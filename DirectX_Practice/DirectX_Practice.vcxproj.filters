@@ -1,0 +1,393 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Utility\Input.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\Math.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\Singleton.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\GamePlay.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneBase.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor\Actor.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor\ActorManager.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor\ComponentManagementOfActor.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor\PlayerActor.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\Component.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\PlayerMoveComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Pause.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UI.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\UIManager.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="UI\Texture.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\Collision.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader\Shader.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera\Camera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Sprite.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Device\IDManager.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Device\Random.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Device\Renderer.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Direct3D11.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Entry.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Game.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Window.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\SpriteManager.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Title.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\SceneManager.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\SpriteComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Device\Sound.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Device\CSVReader.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\CircleCollisionComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor\EnemyActor.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\EnemyMoveComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor\EnemyBullet1.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\EnemyBullet1Component.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Device\Physics.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor\EnemyBullet2.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\EnemyBullet2Component.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\HitPointComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\DamageComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor\PlayerAttack.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\PlayerAttackComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Device\Time.cpp">
+      <Filter>Device</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor\AvoidancePlayerActor.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\AvoidanceComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\SPComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\PlayerHPSP.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor\SpecialAttack.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\SpecialAttackComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\AnimationComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor\EnemyBullet2Manager.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor\EnemyBullet1Manager.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\Sousa.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor\TakeDamageEffectActor.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Buffer.cpp" />
+    <ClCompile Include="System\InputElement.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Utility\Input.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Math.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Singleton.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\GamePlay.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneBase.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\Actor.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\ActorManager.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\ComponentManagementOfActor.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\PlayerActor.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\Component.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\PlayerMoveComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Pause.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UI.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\UIManager.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Main.h" />
+    <ClInclude Include="UI\Texture.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\Collision.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader\Shader.h">
+      <Filter>Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera\Camera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Sprite.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Device\IDManager.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Device\Random.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Device\Renderer.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Direct3D11.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="System\DirectXIncLib.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Game.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Window.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\SpriteManager.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\IManager.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Title.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\SceneManager.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\SpriteComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Device\Sound.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Device\CSVReader.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\CircleCollisionComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\EnemyActor.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\EnemyMoveComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\EnemyBullet1.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\EnemyBullet1Component.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Device\Physics.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\EnemyBullet2.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\EnemyBullet2Component.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\HitPointComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\DamageComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\PlayerAttack.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\PlayerAttackComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Device\Time.h">
+      <Filter>Device</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\AvoidancePlayerActor.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\AvoidanceComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\SPComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\PlayerHPSP.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\SpecialAttack.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\SpecialAttackComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\AnimationComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\EnemyBullet2Manager.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\EnemyBullet1Manager.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\Sousa.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\TakeDamageEffectActor.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="System\BufferDesc.h" />
+    <ClInclude Include="System\Buffer.h" />
+    <ClInclude Include="System\VertexStreamDesc.h" />
+    <ClInclude Include="System\InputElementDesc.h" />
+    <ClInclude Include="System\InputElement.h" />
+    <ClInclude Include="System\SubResourceDesc.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{7273cc92-b178-4206-927a-16c01a2f1e39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Actor">
+      <UniqueIdentifier>{e36a9bee-af64-409e-97f5-55971d323f81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{88db5578-67dd-4825-865f-a53f807d9e32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{7bfff64e-d623-4981-b9ae-19be33671310}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{fcbe93d9-19b3-4796-8e04-a1a6b5f9a470}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{916830e1-a4ae-4151-ab30-6b78150c3a50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{4aa8cd31-d9c6-40a3-9afd-e8c6d0c1a2ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{360f042a-a3a9-411e-a2e7-2b84f0c2f649}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Device">
+      <UniqueIdentifier>{59e4a739-238f-46f5-80fc-ae72aa67b8ca}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Shader\Mesh.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="Shader\Texture.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
+  </ItemGroup>
+</Project>
