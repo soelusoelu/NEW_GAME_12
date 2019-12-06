@@ -52,9 +52,9 @@ void Texture::drawAll(std::list<std::shared_ptr<Sprite>>* sprites) {
     stream.buffer = mVertexBuffer;
     stream.offset = 0;
     stream.stride = sizeof(TextureVertex);
-    Renderer::setVertexBuffer(stream);
+    Renderer::setVertexBuffer(&stream);
     //インデックスバッファーをセット
-    Renderer::setIndexBuffer(*mIndexBuffer);
+    Renderer::setIndexBuffer(mIndexBuffer);
     //サンプラーのセット
     Direct3D11::mDeviceContext->PSSetSamplers(0, 1, &mSampleLinear);
 
@@ -98,6 +98,10 @@ void Texture::drawAll(std::list<std::shared_ptr<Sprite>>* sprites) {
 
 ID3D11ShaderResourceView* Texture::texture() const {
     return mTexture;
+}
+
+const TextureDesc& Texture::desc() const {
+    return mDesc;
 }
 
 void Texture::create(const char* fileName) {
@@ -158,9 +162,80 @@ void Texture::createSampler() {
 
 void Texture::createTexture(const char* fileName) {
     setTextureDirectory();
-    if (FAILED(D3DX11CreateShaderResourceViewFromFileA(Direct3D11::mDevice, fileName, nullptr, nullptr, &mTexture, nullptr))) {
+    //ファイルからテクスチャ情報を取得
+    D3DX11_IMAGE_INFO info;
+    D3DX11GetImageInfoFromFileA(fileName, nullptr, &info, nullptr);
+
+    TextureDesc desc;
+    desc.width = info.Width;
+    desc.height = info.Height;
+    mDesc = desc;
+
+    if (FAILED(D3DX11CreateShaderResourceViewFromFileA(Direct3D11::mDevice, fileName, &toImageLoadInfo(mDesc), nullptr, &mTexture, nullptr))) {
         MessageBox(0, L"テクスチャ作成失敗", NULL, MB_OK);
     }
+}
+
+D3DX11_IMAGE_LOAD_INFO Texture::toImageLoadInfo(const TextureDesc& desc) const {
+    D3DX11_IMAGE_LOAD_INFO info;
+    info.Width = desc.width;
+    info.Height = desc.height;
+    info.Depth = desc.depth;
+    info.FirstMipLevel = desc.firstMipLevel;
+    info.MipLevels = desc.mipLevels;
+    info.Usage = toUsage(desc.usage);
+    info.BindFlags = toBind(desc.bindFlags);
+    info.CpuAccessFlags = toCPUAccess(desc.cpuAccessFlags);
+    info.MiscFlags = desc.miscFlags;
+    info.Format = toFormat(desc.format);
+    info.Filter = toFilter(desc.filter);
+    info.MipFilter = toFilter(desc.mipFilter);
+    info.pSrcInfo = desc.srcInfo;
+
+    return info;
+}
+
+D3D11_USAGE Texture::toUsage(TextureUsage usage) const {
+    static const D3D11_USAGE usages[] = {
+        D3D11_USAGE_DEFAULT,
+        D3D11_USAGE_IMMUTABLE,
+        D3D11_USAGE_DYNAMIC,
+        D3D11_USAGE_STAGING
+    };
+    return usages[static_cast<unsigned>(usage)];
+}
+
+unsigned Texture::toBind(TextureBind bind) const {
+    static const unsigned binds[] = {
+        D3D11_BIND_SHADER_RESOURCE,
+        D3D11_BIND_RENDER_TARGET,
+    };
+    return binds[static_cast<unsigned>(bind)];
+}
+
+unsigned Texture::toCPUAccess(TextureCPUAccessFlag flag) const {
+    static const unsigned accesses[] = {
+        0,
+        D3D11_CPU_ACCESS_WRITE,
+        D3D11_CPU_ACCESS_READ
+    };
+    return accesses[static_cast<unsigned>(flag)];
+}
+
+DXGI_FORMAT Texture::toFormat(TextureFormat format) const {
+    static const DXGI_FORMAT formats[] = {
+        DXGI_FORMAT_R8G8B8A8_UNORM,
+    };
+    return formats[static_cast<unsigned>(format)];
+}
+
+unsigned Texture::toFilter(TextureFilter filter) const {
+    static const unsigned filters[] = {
+        D3DX11_FILTER_POINT,
+        D3DX11_FILTER_LINEAR,
+        D3DX11_FILTER_TRIANGLE,
+    };
+    return filters[static_cast<unsigned>(filter)];
 }
 
 ID3D11SamplerState* Texture::mSampleLinear = nullptr;

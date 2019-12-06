@@ -39,7 +39,7 @@ EnemyMoveComponent::~EnemyMoveComponent() = default;
 
 void EnemyMoveComponent::start() {
     mMySprite = mOwner->getComponentManager()->getComponent<SpriteComponent>()->getSprite();
-    mMySprite->setTexture("boss_center.png", Vector2(512.f, 256.f));
+    mMySprite->setTexture("boss_center.png");
     mMySprite->setScale(0.f, true);
     mMySprite->setUV(0.f, 0.f, 0.5f, 1.f);
     mMySprite->setPosition(Vector2(Game::WINDOW_WIDTH / 2.f - mMySprite->getScreenTextureSize().x, Game::WINDOW_HEIGHT / 2.f - mMySprite->getScreenTextureSize().y));
@@ -86,7 +86,7 @@ void EnemyMoveComponent::firstMoving() {
             return;
         }
 
-        mMySprite->setTexture("boss_anime.png", Vector2(512.f, 512.f));
+        mMySprite->setTexture("boss_anime.png");
         mMySprite->setUV(0.f, 0.f, 0.5f, 0.5f);
 
         mCircle->enabled();

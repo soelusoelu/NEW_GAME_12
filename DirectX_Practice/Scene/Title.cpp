@@ -7,7 +7,7 @@
 
 Title::Title() :
     SceneBase() {
-    new Sprite("Title.png", Vector2(1080.f, 720.f), 0.1f);
+    new Sprite("Title.png", 0.1f);
     mSound = Renderer::getSound("Title.wav");
     mSound->play(true);
 }

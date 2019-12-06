@@ -18,7 +18,7 @@ std::shared_ptr<InputElement> Renderer::createInputLayout(const InputElementDesc
     return std::make_shared<InputElement>(layout, numElements, compile);
 }
 
-void Renderer::setVertexBuffer(const VertexStreamDesc& stream, unsigned numStream, unsigned start) {
+void Renderer::setVertexBuffer(const VertexStreamDesc* stream, unsigned numStream, unsigned start) {
     /* IASetVertexBuffers
         使い始めのスロット番号
         頂点バッファ配列の要素数
@@ -26,12 +26,12 @@ void Renderer::setVertexBuffer(const VertexStreamDesc& stream, unsigned numStrea
         INPUT_ELEMENT_DESC構造体のサイズが入った配列への先頭ポインタ(stride(読み込み単位)として扱うため)
         頂点バッファ配列の各頂点バッファの頭出しをするオフセット値の配列
     */
-    auto buffer = stream.buffer->buffer();
-    Direct3D11::mDeviceContext->IASetVertexBuffers(start, numStream, &buffer, &stream.stride, &stream.offset);
+    auto buffer = stream->buffer->buffer();
+    Direct3D11::mDeviceContext->IASetVertexBuffers(start, numStream, &buffer, &stream->stride, &stream->offset);
 }
 
-void Renderer::setIndexBuffer(const Buffer& buffer, unsigned offset) {
-    Direct3D11::mDeviceContext->IASetIndexBuffer(buffer.buffer(), DXGI_FORMAT_R16_UINT, offset);
+void Renderer::setIndexBuffer(std::shared_ptr<Buffer> buffer, unsigned offset) {
+    Direct3D11::mDeviceContext->IASetIndexBuffer(buffer->buffer(), DXGI_FORMAT_R16_UINT, offset);
 }
 
 void Renderer::setInputLayout(std::shared_ptr<InputElement> layout) {
@@ -119,7 +119,7 @@ void Renderer::drawNumber(int number, const Vector2& position, bool isRightAlign
         }
     }
 
-    Sprite* sprite = new Sprite("number.png", Vector2(widthOfTexture, 64.f), 0.01f);
+    Sprite* sprite = new Sprite("number.png", 0.01f);
     sprite->setPosition(Vector2(position.x - widthChar * digit, position.y));
 
     // 数字を文字列化し、1文字ずつ取り出す

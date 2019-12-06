@@ -10,7 +10,7 @@ AvoidancePlayerActor::AvoidancePlayerActor(PlayerActor* player, const Vector2& p
     Actor(tag),
     mAvoidance(new AvoidanceComponent(this, player)),
     mCircle(new CircleCollisionComponent(this)),
-    mSprite(new SpriteComponent(this, "player_128.png", Vector2(128.f, 128.f), 0.51f)) {
+    mSprite(new SpriteComponent(this, "player_128.png", 0.51f)) {
     auto s = mSprite->getSprite();
     s->setAlpha(0.f);
     s->setScale(scale);

@@ -2,9 +2,9 @@
 #include "../Actor/Actor.h"
 #include "../UI/Sprite.h"
 
-SpriteComponent::SpriteComponent(Actor* owner, const char* fileName, const Vector2& size, float z) :
+SpriteComponent::SpriteComponent(Actor* owner, const char* fileName, float z) :
     Component(owner),
-    mSprite(new Sprite(fileName, size, z)) {
+    mSprite(new Sprite(fileName, z)) {
 }
 
 SpriteComponent::~SpriteComponent() {

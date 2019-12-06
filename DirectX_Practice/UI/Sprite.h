@@ -14,7 +14,7 @@ class Texture;
 
 class Sprite {
 public:
-    Sprite(const char* fileName, const Vector2& size, float z);
+    Sprite(const char* fileName, float z);
     ~Sprite();
     Sprite(const Sprite& sprite);
     //SpriteManagerにて毎フレーム実行
@@ -24,42 +24,42 @@ public:
     void setPosition(const Vector2& pos);
     //描画優先順位(0～1、0が手前)
     void setPrimary(float z);
-    const Vector2 getPosition() const;
-    const float getDepth() const;
+    Vector2 getPosition() const;
+    float getDepth() const;
     void translate(const Vector2& translation);
     //回転
     void setRotation(float angle);
-    const Quaternion getRotation() const;
+    Quaternion getRotation() const;
     void rotate(float angle);
     //倍率で拡縮
     void setScale(const Vector2& scale, bool isCenterShift = false);
     void setScale(float scale, bool isCenterShift = false);
-    const Vector2 getScale() const;
+    Vector2 getScale() const;
     //色味、たぶん0～1
     void setColor(const Vector3& color);
     void setColor(float r, float g, float b);
     //不透明度(0～1、1が不透明, 0が透明)
     void setAlpha(float alpha);
-    const Vector4 getColor() const;
+    Vector4 getColor() const;
     //切り取り範囲(left, top, right, bottom, 0～1)
     void setUV(float l, float t, float r, float b);
-    const Vector4 getUV() const;
+    Vector4 getUV() const;
     //回転ピボット位置
     void setPivot(const Vector2& pivot);
-    const Vector2 getPivot() const;
+    Vector2 getPivot() const;
     //テクスチャサイズの取得(getterのみ)
-    const Vector2 getTextureSize() const;
+    Vector2 getTextureSize() const;
     //スクリーン表示上のサイズの取得
-    const Vector2 getScreenTextureSize() const;
+    Vector2 getScreenTextureSize() const;
     //状態管理
     static void destroy(Sprite* sprite);
     static void destroy(std::shared_ptr<Sprite> sprite);
-    const SpriteState getState() const;
+    SpriteState getState() const;
     //World行列の取得
-    const Matrix4 getWorld() const;
+    Matrix4 getWorld() const;
     //テクスチャの取得
-    void setTexture(const char* fileName, const Vector2& size);
-    const std::shared_ptr<Texture> texture() const;
+    void setTexture(const char* fileName);
+    std::shared_ptr<Texture> texture() const;
     //シェーダーの取得
     std::shared_ptr<Shader> shader() const;
     //ファイル名の取得

@@ -4,7 +4,7 @@
 
 TakeDamageEffectActor::TakeDamageEffectActor(const char* tag) :
     Actor(tag),
-    mSprite(new Sprite("takeDamage2.png", Vector2(1080.f, 720.f), 0.01f)) {
+    mSprite(new Sprite("takeDamage2.png", 0.01f)) {
 }
 
 TakeDamageEffectActor::~TakeDamageEffectActor() {

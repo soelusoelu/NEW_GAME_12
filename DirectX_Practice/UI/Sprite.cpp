@@ -3,11 +3,12 @@
 #include "Texture.h"
 #include "../Device/Renderer.h"
 #include "../Shader/Shader.h"
+#include "../System/TextureDesc.h"
 #include <cassert>
 
-Sprite::Sprite(const char* fileName, const Vector2& size, float z) :
-    mDefaultSize(size),
-    mCurrentSize(size),
+Sprite::Sprite(const char* fileName, float z) :
+    mDefaultSize(Vector2::zero),
+    mCurrentSize(Vector2::zero),
     mPosition(Vector2::zero, z),
     mRotation(Quaternion::identity),
     mScale(Vector2::one),
@@ -20,6 +21,10 @@ Sprite::Sprite(const char* fileName, const Vector2& size, float z) :
     mShader(std::make_shared<Shader>()),
     mFileName(fileName),
     mWorldUpdateFlag(true) {
+
+    auto desc = mTexture->desc();
+    mDefaultSize = Vector2(desc.width, desc.height);
+    mCurrentSize = mDefaultSize;
 
     mShader->createVertexShader("Texture.hlsl", "VS");
     mShader->createPixelShader("Texture.hlsl", "PS");
@@ -70,11 +75,11 @@ void Sprite::setPrimary(float z) {
     mZSortFlag = true;
 }
 
-const Vector2 Sprite::getPosition() const {
+Vector2 Sprite::getPosition() const {
     return Vector2(mPosition.x, mPosition.y);
 }
 
-const float Sprite::getDepth() const {
+float Sprite::getDepth() const {
     return mPosition.z;
 }
 
@@ -94,7 +99,7 @@ void Sprite::setRotation(float angle) {
     mWorldUpdateFlag = true;
 }
 
-const Quaternion Sprite::getRotation() const {
+Quaternion Sprite::getRotation() const {
     return mRotation;
 }
 
@@ -144,7 +149,7 @@ void Sprite::setScale(float scale, bool isCenterShift) {
     mWorldUpdateFlag = true;
 }
 
-const Vector2 Sprite::getScale() const {
+Vector2 Sprite::getScale() const {
     return mScale;
 }
 
@@ -167,7 +172,7 @@ void Sprite::setAlpha(float alpha) {
     mWorldUpdateFlag = true;
 }
 
-const Vector4 Sprite::getColor() const {
+Vector4 Sprite::getColor() const {
     return mColor;
 }
 
@@ -194,7 +199,7 @@ void Sprite::setUV(float l, float t, float r, float b) {
     mWorldUpdateFlag = true;
 }
 
-const Vector4 Sprite::getUV() const {
+Vector4 Sprite::getUV() const {
     return mUV;
 }
 
@@ -203,15 +208,15 @@ void Sprite::setPivot(const Vector2 & pivot) {
     mWorldUpdateFlag = true;
 }
 
-const Vector2 Sprite::getPivot() const {
+Vector2 Sprite::getPivot() const {
     return mPivot;
 }
 
-const Vector2 Sprite::getTextureSize() const {
+Vector2 Sprite::getTextureSize() const {
     return mDefaultSize;
 }
 
-const Vector2 Sprite::getScreenTextureSize() const {
+Vector2 Sprite::getScreenTextureSize() const {
     return mCurrentSize * mScale;
 }
 
@@ -223,25 +228,27 @@ void Sprite::destroy(std::shared_ptr<Sprite> sprite) {
     sprite->mState = SpriteState::Dead;
 }
 
-const SpriteState Sprite::getState() const {
+SpriteState Sprite::getState() const {
     return mState;
 }
 
-const Matrix4 Sprite::getWorld() const {
+Matrix4 Sprite::getWorld() const {
     return mWorld;
 }
 
-void Sprite::setTexture(const char* fileName, const Vector2 & size) {
-    mDefaultSize = size;
-    mCurrentSize = size;
+void Sprite::setTexture(const char* fileName) {
     mPivot = mCurrentSize / 2.f;
     mTexture = Renderer::getTexture(fileName);
     mFileName = fileName;
 
+    auto desc = mTexture->desc();
+    mDefaultSize = Vector2(desc.width, desc.height);
+    mCurrentSize = mDefaultSize;
+
     mTexture->createVertexLayout(mShader->getCompiledShader());
 }
 
-const std::shared_ptr<Texture> Sprite::texture() const {
+std::shared_ptr<Texture> Sprite::texture() const {
     return mTexture;
 }
 

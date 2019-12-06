@@ -12,10 +12,10 @@ PlayerHPSP::PlayerHPSP(PlayerActor* player, EnemyActor* enemy) :
     mPlayerHP(player->getComponentManager()->getComponent<HitPointComponent>()),
     mPlayerSP(player->getComponentManager()->getComponent<SPComponent>()),
     mEnemyHP(enemy->getComponentManager()->getComponent<HitPointComponent>()),
-    mHpGauge(new Sprite("HP.png", Vector2(256.f, 11.f), 0.1f)),
-    mSpGauge1(new Sprite("SPGauge1.png", Vector2(256.f, 11.f), 0.1f)),
-    mSpGauge2(new Sprite("SPGauge2.png", Vector2(256.f, 11.f), 0.1f)),
-    mSpGauge3(new Sprite("SPGauge3.png", Vector2(256.f, 11.f), 0.1f)) {
+    mHpGauge(new Sprite("HP.png", 0.1f)),
+    mSpGauge1(new Sprite("SPGauge1.png", 0.1f)),
+    mSpGauge2(new Sprite("SPGauge2.png", 0.1f)),
+    mSpGauge3(new Sprite("SPGauge3.png", 0.1f)) {
     mHpGauge->setPosition(Vector2(32.f, 16.f));
     auto spPos = Vector2(32.f, mHpGauge->getScreenTextureSize().y + 24.f);
     mSpGauge1->setPosition(spPos);

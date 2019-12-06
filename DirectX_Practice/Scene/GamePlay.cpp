@@ -19,13 +19,13 @@ GamePlay::GamePlay() :
     SceneBase(),
     mActorManager(std::make_shared<ActorManager>()),
     mState(GameState::Play),
-    mSlowBlack(new Sprite("slow.png", Vector2(1080.f, 720.f), 0.05f)),
+    mSlowBlack(new Sprite("slow.png", 0.05f)),
     mEnd(nullptr),
     mFade(nullptr) {
     auto p = new PlayerActor();
     auto e = new EnemyActor(p);
     mUIManager->add(new PlayerHPSP(p, e));
-    new Sprite("gameplay.png", Vector2(1080.f, 720.f), 0.99f);
+    new Sprite("gameplay.png", 0.99f);
     mSlowBlack->setAlpha(0.f);
 
     mSound = Renderer::getSound("gameplay.wav");
@@ -53,7 +53,7 @@ void GamePlay::updateScene() {
         //    mUIManager->add(new Pause(shared_from_this()));
         //}
         if (isEndGame()) {
-            mFade = new Sprite("fade.png", Vector2(1.f, 1.f), 0.01f);
+            mFade = new Sprite("fade.png", 0.01f);
             mFade->setScale(Vector2(Game::WINDOW_WIDTH, Game::WINDOW_HEIGHT));
             mFade->setAlpha(0.f);
             mState = GameState::Fade;
@@ -88,7 +88,7 @@ void GamePlay::setState(GameState state) {
 
 bool GamePlay::isEndGame() {
     if (!mActorManager->getActor<EnemyActor>()) {
-        mEnd = new Sprite("gameclear.png", Vector2(1080.f, 720.f), 0.001f);
+        mEnd = new Sprite("gameclear.png", 0.001f);
         mEnd->setAlpha(0.f);
         mSound->stop();
         mSound.reset();
@@ -97,7 +97,7 @@ bool GamePlay::isEndGame() {
         return true;
     }
     if (!mActorManager->getPlayer()) {
-        mEnd = new Sprite("gameover.png", Vector2(1080.f, 720.f), 0.001f);
+        mEnd = new Sprite("gameover.png", 0.001f);
         mEnd->setAlpha(0.f);
         mSound->stop();
         mSound.reset();

@@ -26,7 +26,7 @@ private:
     //バッファの使用方法を変換
     D3D11_USAGE toUsage(BufferUsage usage) const;
     //CPUアクセス権限を変換
-    unsigned toCPUAccess(CPUAccessFlag flag) const;
+    unsigned toCPUAccess(BufferCPUAccessFlag flag) const;
     //サブリソースを変換
     D3D11_SUBRESOURCE_DATA toSubResource(const SubResourceDesc* data) const;
 

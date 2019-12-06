@@ -19,7 +19,7 @@ PlayerActor::PlayerActor(const char* tag) :
     mHP(new HitPointComponent(this, 1000)),
     mPlayerMove(new PlayerMoveComponent(this)),
     mSP(new SPComponent(this)),
-    mSprite(new SpriteComponent(this, "player_anime.png", Vector2(512.f, 256.f), 0.5f)) {
+    mSprite(new SpriteComponent(this, "player_anime.png", 0.5f)) {
 }
 
 PlayerActor::~PlayerActor() = default;

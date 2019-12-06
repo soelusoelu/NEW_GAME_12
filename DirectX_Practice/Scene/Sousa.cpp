@@ -4,7 +4,7 @@
 
 Sousa::Sousa() :
     SceneBase() {
-    new Sprite("sousa.png", Vector2(1080.f, 720.f), 0.1f);
+    new Sprite("sousa.png", 0.1f);
 }
 
 Sousa::~Sousa() = default;

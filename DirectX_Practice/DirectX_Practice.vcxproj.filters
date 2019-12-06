@@ -352,6 +352,7 @@
     <ClInclude Include="System\InputElementDesc.h" />
     <ClInclude Include="System\InputElement.h" />
     <ClInclude Include="System\SubResourceDesc.h" />
+    <ClInclude Include="System\TextureDesc.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Utility">

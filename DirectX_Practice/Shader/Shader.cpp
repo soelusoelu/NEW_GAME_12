@@ -17,7 +17,7 @@ Shader::Shader() :
     cb.size = sizeof(TextureShaderConstantBuffer);
     cb.usage = BufferUsage::BUFFER_USAGE_DYNAMIC;
     cb.type = BufferType::BUFFER_TYPE_CONSTANT_BUFFER;
-    cb.cpuAccessFlags = CPUAccessFlag::CPU_ACCESS_WRITE;
+    cb.cpuAccessFlags = BufferCPUAccessFlag::CPU_ACCESS_WRITE;
 
     mConstantBuffer = Renderer::createBuffer(cb);
 }

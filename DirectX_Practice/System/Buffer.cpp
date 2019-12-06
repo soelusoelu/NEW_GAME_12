@@ -63,7 +63,7 @@ unsigned Buffer::toTarget(BufferType type) const {
         //D3D11_BIND_DECODER,
         //D3D11_BIND_VIDEO_ENCODER
     };
-    return targets[static_cast<int>(type)];
+    return targets[static_cast<unsigned>(type)];
 }
 
 D3D11_USAGE Buffer::toUsage(BufferUsage usage) const {
@@ -73,16 +73,16 @@ D3D11_USAGE Buffer::toUsage(BufferUsage usage) const {
         D3D11_USAGE_DYNAMIC,
         D3D11_USAGE_STAGING
     };
-    return usages[static_cast<int>(usage)];
+    return usages[static_cast<unsigned>(usage)];
 }
 
-unsigned Buffer::toCPUAccess(CPUAccessFlag flag) const {
+unsigned Buffer::toCPUAccess(BufferCPUAccessFlag flag) const {
     static const unsigned accesses[] = {
         0,
         D3D11_CPU_ACCESS_WRITE,
         D3D11_CPU_ACCESS_READ
     };
-    return accesses[static_cast<int>(flag)];
+    return accesses[static_cast<unsigned>(flag)];
 }
 
 D3D11_SUBRESOURCE_DATA Buffer::toSubResource(const SubResourceDesc* data) const {

@@ -10,7 +10,7 @@ EnemyBullet2::EnemyBullet2(Sprite* enemySprite, float rotation, float rate, cons
     mCircle(new CircleCollisionComponent(this)),
     mDamage(new DamageComponent(this, 50)),
     mEnemyBullet(new EnemyBullet2Component(this, enemySprite, rotation, rate)),
-    mSprite(new SpriteComponent(this, "fire.png", Vector2(64.f, 64.f), 0.2f - mExistCount / 300.f)) {
+    mSprite(new SpriteComponent(this, "fire.png", 0.2f - mExistCount / 300.f)) {
     mExistCount++;
 }
 
