@@ -26,7 +26,7 @@ void EnemyComponent::start()
 
 void EnemyComponent::update()
 {
-	move(search());
+	//move(search());
 	hit();
 }
 

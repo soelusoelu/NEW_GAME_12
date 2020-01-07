@@ -9,11 +9,21 @@ class CircleCollisionComponent;
 class SpriteComponent;
 class EnemyComponent;
 
+enum class Scale{
+	SMALL,
+	MIDDL,
+	BIG
+};
+
+enum class Type{
+	NORMAL,
+	SHOT,
+	TACKLE
+};
 
 class Enemy :public Actor {
 public:
-	Enemy(std::shared_ptr<Renderer>renderer,const Vector2& pos, const char* tag = "Enemy");
-	Enemy(std::shared_ptr<Renderer>renderer, const Vector2& pos/*1-3‚ð“ü—Í*/,const float& size, const char* tag = "Enemy");
+	Enemy(std::shared_ptr<Renderer>renderer,const Vector2& pos,Scale scale, Type type, const char* tag = "Enemy");
 	~Enemy();
 	virtual void updateActor() override;
 	
@@ -22,4 +32,6 @@ private:
 	CircleCollisionComponent* mCollide;
 	SpriteComponent* mSprite;
 	EnemyComponent* mEnemy;
+	Scale mScale;
+	Type mType;
 };

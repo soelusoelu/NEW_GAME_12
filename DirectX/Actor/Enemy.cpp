@@ -5,30 +5,39 @@
 #include "Transform2D.h"
 #include "../Device/Time.h"
 
-Enemy::Enemy(std::shared_ptr<Renderer> renderer, const Vector2 & pos, const char * tag):
+#include <cassert>
+
+Enemy::Enemy(std::shared_ptr<Renderer> renderer, const Vector2 & pos, Scale scale, Type type, const char * tag):
 	Actor(tag),
 	mCollide(new CircleCollisionComponent(this)),
 	mSprite(new SpriteComponent(this, renderer, "player.png", 0.51f)),
-	mEnemy(new EnemyComponent(this))
+	mEnemy(new EnemyComponent(this)),
+	mScale(scale),
+	mType(type)
 {
-	//mSprite->setUV();//画像切り取り
-	getTransform()->setPosition(pos);//位置(左上)
-
-}
-
-Enemy::Enemy(std::shared_ptr<Renderer> renderer, const Vector2 & pos, const float& size, const char * tag):
-	Actor(tag),
-	mCollide(new CircleCollisionComponent(this)),
-	mSprite(new SpriteComponent(this, renderer, "player.png", 0.51f)),
-	mEnemy(new EnemyComponent(this))
-{
-	getTransform()->setPosition(pos);//位置(左上)
-	getTransform()->setScale(size);
+	switch (mScale)
+	{
+	case Scale::SMALL: getTransform()->setScale(0.5f); break;
+	case Scale::MIDDL:                                 break;
+	case Scale::BIG:   getTransform()->setScale(1.5f); break;
+	default:
+		assert(false);//Debug中は処理を停止。Release中はスルーする(デバックでエラーならエラーが出る)
+		break;
+	}
 }
 
 Enemy::~Enemy() = default;
 
 void Enemy::updateActor()
 {
+	switch (mType)
+	{
+	case Type::NORMAL:break;
+	case Type::SHOT:break;
+	case Type::TACKLE:break;
+	default:
+		assert(false);
+		break;
+	}
 }
 

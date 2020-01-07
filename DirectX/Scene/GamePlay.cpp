@@ -27,7 +27,6 @@ GamePlay::~GamePlay() {
 
 void GamePlay::startScene() {
     new PlayerActor(mRenderer);
-	new Enemy(mRenderer, Vector2(500.f, 0.f));
 }
 
 void GamePlay::updateScene() {

@@ -23,6 +23,8 @@ public:
 
 	Vector2 search();
 
+	
+
 private:
 	
 	std::shared_ptr<Collider>mCol;
