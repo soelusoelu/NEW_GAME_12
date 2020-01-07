@@ -41,9 +41,12 @@ public:
 
     //ActorManagerの登録
     static void setActorManager(ActorManager* manager);
-
+	static ActorManager* getActorManager();
 private:
     void destroyTimer();
+
+protected:
+	static ActorManager* mActorManager;
 
 private:
     std::shared_ptr<ComponentManager> mComponentManager;
@@ -51,7 +54,5 @@ private:
     std::unique_ptr<Time> mDestroyTimer;
     ActorState mState;
     const char* mTag;
-
-    static ActorManager* mActorManager;
 };
 
