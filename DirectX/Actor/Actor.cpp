@@ -80,6 +80,11 @@ void Actor::setActorManager(ActorManager* manager) {
     mActorManager = manager;
 }
 
+ActorManager * Actor::getActorManager()
+{
+	return mActorManager;
+}
+
 void Actor::destroyTimer() {
     if (!mDestroyTimer) {
         return;

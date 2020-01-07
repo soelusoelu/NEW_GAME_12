@@ -6,6 +6,7 @@
 #include "../Device/Physics.h"
 #include "../System/Game.h"
 #include "../UI/Pause.h"
+#include "../Actor/Enemy.h"
 
 GamePlay::GamePlay() :
     SceneBase(),
@@ -26,6 +27,7 @@ GamePlay::~GamePlay() {
 
 void GamePlay::startScene() {
     new PlayerActor(mRenderer);
+	new Enemy(mRenderer, Vector2(500.f, 0.f));
 }
 
 void GamePlay::updateScene() {
