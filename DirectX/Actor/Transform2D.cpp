@@ -15,8 +15,8 @@ bool Transform2D::computeWorldTransform() {
     if (mIsRecomputeTransform) {
         mIsRecomputeTransform = false;
 
-        mWorldTransform = Matrix4::createTranslation(-Vector3(mPivot, 0.f));
-        mWorldTransform *= Matrix4::createScale(Vector3(mScale, 1.f));
+        mWorldTransform = Matrix4::createScale(Vector3(mScale, 1.f));
+        mWorldTransform *= Matrix4::createTranslation(-Vector3(mPivot, 0.f));
         mWorldTransform *= Matrix4::createFromQuaternion(mRotation);
         mWorldTransform *= Matrix4::createTranslation(mPosition + Vector3(mPivot, 0.f));
 
@@ -96,6 +96,26 @@ void Transform2D::setScale(const Vector2 & scale) {
 }
 
 void Transform2D::setScale(float scale) {
+    mScale.x = scale;
+    mScale.y = scale;
+    mIsRecomputeTransform = true;
+}
+
+void Transform2D::setScale(const Vector2& scale, const Vector2INT& size) {
+    auto s = (mScale - scale) / 2.f;
+    auto translation = Vector2(size.x * s.x, size.y * s.y);
+    translate(translation);
+
+    mScale = scale;
+    mIsRecomputeTransform = true;
+}
+
+void Transform2D::setScale(float scale, const Vector2INT& size) {
+    auto sX = (mScale.x - scale) / 2.f;
+    auto sY = (mScale.y - scale) / 2.f;
+    auto translation = Vector2(size.x * sX, size.y * sY);
+    translate(translation);
+
     mScale.x = scale;
     mScale.y = scale;
     mIsRecomputeTransform = true;

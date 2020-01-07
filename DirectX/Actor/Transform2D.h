@@ -32,6 +32,8 @@ public:
     //倍率で拡縮
     void setScale(const Vector2& scale);
     void setScale(float scale);
+    void setScale(const Vector2& scale, const Vector2INT& size);
+    void setScale(float scale, const Vector2INT& size);
     Vector2 getScale() const;
 
 private:

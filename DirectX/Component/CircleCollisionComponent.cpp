@@ -3,8 +3,8 @@
 #include "../Actor/Actor.h"
 #include "../Actor/Transform2D.h"
 
-CircleCollisionComponent::CircleCollisionComponent(Actor* onwer) :
-    Collider(onwer),
+CircleCollisionComponent::CircleCollisionComponent(Actor* owner) :
+    Collider(owner),
     mCircle(nullptr) {
 }
 
