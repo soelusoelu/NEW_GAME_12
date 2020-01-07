@@ -15,6 +15,7 @@ Enemy::Enemy(std::shared_ptr<Renderer> renderer, const Vector2 & pos, Scale scal
 	mScale(scale),
 	mType(type)
 {
+	getTransform()->setPosition(pos);
 	switch (mScale)
 	{
 	case Scale::SMALL: getTransform()->setScale(0.5f); break;
