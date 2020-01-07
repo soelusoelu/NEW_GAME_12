@@ -6,6 +6,7 @@
 class Renderer;
 class CircleCollisionComponent;
 class SpriteComponent;
+class PlayerMoveComponent;
 
 class PlayerActor : public Actor {
 public:
@@ -16,5 +17,6 @@ public:
 private:
     CircleCollisionComponent* mCollide;
     SpriteComponent* mSprite;
+    PlayerMoveComponent* mMove;
 };
 

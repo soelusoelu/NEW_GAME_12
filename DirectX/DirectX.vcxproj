@@ -140,6 +140,7 @@
   <ItemGroup>
     <ClCompile Include="Actor\ActorManager.cpp" />
     <ClCompile Include="Actor\Actor.cpp" />
+    <ClCompile Include="Actor\AnchorActor.cpp" />
     <ClCompile Include="Actor\Enemy.cpp" />
     <ClCompile Include="Component\CircleCollisionComponent.cpp" />
     <ClCompile Include="Component\Collider.cpp" />
@@ -153,6 +154,7 @@
     <ClCompile Include="Actor\Transform2D.cpp" />
     <ClCompile Include="Actor\PlayerActor.cpp" />
     <ClCompile Include="Component\SpriteComponent.cpp" />
+    <ClCompile Include="Component\PlayerMoveComponent.cpp" />
     <ClCompile Include="Component\EnemyComponent.cpp" />
     <ClCompile Include="Shader\Shader.cpp" />
     <ClCompile Include="Sprite\Sprite.cpp" />
@@ -179,6 +181,7 @@
   <ItemGroup>
     <ClInclude Include="Actor\ActorManager.h" />
     <ClInclude Include="Actor\Actor.h" />
+    <ClInclude Include="Actor\AnchorActor.h" />
     <ClInclude Include="Actor\Enemy.h" />
     <ClInclude Include="Component\CircleCollisionComponent.h" />
     <ClInclude Include="Component\Collider.h" />
@@ -192,6 +195,7 @@
     <ClInclude Include="Actor\Transform2D.h" />
     <ClInclude Include="Actor\PlayerActor.h" />
     <ClInclude Include="Component\SpriteComponent.h" />
+    <ClInclude Include="Component\PlayerMoveComponent.h" />
     <ClInclude Include="Component\EnemyComponent.h" />
     <ClInclude Include="Shader\Shader.h" />
     <ClInclude Include="Sprite\Sprite.h" />
