@@ -6,8 +6,8 @@
 #include "../Component/SpriteComponent.h"
 #include "../Device/Time.h"
 
-PlayerMoveComponent::PlayerMoveComponent(Actor* owner, std::shared_ptr<Renderer> renderer) :
-    Component(owner),
+PlayerMoveComponent::PlayerMoveComponent(Actor* owner, std::shared_ptr<Renderer> renderer, int updateOrder) :
+    Component(owner, updateOrder),
     mRenderer(renderer),
     mSpriteComp(nullptr),
     mAcceleration(Vector2(30.f, 0.f)),
@@ -77,6 +77,6 @@ void PlayerMoveComponent::anchor() {
 void PlayerMoveComponent::dead() {
     if (Math::abs(mAcceleration.x) < mDestroySpeed &&
         Math::abs(mAcceleration.y) < mDestroySpeed) {
-        Actor::destroy(mOwner);
+        //Actor::destroy(mOwner);
     }
 }

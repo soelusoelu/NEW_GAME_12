@@ -26,8 +26,8 @@ void EnemyComponent::start()
 
 void EnemyComponent::update()
 {
-	move(search());
-	hit();
+	//move(search());
+	//hit();
 }
 
 void EnemyComponent::move(const Vector2 & movement)//移動
@@ -45,7 +45,7 @@ void EnemyComponent::hit()//当たり判定
 	{
 		if (i->getOwner()->getTag() == "Player")//プレイヤーとあたったら(ほんとは穴に落ちる)
 		{
-			Vector2 mVec = Actor::getActorManager()->getPlayer()->getTransform()->getPosition() - mOwner->getTransform()->getPosition();
+			Vector2 mVec = mOwner->getActorManager()->getPlayer()->getTransform()->getPosition() - mOwner->getTransform()->getPosition();
 			mVec *= -1;
 			mVec.normalize();//エネミーから見たプレイヤーと反対のベクトル
 			mOwner->getTransform()->translate(mVec * 750.f *60.f * Time::deltaTime);//移動処理
@@ -64,5 +64,9 @@ Vector2 EnemyComponent::search()//プレイヤーの位置情報を受け取りその値を返す
 	//auto b = Actor::getActorManager()->getPlayer()->getTransform()->getPosition();
 
 	//return  b;
-	return Actor::getActorManager()->getPlayer()->getTransform()->getPosition();
+	auto p = mOwner->getActorManager()->getPlayer();
+	if (p) {
+		return p->getTransform()->getPosition();
+	}
+	return Vector2::zero;
 }

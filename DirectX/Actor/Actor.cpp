@@ -76,13 +76,12 @@ const char* Actor::getTag() const {
     return mTag;
 }
 
-void Actor::setActorManager(ActorManager* manager) {
+void Actor::setActorManager(ActorManager * manager) {
     mActorManager = manager;
 }
 
-ActorManager * Actor::getActorManager()
-{
-	return mActorManager;
+ActorManager* Actor::getActorManager() {
+    return mActorManager;
 }
 
 void Actor::destroyTimer() {

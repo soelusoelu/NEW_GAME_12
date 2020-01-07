@@ -11,7 +11,7 @@ class SpriteComponent;
 
 class PlayerMoveComponent : public Component {
 public:
-    PlayerMoveComponent(Actor* owner, std::shared_ptr<Renderer> renderer);
+    PlayerMoveComponent(Actor* owner, std::shared_ptr<Renderer> renderer, int updateOrder = 10);
     ~PlayerMoveComponent();
     virtual void start() override;
     virtual void update() override;

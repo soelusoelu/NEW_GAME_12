@@ -5,7 +5,9 @@
 
 CircleCollisionComponent::CircleCollisionComponent(Actor* owner) :
     Collider(owner),
-    mCircle(nullptr) {
+    mCircle(nullptr),
+    mIsAutoUpdate(true)
+{
 }
 
 CircleCollisionComponent::~CircleCollisionComponent() = default;
@@ -21,12 +23,28 @@ void CircleCollisionComponent::updateCollider() {
 }
 
 void CircleCollisionComponent::onUpdateWorldTransformCollider() {
+    if (!mIsAutoUpdate) {
+        return;
+    }
     mCircle->set(
         mOwner->getTransform()->getPosition() + mOwner->getTransform()->getPivot(),
         mOwner->getTransform()->getPivot().x
     );
 }
 
+void CircleCollisionComponent::set(const Vector2& center, float radius) {
+    mCircle->set(center, radius);
+    if (mIsAutoUpdate) {
+        mIsAutoUpdate = false;
+    }
+}
+
 std::shared_ptr<Circle> CircleCollisionComponent::getCircle() const {
     return mCircle;
+}
+
+void CircleCollisionComponent::automation() {
+    if (!mIsAutoUpdate) {
+        mIsAutoUpdate = true;
+    }
 }

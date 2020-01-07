@@ -30,8 +30,8 @@ public:
     Vector2 getPivot() const;
 
     //倍率で拡縮
-    void setScale(const Vector2& scale);
-    void setScale(float scale);
+    void setScale(const Vector2& scale, bool isComputePivot = true);
+    void setScale(float scale, bool isComputePivot = true);
     void setScale(const Vector2& scale, const Vector2INT& size);
     void setScale(float scale, const Vector2INT& size);
     Vector2 getScale() const;
@@ -40,6 +40,7 @@ private:
     Matrix4 mWorldTransform;
     Vector3 mPosition;
     Quaternion mRotation;
+    Vector2 mDefaultPivot;
     Vector2 mPivot;
     Vector2 mScale;
     bool mIsRecomputeTransform;

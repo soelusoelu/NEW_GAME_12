@@ -8,7 +8,7 @@
 Enemy::Enemy(std::shared_ptr<Renderer> renderer, const Vector2 & pos, const char * tag):
 	Actor(tag),
 	mCollide(new CircleCollisionComponent(this)),
-	mSprite(new SpriteComponent(this, renderer, "player.png", 0.51f)),
+	mSprite(new SpriteComponent(this, renderer, "player.png", 0.6f)),
 	mEnemy(new EnemyComponent(this))
 {
 	//mSprite->setUV();//‰æ‘œØ‚èæ‚è
@@ -19,7 +19,7 @@ Enemy::Enemy(std::shared_ptr<Renderer> renderer, const Vector2 & pos, const char
 Enemy::Enemy(std::shared_ptr<Renderer> renderer, const Vector2 & pos, const float& size, const char * tag):
 	Actor(tag),
 	mCollide(new CircleCollisionComponent(this)),
-	mSprite(new SpriteComponent(this, renderer, "player.png", 0.51f)),
+	mSprite(new SpriteComponent(this, renderer, "player.png", 0.6f)),
 	mEnemy(new EnemyComponent(this))
 {
 	getTransform()->setPosition(pos);//ˆÊ’u(¶ã)

@@ -4,6 +4,7 @@ Transform2D::Transform2D() :
     mWorldTransform(Matrix4::identity),
     mPosition(Vector3::zero),
     mRotation(Quaternion::identity),
+    mDefaultPivot(Vector2::zero),
     mPivot(Vector2::zero),
     mScale(Vector2::one),
     mIsRecomputeTransform(true) {
@@ -82,6 +83,7 @@ void Transform2D::rotate(float angle) {
 }
 
 void Transform2D::setPivot(const Vector2 & pivot) {
+    mDefaultPivot = pivot;
     mPivot = pivot;
     mIsRecomputeTransform = true;
 }
@@ -90,34 +92,48 @@ Vector2 Transform2D::getPivot() const {
     return mPivot;
 }
 
-void Transform2D::setScale(const Vector2 & scale) {
+void Transform2D::setScale(const Vector2 & scale, bool isComputePivot) {
+    if (isComputePivot) {
+        mPivot = mDefaultPivot * scale;
+    }
+
     mScale = scale;
     mIsRecomputeTransform = true;
 }
 
-void Transform2D::setScale(float scale) {
+void Transform2D::setScale(float scale, bool isComputePivot) {
+    if (isComputePivot) {
+        mPivot = mDefaultPivot * scale;
+    }
+
     mScale.x = scale;
     mScale.y = scale;
     mIsRecomputeTransform = true;
 }
 
-void Transform2D::setScale(const Vector2& scale, const Vector2INT& size) {
+void Transform2D::setScale(const Vector2 & scale, const Vector2INT & size) {
     auto s = (mScale - scale) / 2.f;
     auto translation = Vector2(size.x * s.x, size.y * s.y);
     translate(translation);
 
+    mPivot = mDefaultPivot * scale;
+
     mScale = scale;
+
     mIsRecomputeTransform = true;
 }
 
-void Transform2D::setScale(float scale, const Vector2INT& size) {
+void Transform2D::setScale(float scale, const Vector2INT & size) {
     auto sX = (mScale.x - scale) / 2.f;
     auto sY = (mScale.y - scale) / 2.f;
     auto translation = Vector2(size.x * sX, size.y * sY);
     translate(translation);
 
+    mPivot = mDefaultPivot * scale;
+
     mScale.x = scale;
     mScale.y = scale;
+
     mIsRecomputeTransform = true;
 }
 
