@@ -15,9 +15,8 @@ PlayerMoveComponent::PlayerMoveComponent(Actor* owner, std::shared_ptr<Renderer>
     mAccelerationRange(Vector2(-300.f, 300.f)),
     mDeceleration(Vector2::one),
     mDecelerationSpeed(10.f),
-    mDestroyRange(Vector2(-3.f, 3.f)),
-    mAnchorKey(KeyCode::Q),
-    mAnchorLength(400.f) {
+    mDestroySpeed(3.f),
+    mAnchorKey(KeyCode::Q) {
 }
 
 PlayerMoveComponent::~PlayerMoveComponent() = default;
@@ -31,6 +30,18 @@ void PlayerMoveComponent::update() {
     deceleration();
     anchor();
     dead();
+}
+
+int PlayerMoveComponent::getAccelerate() const {
+    auto x = Math::abs(mAcceleration.x);
+    auto y = Math::abs(mAcceleration.y);
+    if (0.f <= x && x < 100.f) {
+        return 1;
+    } else if (100.f <= x && x < 200.f) {
+        return 2;
+    } else {
+        return 3;
+    }
 }
 
 void PlayerMoveComponent::move() {
@@ -60,15 +71,12 @@ void PlayerMoveComponent::anchor() {
     if (!Input::getKeyDown(mAnchorKey)) {
         return;
     }
-    auto pos = mOwner->getTransform()->getPosition();
-    auto sizeDiv2 = mSpriteComp->getScreenTextureSize() / 2.f;
-
-    new AnchorActor(mRenderer, Vector2(pos.x + sizeDiv2.x, pos.y + sizeDiv2.y), Vector2::up, mAnchorLength);
+    new AnchorActor(mRenderer, mOwner, Vector2::right);
 }
 
 void PlayerMoveComponent::dead() {
-    if (mDestroyRange.x < mAcceleration.x && mAcceleration.x < mDestroyRange.y &&
-        mDestroyRange.x < mAcceleration.y && mAcceleration.y < mDestroyRange.y) {
+    if (Math::abs(mAcceleration.x) < mDestroySpeed &&
+        Math::abs(mAcceleration.y) < mDestroySpeed) {
         Actor::destroy(mOwner);
     }
 }

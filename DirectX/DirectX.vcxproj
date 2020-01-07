@@ -142,6 +142,7 @@
     <ClCompile Include="Actor\Actor.cpp" />
     <ClCompile Include="Actor\AnchorActor.cpp" />
     <ClCompile Include="Actor\Enemy.cpp" />
+    <ClCompile Include="Component\AnchorComponent.cpp" />
     <ClCompile Include="Component\CircleCollisionComponent.cpp" />
     <ClCompile Include="Component\Collider.cpp" />
     <ClCompile Include="Component\ComponentManager.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="Actor\Actor.h" />
     <ClInclude Include="Actor\AnchorActor.h" />
     <ClInclude Include="Actor\Enemy.h" />
+    <ClInclude Include="Component\AnchorComponent.h" />
     <ClInclude Include="Component\CircleCollisionComponent.h" />
     <ClInclude Include="Component\Collider.h" />
     <ClInclude Include="Component\ComponentManager.h" />

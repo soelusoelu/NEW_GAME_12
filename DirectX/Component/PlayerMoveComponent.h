@@ -15,6 +15,7 @@ public:
     ~PlayerMoveComponent();
     virtual void start() override;
     virtual void update() override;
+    int getAccelerate() const;
 
 private:
     void move();
@@ -30,8 +31,7 @@ private:
     Vector2 mAccelerationRange;
     Vector2 mDeceleration;
     float mDecelerationSpeed;
-    Vector2 mDestroyRange;
+    float mDestroySpeed;
     KeyCode mAnchorKey;
-    float mAnchorLength;
 };
 

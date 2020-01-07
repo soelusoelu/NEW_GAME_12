@@ -7,14 +7,14 @@
 class Renderer;
 class CircleCollisionComponent;
 class SpriteComponent;
+class AnchorComponent;
 
 class AnchorActor : public Actor {
 public:
     AnchorActor(
         std::shared_ptr<Renderer> renderer,
-        const Vector2& playerCenterPosition,
+        Actor* player,
         const Vector2& anchorDirection,
-        float length,
         const char* tag = "Anchor"
     );
     ~AnchorActor();
@@ -23,5 +23,6 @@ public:
 private:
     CircleCollisionComponent* mCollide;
     SpriteComponent* mSprite;
+    AnchorComponent* mAnchor;
 };
 
