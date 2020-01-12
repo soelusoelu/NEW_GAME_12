@@ -1,4 +1,4 @@
-#include "AnchorActor.h"
+﻿#include "AnchorActor.h"
 #include "Transform2D.h"
 #include "../Component/AnchorComponent.h"
 #include "../Component/CircleCollisionComponent.h"
@@ -16,10 +16,14 @@ AnchorActor::~AnchorActor() = default;
 void AnchorActor::updateActor() {
 }
 
-void AnchorActor::initialize(const Vector2& direction) {
-    mAnchor->initialize(direction);
+void AnchorActor::shot(const Vector2& direction) {
+    mAnchor->shot(direction);
 }
 
 bool AnchorActor::isHit() const {
     return mAnchor->isHit();
+}
+
+bool AnchorActor::canShot() const {
+    return mAnchor->canShot();
 }

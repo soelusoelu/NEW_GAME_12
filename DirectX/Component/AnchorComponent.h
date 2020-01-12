@@ -1,8 +1,15 @@
-#pragma once
+ï»¿#pragma once
 
 #include "Component.h"
+#include "../Utility/Input.h"
 #include "../Utility/Math.h"
 #include <memory>
+
+enum class AnchorState {
+    EXTEND,
+    SHRINK,
+    STOP
+};
 
 class Actor;
 class SpriteComponent;
@@ -15,21 +22,23 @@ public:
     ~AnchorComponent();
     virtual void start() override;
     virtual void update() override;
-    void initialize(const Vector2& direction);
+    void shot(const Vector2& direction);
     bool isHit() const;
+    bool canShot() const;
 
 private:
-    //ƒAƒ“ƒJ[‚Ì“®‚«
+    //ã‚¢ãƒ³ã‚«ãƒ¼ã®å‹•ã
     void extend();
-    //ƒAƒ“ƒJ[‚Ì“–‚½‚è”»’è‚ğ–ˆƒtƒŒ[ƒ€XV
+    void shrink();
+    //ã‚¢ãƒ³ã‚«ãƒ¼ã®å½“ãŸã‚Šåˆ¤å®šã‚’æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°
     void updateCollider();
-    //“–‚½‚è”»’è
+    //å½“ãŸã‚Šåˆ¤å®š
     void hit();
-    //ƒAƒ“ƒJ[‚ªh‚³‚Á‚½‚Æ‚«‚ÌˆÚ“®§ŒÀ
+    //ã‚¢ãƒ³ã‚«ãƒ¼ãŒåˆºã•ã£ãŸã¨ãã®ç§»å‹•åˆ¶é™
     void hitClamp();
-    //€‚ÊğŒ
-    void dead();
-    //ƒvƒŒƒCƒ„[‚Ì’†SÀ•W‚Ìæ“¾
+    //æ­»ã¬æ¡ä»¶
+    void changeState();
+    //ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ä¸­å¿ƒåº§æ¨™ã®å–å¾—
     Vector2 playerCenter() const;
 
 private:
@@ -40,8 +49,10 @@ private:
     const float MAX_LENGTH;
     const float ANCHOR_INCREASE;
     float mCurrentAnchorLength;
+    Vector2 mTargetPoint;
     bool mIsHit;
     Actor* mHitEnemy;
     Vector2 mHitEnemyCenter;
-    bool mIsUpdate;
+    KeyCode mReleaseKey;
+    AnchorState mState;
 };

@@ -1,4 +1,4 @@
-#include "AnchorComponent.h"
+ï»¿#include "AnchorComponent.h"
 #include "CircleCollisionComponent.h"
 #include "Collider.h"
 #include "ComponentManager.h"
@@ -16,66 +16,92 @@ AnchorComponent::AnchorComponent(Actor* owner, std::shared_ptr<Transform2D> play
     mCollide(nullptr),
     mAnchorDirection(Vector2::right),
     MAX_LENGTH(400.f),
-    ANCHOR_INCREASE(1200.f),
+    ANCHOR_INCREASE(1600.f),
     mCurrentAnchorLength(0.f),
+    mTargetPoint(Vector2::zero),
     mIsHit(false),
     mHitEnemy(nullptr),
     mHitEnemyCenter(Vector2::zero),
-    mIsUpdate(false) {
+    mReleaseKey(KeyCode::Q),
+    mState(AnchorState::STOP) {
 }
 
 AnchorComponent::~AnchorComponent() = default;
 
 void AnchorComponent::start() {
     mSpriteComp = mOwner->componentManager()->getComponent<SpriteComponent>();
+    mSpriteComp->setActive(false);
     mCollide = mOwner->componentManager()->getComponent<CircleCollisionComponent>();
 }
 
 void AnchorComponent::update() {
-    if (!mIsUpdate) {
+    if (mState == AnchorState::STOP) {
         return;
     }
     extend();
+    shrink();
     updateCollider();
     hit();
     hitClamp();
-    dead();
+    changeState();
 }
 
-void AnchorComponent::initialize(const Vector2 & direction) {
+void AnchorComponent::shot(const Vector2 & direction) {
     mAnchorDirection = direction;
     mOwner->transform()->setRotation(Math::toDegrees(Math::atan2(-mAnchorDirection.x, mAnchorDirection.y)));
+    mTargetPoint = playerCenter() + mAnchorDirection * MAX_LENGTH;
     mIsHit = false;
     mHitEnemy = nullptr;
     mCurrentAnchorLength = 0.f;
-    mIsUpdate = true;
+    mState = AnchorState::EXTEND;
+    mSpriteComp->setActive(true);
 }
 
 bool AnchorComponent::isHit() const {
     return mIsHit;
 }
 
+bool AnchorComponent::canShot() const {
+    return mState == AnchorState::STOP;
+}
+
 void AnchorComponent::extend() {
-    if (mIsHit) { //ƒAƒ“ƒJ[‚ª“G‚ÉŽh‚³‚Á‚Ä‚½‚çŒü‚«‚Ì’²®
-        auto dir = mHitEnemyCenter - playerCenter();
-        auto rot = Math::toDegrees(Math::atan2(-dir.x, dir.y));
-        mOwner->transform()->setRotation(rot);
-    } else { //ƒAƒ“ƒJ[‚ª“G‚ÉŽh‚³‚Á‚Ä‚È‚¢‚È‚çˆê’¼ü‚ÉL‚Î‚·
-        mCurrentAnchorLength += ANCHOR_INCREASE * Time::deltaTime;
-        mOwner->transform()->setScale(Vector2(2.f, mCurrentAnchorLength), false);
+    if (mState != AnchorState::EXTEND) {
+        return;
     }
+    auto other = (mIsHit) ? mHitEnemyCenter : mTargetPoint;
+    auto dir = other - playerCenter();
+    auto rot = Math::toDegrees(Math::atan2(-dir.x, dir.y));
+    mOwner->transform()->setRotation(rot);
+
+    mCurrentAnchorLength += ANCHOR_INCREASE * Time::deltaTime;
+    mOwner->transform()->setScale(Vector2(2.f, mCurrentAnchorLength), false);
+}
+
+void AnchorComponent::shrink() {
+    if (mState != AnchorState::SHRINK) {
+        return;
+    }
+    mCurrentAnchorLength -= ANCHOR_INCREASE * Time::deltaTime;
+    mOwner->transform()->setScale(Vector2(2.f, mCurrentAnchorLength), false);
 }
 
 void AnchorComponent::updateCollider() {
     if (mIsHit) {
         return;
     }
-    //ƒAƒ“ƒJ[‚Ìæ’[‚É‚¾‚¯“–‚½‚è”»’è
+    if (mState != AnchorState::EXTEND) {
+        return;
+    }
+    //ã‚¢ãƒ³ã‚«ãƒ¼ã®å…ˆç«¯ã«ã ã‘å½“ãŸã‚Šåˆ¤å®š
     mCollide->set(mOwner->transform()->getPosition() + mAnchorDirection * mCurrentAnchorLength, 3.f);
 }
 
 void AnchorComponent::hit() {
     if (mIsHit) {
+        return;
+    }
+    if (mState != AnchorState::EXTEND) {
         return;
     }
     auto hits = mCollide->onCollisionEnter();
@@ -85,7 +111,7 @@ void AnchorComponent::hit() {
             auto enemyTrans = hit->getOwner()->transform();
             mHitEnemyCenter = enemyTrans->getPosition() + enemyTrans->getPivot();
 
-            //ƒAƒ“ƒJ[‚Ì’·‚³‚ðŒÅ’è
+            //ã‚¢ãƒ³ã‚«ãƒ¼ã®é•·ã•ã‚’å›ºå®š
             mCurrentAnchorLength = Vector2::distance(mHitEnemyCenter, playerCenter());
             mOwner->transform()->setScale(Vector2(2.f, mCurrentAnchorLength), false);
 
@@ -100,27 +126,43 @@ void AnchorComponent::hitClamp() {
     if (!mIsHit) {
         return;
     }
-    //‰~‚ð•`‚­‚½‚ß‚É–³—‚â‚è
+    if (mState != AnchorState::EXTEND) {
+        return;
+    }
+    //å††ã‚’æããŸã‚ã«ç„¡ç†ã‚„ã‚Š
     auto dis = Vector2::distance(mHitEnemyCenter, playerCenter());
     auto dir = mHitEnemyCenter - playerCenter();
     dir.normalize();
     mPlayer->translate(dir * (dis - mCurrentAnchorLength));
 }
 
-void AnchorComponent::dead() {
-    auto dead = false;
-    if (mIsHit) {
-        if (Input::getKeyDown(KeyCode::E)) {
-            dead = true;
+void AnchorComponent::changeState() {
+    auto change = false;
+    if (mState == AnchorState::EXTEND) {
+        if (mIsHit) {
+            if (Input::getKeyDown(mReleaseKey)) {
+                change = true;
+            }
+        } else {
+            if (mCurrentAnchorLength >= MAX_LENGTH) {
+                change = true;
+            }
         }
-    } else {
-        if (mCurrentAnchorLength >= MAX_LENGTH) {
-            dead = true;
-        }
-    }
 
-    if (dead) {
-        mIsUpdate = false;
+        if (change) {
+            mState = AnchorState::SHRINK;
+            mIsHit = false;
+            mHitEnemy = nullptr;
+        }
+    } else if (mState == AnchorState::SHRINK) {
+        if (mCurrentAnchorLength <= 0.f) {
+            change = true;
+        }
+
+        if (change) {
+            mState = AnchorState::STOP;
+            mSpriteComp->setActive(false);
+        }
     }
 }
 

@@ -1,4 +1,4 @@
-#include "PlayerMoveComponent.h"
+ï»¿#include "PlayerMoveComponent.h"
 #include "../Actor/Actor.h"
 #include "../Actor/AnchorActor.h"
 #include "../Actor/Transform2D.h"
@@ -59,11 +59,11 @@ void PlayerMoveComponent::move() {
         mAcceleration += a;
     }
 
-    //Å‘åÅ¬‰Á‘¬“x
+    //æœ€å¤§æœ€å°åŠ é€Ÿåº¦
     auto range = (mAnchor->isHit()) ? mAnchorAccelerationRange : mAccelerationRange;
     mAcceleration.clamp(Vector2(range.x, range.x), Vector2(range.y, range.y));
 
-    //Œ»Ý‚Ì‰Á‘¬“x‚ÅˆÚ“®
+    //ç¾åœ¨ã®åŠ é€Ÿåº¦ã§ç§»å‹•
     mOwner->transform()->translate(mAcceleration * Time::deltaTime);
 }
 
@@ -77,10 +77,10 @@ void PlayerMoveComponent::deceleration() {
 }
 
 void PlayerMoveComponent::anchorInjection() {
-    if (!Input::getKeyDown(mAnchorKey)) {
+    if (!Input::getKeyDown(mAnchorKey) || !mAnchor->canShot()) {
         return;
     }
-    mAnchor->initialize(mLastInput);
+    mAnchor->shot(mLastInput);
 }
 
 void PlayerMoveComponent::anchorUpdate() {
@@ -90,6 +90,6 @@ void PlayerMoveComponent::anchorUpdate() {
 void PlayerMoveComponent::dead() {
     if (Math::abs(mAcceleration.x) < mDestroySpeed &&
         Math::abs(mAcceleration.y) < mDestroySpeed) {
-        Actor::destroy(mOwner);
+        //Actor::destroy(mOwner);
     }
 }

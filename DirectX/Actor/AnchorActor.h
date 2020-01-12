@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Actor.h"
 #include "../Utility/Math.h"
@@ -14,8 +14,9 @@ public:
     AnchorActor(std::shared_ptr<Renderer> renderer, std::shared_ptr<Transform2D> player, const char* tag = "Anchor");
     ~AnchorActor();
     virtual void updateActor() override;
-    void initialize(const Vector2& direction);
+    void shot(const Vector2& direction);
     bool isHit() const;
+    bool canShot() const;
 
 private:
     CircleCollisionComponent* mCollide;
