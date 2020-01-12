@@ -16,6 +16,9 @@ public:
     virtual void start() override;
     virtual void update() override;
     int getAccelerate() const;
+    void setAccelerate(const Vector2& acceleration);
+    void reSetAccelerate();
+    void setDecelerate(bool flag);
 
 private:
     void move();
@@ -29,9 +32,11 @@ private:
     Vector2 mAcceleration;
     float mAccelerationSpeed;
     Vector2 mAccelerationRange;
+    Vector2 mAnchorAccelerationRange;
     Vector2 mDeceleration;
     float mDecelerationSpeed;
     float mDestroySpeed;
+    bool mIsDecelerated;
     KeyCode mAnchorKey;
 };
 

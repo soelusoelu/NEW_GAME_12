@@ -34,10 +34,10 @@ public:
     static void destroy(std::shared_ptr<Actor> actor, float sec);
 
     //ゲッター、セッター
-    std::shared_ptr<ComponentManager> getComponentManager() const;
-    std::shared_ptr<Transform2D> getTransform() const;
+    std::shared_ptr<ComponentManager> componentManager() const;
+    std::shared_ptr<Transform2D> transform() const;
     ActorState getState() const;
-    const char* getTag() const;
+    const char* tag() const;
 
     //ActorManagerの登録
     static void setActorManager(ActorManager* manager);

@@ -230,6 +230,10 @@ public:
         return (a.x * b.x + a.y * b.y);
     }
 
+    static float cross(const Vector2& a, const Vector2& b) {
+        return (a.x * b.y - a.y * b.x);
+    }
+
     // Lerp from A to B by f
     static Vector2 lerp(const Vector2& a, const Vector2& b, float f) {
         return Vector2(a + f * (b - a));

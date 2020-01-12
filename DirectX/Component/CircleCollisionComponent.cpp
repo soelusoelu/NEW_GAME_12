@@ -14,8 +14,8 @@ CircleCollisionComponent::~CircleCollisionComponent() = default;
 
 void CircleCollisionComponent::startCollider() {
     mCircle = std::make_shared<Circle>(
-        mOwner->getTransform()->getPosition() + mOwner->getTransform()->getPivot(),
-        mOwner->getTransform()->getPivot().x
+        mOwner->transform()->getPosition() + mOwner->transform()->getPivot(),
+        mOwner->transform()->getPivot().x
     );
 }
 
@@ -27,8 +27,8 @@ void CircleCollisionComponent::onUpdateWorldTransformCollider() {
         return;
     }
     mCircle->set(
-        mOwner->getTransform()->getPosition() + mOwner->getTransform()->getPivot(),
-        mOwner->getTransform()->getPivot().x
+        mOwner->transform()->getPosition() + mOwner->transform()->getPivot(),
+        mOwner->transform()->getPivot().x
     );
 }
 

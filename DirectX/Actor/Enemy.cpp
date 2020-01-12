@@ -14,12 +14,12 @@ Enemy::Enemy(std::shared_ptr<Renderer> renderer, const Vector2 & pos, Scale scal
 	mScale(scale),
 	mType(type)
 {
-	getTransform()->setPosition(pos);
+	transform()->setPosition(pos);
 	switch (mScale)
 	{
-	case Scale::SMALL: getTransform()->setScale(0.5f); break;
+	case Scale::SMALL: transform()->setScale(0.5f); break;
 	case Scale::MIDDL:                                 break;
-	case Scale::BIG:   getTransform()->setScale(1.5f); break;
+	case Scale::BIG:   transform()->setScale(1.5f); break;
 	default:
 		assert(false);//Debug中は処理を停止。Release中はスルーする(デバックでエラーならエラーが出る)
 		break;

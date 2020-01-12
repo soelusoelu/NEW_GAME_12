@@ -10,7 +10,7 @@ class CircleCollisionComponent;
 
 class AnchorComponent : public Component {
 public:
-    AnchorComponent(Actor* owner, Actor* player, const Vector2& anchorDirection);
+    AnchorComponent(Actor* owner, Actor* player, const Vector2& anchorDirection, int updateOrder = 20);
     ~AnchorComponent();
     virtual void start() override;
     virtual void update() override;
@@ -37,6 +37,7 @@ private:
     float mAnchorIncrease;
     float mCurrentAnchorLength;
     bool mIsHit;
+    Actor* mHitEnemy;
     Vector2 mHitEnemyCenter;
     static const float MAX_LENGTH;
 };

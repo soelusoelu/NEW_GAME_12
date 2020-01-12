@@ -2,30 +2,32 @@
 #include "CircleCollisionComponent.h"
 #include "Collider.h"
 #include "ComponentManager.h"
+#include "PlayerMoveComponent.h"
 #include "SpriteComponent.h"
 #include "../Actor/Actor.h"
 #include "../Actor/Transform2D.h"
 #include "../Device/Time.h"
 #include "../Utility/Input.h"
 
-AnchorComponent::AnchorComponent(Actor* owner, Actor* player, const Vector2& anchorDirection) :
-    Component(owner),
+AnchorComponent::AnchorComponent(Actor* owner, Actor* player, const Vector2& anchorDirection, int updateOrder) :
+    Component(owner, updateOrder),
     mPlayer(player),
     mSpriteComp(nullptr),
     mCollide(nullptr),
     mAnchorDirection(anchorDirection),
-    mAnchorIncrease(600.f),
+    mAnchorIncrease(1200.f),
     mCurrentAnchorLength(0.f),
     mIsHit(false),
+    mHitEnemy(nullptr),
     mHitEnemyCenter(Vector2::zero) {
-    mOwner->getTransform()->setRotation(Math::toDegrees(Math::atan2(-mAnchorDirection.x, -mAnchorDirection.y)));
+    mOwner->transform()->setRotation(Math::toDegrees(Math::atan2(-mAnchorDirection.x, -mAnchorDirection.y)));
 }
 
 AnchorComponent::~AnchorComponent() = default;
 
 void AnchorComponent::start() {
-    mSpriteComp = mOwner->getComponentManager()->getComponent<SpriteComponent>();
-    mCollide = mOwner->getComponentManager()->getComponent<CircleCollisionComponent>();
+    mSpriteComp = mOwner->componentManager()->getComponent<SpriteComponent>();
+    mCollide = mOwner->componentManager()->getComponent<CircleCollisionComponent>();
 }
 
 void AnchorComponent::update() {
@@ -39,12 +41,13 @@ void AnchorComponent::update() {
 void AnchorComponent::extend() {
     if (mIsHit) { //アンカーが敵に刺さってたら向きの調整
         auto dir = mHitEnemyCenter - playerCenter();
-        mOwner->getTransform()->setRotation(Math::toDegrees(Math::atan2(-dir.x, dir.y)));
+        auto rot = Math::toDegrees(Math::atan2(-dir.x, dir.y));
+        mOwner->transform()->setRotation(rot);
     } else { //アンカーが敵に刺さってないなら一直線に伸ばす
         mCurrentAnchorLength += mAnchorIncrease * Time::deltaTime;
-        mOwner->getTransform()->setScale(Vector2(2.f, mCurrentAnchorLength), false);
+        mOwner->transform()->setScale(Vector2(2.f, mCurrentAnchorLength), false);
     }
-    mOwner->getTransform()->setPosition(playerCenter());
+    mOwner->transform()->setPosition(playerCenter());
 }
 
 void AnchorComponent::updateCollider() {
@@ -52,24 +55,31 @@ void AnchorComponent::updateCollider() {
         return;
     }
     //アンカーの先端にだけ当たり判定
-    mCollide->set(mOwner->getTransform()->getPosition() + mAnchorDirection * mCurrentAnchorLength, 3.f);
+    mCollide->set(mOwner->transform()->getPosition() + mAnchorDirection * mCurrentAnchorLength, 3.f);
 }
 
 void AnchorComponent::hit() {
     if (mIsHit) {
+        if (!mHitEnemy) {
+            return;
+        }
+        auto dot = Vector2::cross(playerCenter(), mHitEnemyCenter);
         return;
     }
     auto hits = mCollide->onCollisionEnter();
     for (auto&& hit : hits) {
-        if (hit->getOwner()->getTag() == "Enemy") {
-            auto enemyTrans = hit->getOwner()->getTransform();
+        if (hit->getOwner()->tag() == "Enemy") {
+            mHitEnemy = hit->getOwner();
+            auto enemyTrans = hit->getOwner()->transform();
             mHitEnemyCenter = enemyTrans->getPosition() + enemyTrans->getPivot();
 
             //アンカーの長さを固定
             mCurrentAnchorLength = Vector2::distance(mHitEnemyCenter, playerCenter());
-            mOwner->getTransform()->setScale(Vector2(2.f, mCurrentAnchorLength), false);
+            mOwner->transform()->setScale(Vector2(2.f, mCurrentAnchorLength), false);
 
             mIsHit = true;
+            mCollide->disabled();
+            mPlayer->componentManager()->getComponent<PlayerMoveComponent>()->setDecelerate(false);
             break;
         }
     }
@@ -83,22 +93,29 @@ void AnchorComponent::hitClamp() {
     auto dis = Vector2::distance(mHitEnemyCenter, playerCenter());
     auto dir = mHitEnemyCenter - playerCenter();
     dir.normalize();
-    mPlayer->getTransform()->translate(dir * (dis - mCurrentAnchorLength));
+    mPlayer->transform()->translate(dir * (dis - mCurrentAnchorLength));
 }
 
 void AnchorComponent::dead() {
+    auto flag = false;
     if (mIsHit) {
-        if (Input::getKeyDown(KeyCode::Q)) {
-            Actor::destroy(mOwner);
+        if (Input::getKeyDown(KeyCode::W)) {
+            flag = true;
+        }
+    } else {
+        if (mCurrentAnchorLength >= MAX_LENGTH) {
+            flag = true;
         }
     }
-    if (mCurrentAnchorLength >= MAX_LENGTH) {
+
+    if (flag) {
         Actor::destroy(mOwner);
+        mPlayer->componentManager()->getComponent<PlayerMoveComponent>()->setDecelerate(true);
     }
 }
 
 Vector2 AnchorComponent::playerCenter() const {
-    auto playerTrans = mPlayer->getTransform();
+    auto playerTrans = mPlayer->transform();
     return playerTrans->getPosition() + playerTrans->getPivot();
 }
 

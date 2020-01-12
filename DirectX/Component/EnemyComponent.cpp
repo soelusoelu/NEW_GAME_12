@@ -24,8 +24,8 @@ EnemyComponent::~EnemyComponent()
 
 void EnemyComponent::start()
 {
-	mCol = mOwner->getComponentManager()->getComponent<Collider>();//CircleCollisionComponent
-	mDestination = mOwner->getTransform()->getPosition();
+	mCol = mOwner->componentManager()->getComponent<Collider>();//CircleCollisionComponent
+	mDestination = mOwner->transform()->getPosition();
 }
 
 void EnemyComponent::update()
@@ -36,10 +36,10 @@ void EnemyComponent::update()
 
 void EnemyComponent::move(const Vector2 & movement)//移動
 {
-	Vector2 difference = movement - mOwner->getTransform()->getPosition();
+	Vector2 difference = movement - mOwner->transform()->getPosition();
 	difference.normalize();
 	
-	mOwner->getTransform()->translate(difference * 60.f * Time::deltaTime);//移動処理(60倍する)
+	mOwner->transform()->translate(difference * 60.f * Time::deltaTime);//移動処理(60倍する)
 
 	
 }
@@ -49,7 +49,7 @@ void EnemyComponent::hit()//当たり判定
 	auto lists = mCol->onCollisionEnter();
 	for (auto&& i : lists)
 	{
-		if (i->getOwner()->getTag() == "Player")//プレイヤーとあたったら(ほんとは穴に落ちる)
+		if (i->getOwner()->tag() == "Player")//プレイヤーとあたったら(ほんとは穴に落ちる)
 		{
 			//プレイヤーのスピードに応じてダメージ
 
@@ -63,7 +63,7 @@ void EnemyComponent::hit()//当たり判定
 			//mOwner->getTransform()->translate(mVec * 750.f *60.f * Time::deltaTime);//移動処理
 		}
 
-		if (i->getOwner()->getTag() == "Hole")//穴に落ちると即死
+		if (i->getOwner()->tag() == "Hole")//穴に落ちると即死
 		{
 			Actor::destroy(mOwner);//自分が消える
 		}
@@ -93,7 +93,7 @@ Vector2 EnemyComponent::search()//プレイヤーの位置情報を受け取りその値を返す
 	//return  b;
 	auto p = mOwner->getActorManager()->getPlayer();
 	if (p) {
-		return p->getTransform()->getPosition();
+		return p->transform()->getPosition();
 	}
 	return Vector2::zero;
 }
