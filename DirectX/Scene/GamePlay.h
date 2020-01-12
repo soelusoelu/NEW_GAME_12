@@ -11,6 +11,7 @@ enum class GameState {
 
 class ActorManager;
 class Physics;
+class AnchorPoint;
 
 class GamePlay : public SceneBase, public std::enable_shared_from_this<GamePlay> {
 public:
@@ -25,6 +26,7 @@ public:
 private:
     ActorManager* mActorManager;
     Physics* mPhysics;
+    AnchorPoint* mAnchorPoint;
     GameState mState;
     KeyCode mPauseKey;
 };

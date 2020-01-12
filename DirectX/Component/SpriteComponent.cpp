@@ -68,6 +68,14 @@ Vector2INT SpriteComponent::getScreenTextureSize() const {
     );
 }
 
+void SpriteComponent::setActive(bool value) {
+    mSprite->setActive(value);
+}
+
+bool SpriteComponent::getActive() const {
+    return mSprite->getActive();
+}
+
 SpriteState SpriteComponent::getState() const {
     return mSprite->getState();
 }

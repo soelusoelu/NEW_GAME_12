@@ -4,7 +4,9 @@
 #include "../Actor/PlayerActor.h"
 #include "../Component/Collider.h"
 #include "../Device/Physics.h"
+#include "../Scene/Title.h"
 #include "../System/Game.h"
+#include "../UI/AnchorPoint.h"
 #include "../UI/Pause.h"
 #include "../Actor/Enemy.h"
 
@@ -26,8 +28,9 @@ GamePlay::~GamePlay() {
 }
 
 void GamePlay::startScene() {
-    new PlayerActor(mRenderer);
-	new Enemy(mRenderer, Vector2(500.f, 300.f), Scale::SMALL, Type::NORMAL);
+    auto p = new PlayerActor(mRenderer);
+    new Enemy(mRenderer, Vector2(500.f, 300.f), Scale::SMALL, Type::NORMAL);
+    mAnchorPoint = new AnchorPoint(mRenderer, p);
 }
 
 void GamePlay::updateScene() {
@@ -39,6 +42,11 @@ void GamePlay::updateScene() {
 
         if (Input::getKeyDown(mPauseKey)) {
             new Pause(shared_from_this(), mRenderer);
+        }
+        auto p = mActorManager->getPlayer();
+        if (!p) {
+            mAnchorPoint->setActive(false);
+            nextScene(std::make_shared<Title>());
         }
     } else if (mState == GameState::PAUSED) {
 

@@ -5,6 +5,7 @@
 
 enum class SpriteState {
     ACTIVE,
+    NON_ACTIVE,
     DEAD
 };
 
@@ -60,6 +61,8 @@ public:
     //状態管理
     static void destroy(Sprite* sprite);
     static void destroy(std::shared_ptr<Sprite> sprite);
+    void setActive(bool value);
+    bool getActive() const;
     SpriteState getState() const;
     //World行列
     void setWorld(const Matrix4& world);

@@ -16,3 +16,11 @@ PlayerActor::~PlayerActor() = default;
 
 void PlayerActor::updateActor() {
 }
+
+Vector2 PlayerActor::getLastInput() const {
+    return mMove->getLastInput();
+}
+
+bool PlayerActor::isHitAnchor() const {
+    return mMove->isHitAnchor();
+}

@@ -6,6 +6,7 @@
 #include <memory>
 
 class Actor;
+class AnchorActor;
 class Renderer;
 class SpriteComponent;
 
@@ -15,18 +16,18 @@ public:
     ~PlayerMoveComponent();
     virtual void start() override;
     virtual void update() override;
-    int getAccelerate() const;
-    void setAccelerate(const Vector2& acceleration);
-    void reSetAccelerate();
-    void setDecelerate(bool flag);
+    Vector2 getLastInput() const;
+    bool isHitAnchor() const;
 
 private:
     void move();
     void deceleration();
-    void anchor();
+    void anchorInjection();
+    void anchorUpdate();
     void dead();
 
 private:
+    AnchorActor* mAnchor;
     std::shared_ptr<Renderer> mRenderer;
     std::shared_ptr<SpriteComponent> mSpriteComp;
     Vector2 mAcceleration;
@@ -36,7 +37,7 @@ private:
     Vector2 mDeceleration;
     float mDecelerationSpeed;
     float mDestroySpeed;
-    bool mIsDecelerated;
     KeyCode mAnchorKey;
+    Vector2 mLastInput;
 };
 

@@ -7,13 +7,16 @@
 class Actor;
 class SpriteComponent;
 class CircleCollisionComponent;
+class Transform2D;
 
 class AnchorComponent : public Component {
 public:
-    AnchorComponent(Actor* owner, Actor* player, const Vector2& anchorDirection, int updateOrder = 20);
+    AnchorComponent(Actor* owner, std::shared_ptr<Transform2D> player, int updateOrder = 10);
     ~AnchorComponent();
     virtual void start() override;
     virtual void update() override;
+    void initialize(const Vector2& direction);
+    bool isHit() const;
 
 private:
     //ÉAÉìÉJÅ[ÇÃìÆÇ´
@@ -30,14 +33,15 @@ private:
     Vector2 playerCenter() const;
 
 private:
-    Actor* mPlayer;
+    std::shared_ptr<Transform2D> mPlayer;
     std::shared_ptr<SpriteComponent> mSpriteComp;
     std::shared_ptr<CircleCollisionComponent> mCollide;
     Vector2 mAnchorDirection;
-    float mAnchorIncrease;
+    const float MAX_LENGTH;
+    const float ANCHOR_INCREASE;
     float mCurrentAnchorLength;
     bool mIsHit;
     Actor* mHitEnemy;
     Vector2 mHitEnemyCenter;
-    static const float MAX_LENGTH;
+    bool mIsUpdate;
 };

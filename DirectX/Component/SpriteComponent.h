@@ -34,6 +34,8 @@ public:
     //スクリーン表示上のサイズの取得
     Vector2INT getScreenTextureSize() const;
     //状態管理
+    void setActive(bool value);
+    bool getActive() const;
     SpriteState getState() const;
     //テクスチャ
     void setTexture(const char* fileName);
