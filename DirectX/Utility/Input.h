@@ -95,13 +95,15 @@ public:
     //キーが押され続けているか
     static bool getKey(KeyCode key);
     static bool getJoy(JoyCode joy);
-	static bool getJoya(JoyCode joy);
     //キーが離れた瞬間
     static bool getKeyUp(KeyCode key);
     static bool getJoyUp(JoyCode joy);
     //縦横
     static int horizontal();
     static int vertical();
+
+	static float joyHorizontal();
+	static float joyVertical();
 
 public:
     static LPDIRECTINPUT8 mDinput;
@@ -114,5 +116,6 @@ private:
     static DIJOYSTATE2 mPreviousJoyState;
 
     static LPDIRECTINPUTDEVICE8 mKeyDevice;
+
 };
 

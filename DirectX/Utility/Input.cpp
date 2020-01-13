@@ -2,6 +2,7 @@
 #include "../System/Game.h"
 #include <algorithm>
 
+
 BOOL CALLBACK enumJoysticksCallback(const DIDEVICEINSTANCE*, VOID*);
 BOOL CALLBACK enumObjectsCallback(const DIDEVICEOBJECTINSTANCE*, VOID*);
 
@@ -180,7 +181,7 @@ void Input::update() {
     if ((hr == DI_OK) || (hr == S_FALSE)) {
         mKeyDevice->GetDeviceState(sizeof(mCurrentKeys), &mCurrentKeys);
     }
-    if (mPadDevice) {
+    /*if (mPadDevice) {
         hr = mPadDevice->Acquire();
         if ((hr == DI_OK) || (hr == S_FALSE)) {
             //mPadDevice->GetDeviceState(sizeof(DIJOYSTATE2), &mCurrentJoyState);
@@ -194,7 +195,13 @@ void Input::update() {
 				mPadDevice->Acquire();
 			}
         }
-    }
+    }*/
+	if (mPadDevice) {
+		hr = mPadDevice->Acquire();
+		if ((hr == DI_OK) || (hr == S_FALSE)) {
+			mPadDevice->GetDeviceState(sizeof(DIJOYSTATE2), &mCurrentJoyState);
+		}
+	}
 
 	//追加
 	//mPadDevice->Acquire();
@@ -230,16 +237,6 @@ bool Input::getJoy(JoyCode joy) {
     return mCurrentJoyState.rgbButtons[static_cast<int>(joy)] & 0x80;
 }
 
-bool Input::getJoya(JoyCode joy)
-{
-	DIPROPRANGE diprg;
-	diprg.diph.dwSize = sizeof(diprg);
-	diprg.diph.dwHeaderSize = sizeof(diprg.diph);
-	diprg.diph.dwHow = DIPH_BYOFFSET;
-	diprg.lMax = 1000;
-	diprg.lMin = -1000;
-	return mPadDevice->SetProperty(DIPROP_RANGE, &diprg.diph);
-}
 
 bool Input::getKeyUp(KeyCode key) {
     return (!(mCurrentKeys[static_cast<BYTE>(key)] & 0x80) && mPreviousKeys[static_cast<BYTE>(key)] & 0x80);
@@ -250,9 +247,10 @@ bool Input::getJoyUp(JoyCode joy) {
 }
 
 int Input::horizontal() {
-    if (getKey(KeyCode::A) || getKey(KeyCode::LeftArrow)/*||getJoya(JoyCode::B) */){
+
+    if (getKey(KeyCode::A) || getKey(KeyCode::LeftArrow)){
         return -1;
-    } else if (getKey(KeyCode::D) || getKey(KeyCode::RightArrow) || getJoy(JoyCode::A)) {
+    } else if (getKey(KeyCode::D) || getKey(KeyCode::RightArrow)) {
         return 1;
     } else {
         return 0;
@@ -260,6 +258,7 @@ int Input::horizontal() {
 }
 
 int Input::vertical() {
+
     if (getKey(KeyCode::W) || getKey(KeyCode::UpArrow)) {
         return 1;
     } else if (getKey(KeyCode::S) || getKey(KeyCode::DownArrow)) {
@@ -267,6 +266,30 @@ int Input::vertical() {
     } else {
         return 0;
     }
+}
+
+float Input::joyHorizontal()
+{
+	if (mCurrentJoyState.lX)
+	{
+		return mCurrentJoyState.lX / 1000.f;
+	}
+	else
+	{
+		return 0.f;
+	}
+}
+
+float Input::joyVertical()
+{
+	if (mCurrentJoyState.lY)//
+	{
+		return -mCurrentJoyState.lY / 1000.f;
+	}
+	else
+	{
+		return 0.f;
+	}
 }
 
 BYTE Input::mCurrentKeys[256] = { 0 };
