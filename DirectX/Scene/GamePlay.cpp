@@ -28,9 +28,9 @@ GamePlay::~GamePlay() {
 }
 
 void GamePlay::startScene() {
-    auto p = new PlayerActor(mRenderer);
+    new PlayerActor(mRenderer);
     new Enemy(mRenderer, Vector2(500.f, 300.f), Scale::SMALL, Type::NORMAL);
-    mAnchorPoint = new AnchorPoint(mRenderer, p);
+    new AnchorPoint(mRenderer, mActorManager->getPlayer());
 }
 
 void GamePlay::updateScene() {
@@ -43,9 +43,9 @@ void GamePlay::updateScene() {
         if (Input::getKeyDown(mPauseKey)) {
             new Pause(shared_from_this(), mRenderer);
         }
+
         auto p = mActorManager->getPlayer();
         if (!p) {
-            mAnchorPoint->setActive(false);
             nextScene(std::make_shared<Title>());
         }
     } else if (mState == GameState::PAUSED) {
