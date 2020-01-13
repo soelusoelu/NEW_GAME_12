@@ -13,16 +13,18 @@ PlayerMoveComponent::PlayerMoveComponent(Actor* owner, std::shared_ptr<Renderer>
     mSpriteComp(nullptr),
     mAcceleration(Vector2(30.f, 0.f)),
     mAccelerationSpeed(120.f),
-    mAccelerationRange(Vector2(-300.f, 300.f)),
-    mAnchorAccelerationRange(Vector2(-500.f, 500.f)),
-    mDeceleration(Vector2::one),
+    mAccelerationRange(100.f),
+    mAnchorAccelerationTimes(5.f),
+    mAnchorAccelerationRange(300.f),
     mDecelerationSpeed(10.f),
-    mDestroySpeed(3.f),
+    mDestroyRange(3.f),
     mAnchorKey(KeyCode::Q),
     mLastInput(Vector2::right) {
 }
 
-PlayerMoveComponent::~PlayerMoveComponent() = default;
+PlayerMoveComponent::~PlayerMoveComponent() {
+    Actor::destroy(mAnchor);
+}
 
 void PlayerMoveComponent::start() {
     mSpriteComp = mOwner->componentManager()->getComponent<SpriteComponent>();
@@ -44,24 +46,28 @@ bool PlayerMoveComponent::isHitAnchor() const {
     return mAnchor->isHit();
 }
 
+const float PlayerMoveComponent::anchorMaxLength() const {
+    return mAnchor->maxLength();
+}
+
 void PlayerMoveComponent::move() {
     auto h = Input::horizontal();
     auto v = Input::vertical();
     if (!Math::nearZero(h) || !Math::nearZero(v)) {
         mLastInput.set(h, -v);
-        h *= mAccelerationSpeed * Time::deltaTime;
-        v *= mAccelerationSpeed * Time::deltaTime;
+        auto fh = h * mAccelerationSpeed * Time::deltaTime;
+        auto fv = v * mAccelerationSpeed * Time::deltaTime;
 
-        auto a = Vector2(h, -v);
+        auto a = Vector2(fh, -fv);
         if (mAnchor->isHit()) {
-            a *= 5.f;
+            a *= mAnchorAccelerationTimes;
         }
         mAcceleration += a;
     }
 
     //最大最小加速度
     auto range = (mAnchor->isHit()) ? mAnchorAccelerationRange : mAccelerationRange;
-    mAcceleration.clamp(Vector2(range.x, range.x), Vector2(range.y, range.y));
+    mAcceleration.clamp(Vector2(-range, -range), Vector2(range, range));
 
     //現在の加速度で移動
     mOwner->transform()->translate(mAcceleration * Time::deltaTime);
@@ -71,9 +77,10 @@ void PlayerMoveComponent::deceleration() {
     if (mAnchor->isHit()) {
         return;
     }
-    mDeceleration.x = (mAcceleration.x > 0) ? -mDecelerationSpeed : mDecelerationSpeed;
-    mDeceleration.y = (mAcceleration.y > 0) ? -mDecelerationSpeed : mDecelerationSpeed;
-    mAcceleration += mDeceleration * Time::deltaTime;
+    Vector2 d;
+    d.x = (mAcceleration.x > 0.f) ? -mDecelerationSpeed : mDecelerationSpeed;
+    d.y = (mAcceleration.y > 0.f) ? -mDecelerationSpeed : mDecelerationSpeed;
+    mAcceleration += d * Time::deltaTime;
 }
 
 void PlayerMoveComponent::anchorInjection() {
@@ -88,8 +95,8 @@ void PlayerMoveComponent::anchorUpdate() {
 }
 
 void PlayerMoveComponent::dead() {
-    if (Math::abs(mAcceleration.x) < mDestroySpeed &&
-        Math::abs(mAcceleration.y) < mDestroySpeed) {
+    if (Math::abs(mAcceleration.x) < mDestroyRange &&
+        Math::abs(mAcceleration.y) < mDestroyRange) {
         //Actor::destroy(mOwner);
     }
 }

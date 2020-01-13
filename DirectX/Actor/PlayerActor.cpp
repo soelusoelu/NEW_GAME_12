@@ -24,3 +24,7 @@ Vector2 PlayerActor::getLastInput() const {
 bool PlayerActor::isHitAnchor() const {
     return mMove->isHitAnchor();
 }
+
+const float PlayerActor::anchorMaxLength() const {
+    return mMove->anchorMaxLength();
+}

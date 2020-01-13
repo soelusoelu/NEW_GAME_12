@@ -26,6 +26,7 @@ public:
     void shot(const Vector2& direction);
     bool isHit() const;
     bool canShot() const;
+    const float maxLength() const;
 
 private:
     //アンカーの動き

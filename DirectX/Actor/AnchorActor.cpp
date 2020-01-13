@@ -27,3 +27,7 @@ bool AnchorActor::isHit() const {
 bool AnchorActor::canShot() const {
     return mAnchor->canShot();
 }
+
+const float AnchorActor::maxLength() const {
+    return mAnchor->maxLength();
+}

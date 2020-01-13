@@ -16,6 +16,7 @@ public:
     virtual void updateActor() override;
     Vector2 getLastInput() const;
     bool isHitAnchor() const;
+    const float anchorMaxLength() const;
 
 private:
     CircleCollisionComponent* mCollide;

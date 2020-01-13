@@ -62,6 +62,10 @@ bool AnchorComponent::canShot() const {
     return mState == AnchorState::STOP;
 }
 
+const float AnchorComponent::maxLength() const {
+    return MAX_LENGTH;
+}
+
 void AnchorComponent::rotate() {
     if (mState != AnchorState::EXTEND || mState != AnchorState::HIT) {
         auto other = (isHit()) ? mHitEnemyCenter : mTargetPoint;
