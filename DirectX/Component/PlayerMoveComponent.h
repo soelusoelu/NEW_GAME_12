@@ -25,6 +25,7 @@ private:
     void deceleration();
     void anchorInjection();
     void anchorUpdate();
+    void clamp();
     void dead();
 
 private:

@@ -18,6 +18,7 @@ public:
     bool isHit() const;
     bool canShot() const;
     const float maxLength() const;
+    Actor* hitEnemy() const;
 
 private:
     CircleCollisionComponent* mCollide;

@@ -27,6 +27,7 @@ public:
     bool isHit() const;
     bool canShot() const;
     const float maxLength() const;
+    Actor* hitEnemy() const;
 
 private:
     //アンカーの動き
@@ -41,8 +42,11 @@ private:
     void hitClamp();
     //死ぬ条件
     void changeState();
-    //プレイヤーの中心座標の取得
-    Vector2 playerCenter() const;
+    //座標の取得
+    Vector2 position() const;
+    Vector2 enemyCenterPosition() const;
+    //アンカーの伸縮
+    void computeScale();
 
 private:
     std::shared_ptr<Transform2D> mPlayer;
@@ -51,9 +55,9 @@ private:
     const float MAX_LENGTH;
     const float ANCHOR_INCREASE;
     float mCurrentAnchorLength;
+    float mThick;
     Vector2 mTargetPoint;
     Actor* mHitEnemy;
-    Vector2 mHitEnemyCenter;
     KeyCode mReleaseKey;
     AnchorState mState;
 };

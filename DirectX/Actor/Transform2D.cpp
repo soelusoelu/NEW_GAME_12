@@ -140,3 +140,7 @@ void Transform2D::setScale(float scale, const Vector2INT & size) {
 Vector2 Transform2D::getScale() const {
     return mScale;
 }
+
+Vector2 Transform2D::getCenter() const {
+    return Vector2(mPosition.x, mPosition.y) + mPivot;
+}

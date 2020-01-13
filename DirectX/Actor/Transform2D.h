@@ -36,6 +36,9 @@ public:
     void setScale(float scale, const Vector2INT& size);
     Vector2 getScale() const;
 
+    //位置+ピボット
+    Vector2 getCenter() const;
+
 private:
     Matrix4 mWorldTransform;
     Vector3 mPosition;

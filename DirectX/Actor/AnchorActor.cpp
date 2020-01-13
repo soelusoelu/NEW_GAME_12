@@ -31,3 +31,7 @@ bool AnchorActor::canShot() const {
 const float AnchorActor::maxLength() const {
     return mAnchor->maxLength();
 }
+
+Actor* AnchorActor::hitEnemy() const {
+    return mAnchor->hitEnemy();
+}

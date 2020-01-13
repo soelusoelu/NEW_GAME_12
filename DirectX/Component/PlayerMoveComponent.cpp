@@ -5,6 +5,8 @@
 #include "../Component/ComponentManager.h"
 #include "../Component/SpriteComponent.h"
 #include "../Device/Time.h"
+#include "../System/Game.h"
+#include <iostream>
 
 PlayerMoveComponent::PlayerMoveComponent(Actor* owner, std::shared_ptr<Renderer> renderer, int updateOrder) :
     Component(owner, updateOrder),
@@ -33,8 +35,9 @@ void PlayerMoveComponent::start() {
 void PlayerMoveComponent::update() {
     move();
     deceleration();
-    anchorInjection();
     anchorUpdate();
+    anchorInjection();
+    clamp();
     dead();
 }
 
@@ -59,14 +62,14 @@ void PlayerMoveComponent::move() {
         auto fv = v * mAccelerationSpeed * Time::deltaTime;
 
         auto a = Vector2(fh, -fv);
-        if (mAnchor->isHit()) {
+        if (isHitAnchor()) {
             a *= mAnchorAccelerationTimes;
         }
         mAcceleration += a;
     }
 
     //最大最小加速度
-    auto range = (mAnchor->isHit()) ? mAnchorAccelerationRange : mAccelerationRange;
+    auto range = (isHitAnchor()) ? mAnchorAccelerationRange : mAccelerationRange;
     mAcceleration.clamp(Vector2(-range, -range), Vector2(range, range));
 
     //現在の加速度で移動
@@ -74,7 +77,7 @@ void PlayerMoveComponent::move() {
 }
 
 void PlayerMoveComponent::deceleration() {
-    if (mAnchor->isHit()) {
+    if (isHitAnchor()) {
         return;
     }
     Vector2 d;
@@ -91,7 +94,16 @@ void PlayerMoveComponent::anchorInjection() {
 }
 
 void PlayerMoveComponent::anchorUpdate() {
-    mAnchor->transform()->setPosition(mOwner->transform()->getPosition() + mOwner->transform()->getPivot());
+    mAnchor->transform()->setPosition(mOwner->transform()->getCenter());
+}
+
+void PlayerMoveComponent::clamp() {
+    auto t = mOwner->transform();
+    t->setPosition(Vector2::clamp(
+        t->getPosition(),
+        Vector2::zero,
+        Vector2(Game::WINDOW_WIDTH, Game::WINDOW_HEIGHT) - Vector2(mSpriteComp->getScreenTextureSize().x, mSpriteComp->getScreenTextureSize().y)
+    ));
 }
 
 void PlayerMoveComponent::dead() {
