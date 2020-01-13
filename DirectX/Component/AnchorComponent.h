@@ -7,6 +7,7 @@
 
 enum class AnchorState {
     EXTEND,
+    HIT,
     SHRINK,
     STOP
 };
@@ -28,6 +29,7 @@ public:
 
 private:
     //アンカーの動き
+    void rotate();
     void extend();
     void shrink();
     //アンカーの当たり判定を毎フレーム更新
@@ -45,12 +47,10 @@ private:
     std::shared_ptr<Transform2D> mPlayer;
     std::shared_ptr<SpriteComponent> mSpriteComp;
     std::shared_ptr<CircleCollisionComponent> mCollide;
-    Vector2 mAnchorDirection;
     const float MAX_LENGTH;
     const float ANCHOR_INCREASE;
     float mCurrentAnchorLength;
     Vector2 mTargetPoint;
-    bool mIsHit;
     Actor* mHitEnemy;
     Vector2 mHitEnemyCenter;
     KeyCode mReleaseKey;

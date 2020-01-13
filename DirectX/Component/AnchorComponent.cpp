@@ -14,12 +14,10 @@ AnchorComponent::AnchorComponent(Actor* owner, std::shared_ptr<Transform2D> play
     mPlayer(player),
     mSpriteComp(nullptr),
     mCollide(nullptr),
-    mAnchorDirection(Vector2::right),
     MAX_LENGTH(400.f),
     ANCHOR_INCREASE(1600.f),
     mCurrentAnchorLength(0.f),
     mTargetPoint(Vector2::zero),
-    mIsHit(false),
     mHitEnemy(nullptr),
     mHitEnemyCenter(Vector2::zero),
     mReleaseKey(KeyCode::Q),
@@ -38,6 +36,7 @@ void AnchorComponent::update() {
     if (mState == AnchorState::STOP) {
         return;
     }
+    rotate();
     extend();
     shrink();
     updateCollider();
@@ -47,33 +46,35 @@ void AnchorComponent::update() {
 }
 
 void AnchorComponent::shot(const Vector2 & direction) {
-    mAnchorDirection = direction;
-    mOwner->transform()->setRotation(Math::toDegrees(Math::atan2(-mAnchorDirection.x, mAnchorDirection.y)));
-    mTargetPoint = playerCenter() + mAnchorDirection * MAX_LENGTH;
-    mIsHit = false;
+    mTargetPoint = playerCenter() + direction * MAX_LENGTH;
     mHitEnemy = nullptr;
     mCurrentAnchorLength = 0.f;
     mState = AnchorState::EXTEND;
     mSpriteComp->setActive(true);
+    mCollide->enabled();
 }
 
 bool AnchorComponent::isHit() const {
-    return mIsHit;
+    return mState == AnchorState::HIT;
 }
 
 bool AnchorComponent::canShot() const {
     return mState == AnchorState::STOP;
 }
 
+void AnchorComponent::rotate() {
+    if (mState != AnchorState::EXTEND || mState != AnchorState::HIT) {
+        auto other = (isHit()) ? mHitEnemyCenter : mTargetPoint;
+        auto dir = other - playerCenter();
+        auto rot = Math::toDegrees(Math::atan2(-dir.x, dir.y));
+        mOwner->transform()->setRotation(rot);
+    }
+}
+
 void AnchorComponent::extend() {
     if (mState != AnchorState::EXTEND) {
         return;
     }
-    auto other = (mIsHit) ? mHitEnemyCenter : mTargetPoint;
-    auto dir = other - playerCenter();
-    auto rot = Math::toDegrees(Math::atan2(-dir.x, dir.y));
-    mOwner->transform()->setRotation(rot);
-
     mCurrentAnchorLength += ANCHOR_INCREASE * Time::deltaTime;
     mOwner->transform()->setScale(Vector2(2.f, mCurrentAnchorLength), false);
 }
@@ -87,20 +88,16 @@ void AnchorComponent::shrink() {
 }
 
 void AnchorComponent::updateCollider() {
-    if (mIsHit) {
-        return;
-    }
     if (mState != AnchorState::EXTEND) {
         return;
     }
     //アンカーの先端にだけ当たり判定
-    mCollide->set(mOwner->transform()->getPosition() + mAnchorDirection * mCurrentAnchorLength, 3.f);
+    auto dir = mTargetPoint - playerCenter();
+    dir.normalize(); //重いねぇ
+    mCollide->set(mOwner->transform()->getPosition() + dir * mCurrentAnchorLength, 3.f);
 }
 
 void AnchorComponent::hit() {
-    if (mIsHit) {
-        return;
-    }
     if (mState != AnchorState::EXTEND) {
         return;
     }
@@ -115,7 +112,7 @@ void AnchorComponent::hit() {
             mCurrentAnchorLength = Vector2::distance(mHitEnemyCenter, playerCenter());
             mOwner->transform()->setScale(Vector2(2.f, mCurrentAnchorLength), false);
 
-            mIsHit = true;
+            mState = AnchorState::HIT;
             mCollide->disabled();
             break;
         }
@@ -123,10 +120,7 @@ void AnchorComponent::hit() {
 }
 
 void AnchorComponent::hitClamp() {
-    if (!mIsHit) {
-        return;
-    }
-    if (mState != AnchorState::EXTEND) {
+    if (mState != AnchorState::HIT) {
         return;
     }
     //円を描くために無理やり
@@ -137,29 +131,16 @@ void AnchorComponent::hitClamp() {
 }
 
 void AnchorComponent::changeState() {
-    auto change = false;
     if (mState == AnchorState::EXTEND) {
-        if (mIsHit) {
-            if (Input::getKeyDown(mReleaseKey)) {
-                change = true;
-            }
-        } else {
-            if (mCurrentAnchorLength >= MAX_LENGTH) {
-                change = true;
-            }
-        }
-
-        if (change) {
+        if (mCurrentAnchorLength >= MAX_LENGTH) {
             mState = AnchorState::SHRINK;
-            mIsHit = false;
-            mHitEnemy = nullptr;
+        }
+    } else if (mState == AnchorState::HIT) {
+        if (Input::getKeyDown(mReleaseKey)) {
+            mState = AnchorState::SHRINK;
         }
     } else if (mState == AnchorState::SHRINK) {
         if (mCurrentAnchorLength <= 0.f) {
-            change = true;
-        }
-
-        if (change) {
             mState = AnchorState::STOP;
             mSpriteComp->setActive(false);
         }
