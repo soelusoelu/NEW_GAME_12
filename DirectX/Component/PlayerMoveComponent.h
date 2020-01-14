@@ -40,6 +40,7 @@ private:
     float mDecelerationSpeed; //減速度
     float mDestroyRange; //死亡範囲
     KeyCode mAnchorKey;
+    JoyCode mAnchorJoy;
     Vector2 mLastInput;
 };
 

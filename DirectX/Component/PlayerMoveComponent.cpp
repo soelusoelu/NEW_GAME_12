@@ -21,6 +21,7 @@ PlayerMoveComponent::PlayerMoveComponent(Actor* owner, std::shared_ptr<Renderer>
     mDecelerationSpeed(30.f),
     mDestroyRange(3.f),
     mAnchorKey(KeyCode::Q),
+    mAnchorJoy(JoyCode::RightButton),
     mLastInput(Vector2::right) {
 }
 
@@ -87,7 +88,7 @@ void PlayerMoveComponent::deceleration() {
 }
 
 void PlayerMoveComponent::anchorInjection() {
-    if (!Input::getKeyDown(mAnchorKey) || !mAnchor->canShot()) {
+    if ((!Input::getKeyDown(mAnchorKey) && !Input::getJoyDown(mAnchorJoy)) || !mAnchor->canShot()) {
         return;
     }
     mAnchor->shot(mLastInput);
@@ -101,12 +102,9 @@ void PlayerMoveComponent::anchorUpdate() {
     auto h = Input::joyRhorizontal();
     auto v = Input::joyRvertical();
     if (!Math::nearZero(h) || !Math::nearZero(v)) {
-        if (h > 1.f) {
-            int a = 0;
-        }
-        //auto dir = Vector2::normalize(Vector2(h, -v));
-        //mLastInput.set(dir.x, dir.y);
-        mLastInput.set(h, -v);
+        auto dir = Vector2::normalize(Vector2(h, -v));
+        mLastInput.set(dir.x, dir.y);
+        //mLastInput.set(h, -v);
     }
 }
 

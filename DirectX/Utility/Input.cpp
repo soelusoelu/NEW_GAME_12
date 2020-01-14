@@ -123,7 +123,7 @@ bool Input::getKeyDown(KeyCode key) {
     return (mCurrentKeys[static_cast<BYTE>(key)] & 0x80 && !(mPreviousKeys[static_cast<BYTE>(key)] & 0x80));
 }
 
-bool Input::getJoyStickDown(JoyCode joy) {
+bool Input::getJoyDown(JoyCode joy) {
     return (mCurrentJoyState.rgbButtons[static_cast<int>(joy)] & 0x80 && !(mPreviousJoyState.rgbButtons[static_cast<int>(joy)] & 0x80));
 }
 
@@ -134,7 +134,6 @@ bool Input::getKey(KeyCode key) {
 bool Input::getJoy(JoyCode joy) {
     return mCurrentJoyState.rgbButtons[static_cast<int>(joy)] & 0x80;
 }
-
 
 bool Input::getKeyUp(KeyCode key) {
     return (!(mCurrentKeys[static_cast<BYTE>(key)] & 0x80) && mPreviousKeys[static_cast<BYTE>(key)] & 0x80);

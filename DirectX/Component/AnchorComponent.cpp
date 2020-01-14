@@ -21,6 +21,7 @@ AnchorComponent::AnchorComponent(Actor* owner, std::shared_ptr<Transform2D> play
     mTargetPoint(Vector2::zero),
     mHitEnemy(nullptr),
     mReleaseKey(KeyCode::Q),
+    mReleaseJoy(JoyCode::RightButton),
     mState(AnchorState::STOP) {
 }
 
@@ -143,7 +144,7 @@ void AnchorComponent::changeState() {
             mState = AnchorState::SHRINK;
         }
     } else if (mState == AnchorState::HIT) {
-        if (Input::getKeyDown(mReleaseKey)) {
+        if (Input::getKeyDown(mReleaseKey) || Input::getJoyDown(mReleaseJoy)) {
             mState = AnchorState::SHRINK;
         }
     } else if (mState == AnchorState::SHRINK) {

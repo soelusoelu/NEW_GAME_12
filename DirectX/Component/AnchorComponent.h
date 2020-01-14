@@ -59,5 +59,6 @@ private:
     Vector2 mTargetPoint;
     Actor* mHitEnemy;
     KeyCode mReleaseKey;
+    JoyCode mReleaseJoy;
     AnchorState mState;
 };

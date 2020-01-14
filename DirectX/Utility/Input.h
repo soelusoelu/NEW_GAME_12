@@ -91,7 +91,7 @@ public:
     static void update();
     //キーが押された瞬間
     static bool getKeyDown(KeyCode key);
-    static bool getJoyStickDown(JoyCode joy);
+    static bool getJoyDown(JoyCode joy);
     //キーが押され続けているか
     static bool getKey(KeyCode key);
     static bool getJoy(JoyCode joy);
