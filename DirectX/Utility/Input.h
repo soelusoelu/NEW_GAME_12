@@ -101,9 +101,12 @@ public:
     //縦横
     static int horizontal();
     static int vertical();
-
+	//ジョイスティック対応
 	static float joyHorizontal();
 	static float joyVertical();
+	//ジョイスティック右
+	static float joyRhorizontal();
+	static float joyRvertical();
 
 public:
     static LPDIRECTINPUT8 mDinput;

@@ -1,4 +1,5 @@
 ﻿#include "Input.h"
+#include "Math.h"
 #include "../System/Game.h"
 #include <algorithm>
 
@@ -170,7 +171,7 @@ float Input::joyHorizontal()
 		//最大1で返すため1000で割る
 		//return mCurrentJoyState.lX / 1000.f;//20以上なら0を返すなど・・・
 		//return (mCurrentJoyState.lX > 100.f) ? mCurrentJoyState.lX / 1000.f : 0.f;
-		if (mCurrentJoyState.lX > 100.f || mCurrentJoyState.lX < -100.f)//100以上なら
+		if (Math::abs(mCurrentJoyState.lX) > 100.f)//100以上なら
 		{
 			return mCurrentJoyState.lX / 1000.f;
 		}
@@ -188,9 +189,45 @@ float Input::joyVertical()
 		//なぜか反転してるから
 		//return -mCurrentJoyState.lY / 1000.f;
 		//return (mCurrentJoyState.lY > 100.f) ? mCurrentJoyState.lY / 1000.f : 0.f;
-		if (mCurrentJoyState.lY > 100.f || mCurrentJoyState.lY < -100.f)//100以上なら
+		if (Math::abs(mCurrentJoyState.lY) > 100.f)//100以上なら
 		{
 			return -mCurrentJoyState.lY / 1000.f;
+		}
+	}
+	else
+	{
+		return 0.f;
+	}
+}
+
+float Input::joyRhorizontal()
+{
+	if (mCurrentJoyState.lRx)
+	{
+		//最大1で返すため1000で割る
+		//return mCurrentJoyState.lX / 1000.f;//20以上なら0を返すなど・・・
+		//return (mCurrentJoyState.lX > 100.f) ? mCurrentJoyState.lX / 1000.f : 0.f;
+		if (Math::abs(mCurrentJoyState.lRx) > 100.f)//100以上なら
+		{
+			return mCurrentJoyState.lRx / 1000.f;
+		}
+	}
+	else
+	{
+		return 0.f;
+	}
+}
+
+float Input::joyRvertical()
+{
+	if (mCurrentJoyState.lRy)//
+	{
+		//なぜか反転してるから
+		//return -mCurrentJoyState.lY / 1000.f;
+		//return (mCurrentJoyState.lY > 100.f) ? mCurrentJoyState.lY / 1000.f : 0.f;
+		if (Math::abs(mCurrentJoyState.lRy) > 100.f)//100以上なら
+		{
+			return -mCurrentJoyState.lRy / 1000.f;
 		}
 	}
 	else

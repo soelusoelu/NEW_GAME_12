@@ -54,8 +54,8 @@ const float PlayerMoveComponent::anchorMaxLength() const {
 }
 
 void PlayerMoveComponent::move() {
-    auto h = Input::horizontal();
-    auto v = Input::vertical();
+    auto h = Input::joyHorizontal();
+    auto v = Input::joyVertical();
     if (!Math::nearZero(h) || !Math::nearZero(v)) {
         mLastInput.set(h, -v);
         auto fh = h * mAccelerationSpeed * Time::deltaTime;
