@@ -21,10 +21,9 @@ void AnchorPoint::updateUI() {
             return;
         }
         auto t = p->transform();
-        auto center = t->getPosition() + t->getPivot();
         auto full = Vector2(mPoint->getScreenTextureSize().x, mPoint->getScreenTextureSize().y);
         auto half = full / 2.f;
-        mPoint->setPosition(center - half + p->getLastInput() * 200.f);
+        mPoint->setPosition(t->getCenter() - half + p->getLastInput() * 200.f);
 
         //ポイント範囲調整
         mPoint->setPosition(Vector2::clamp(

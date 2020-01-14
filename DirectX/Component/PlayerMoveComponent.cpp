@@ -18,7 +18,7 @@ PlayerMoveComponent::PlayerMoveComponent(Actor* owner, std::shared_ptr<Renderer>
     mAccelerationRange(100.f),
     mAnchorAccelerationTimes(5.f),
     mAnchorAccelerationRange(300.f),
-    mDecelerationSpeed(10.f),
+    mDecelerationSpeed(30.f),
     mDestroyRange(3.f),
     mAnchorKey(KeyCode::Q),
     mLastInput(Vector2::right) {
@@ -57,7 +57,7 @@ void PlayerMoveComponent::move() {
     auto h = Input::joyHorizontal();
     auto v = Input::joyVertical();
     if (!Math::nearZero(h) || !Math::nearZero(v)) {
-        mLastInput.set(h, -v);
+        //mLastInput.set(h, -v);
         auto fh = h * mAccelerationSpeed * Time::deltaTime;
         auto fv = v * mAccelerationSpeed * Time::deltaTime;
 
@@ -94,7 +94,20 @@ void PlayerMoveComponent::anchorInjection() {
 }
 
 void PlayerMoveComponent::anchorUpdate() {
+    //アンカーの位置をプレイヤーの中心に
     mAnchor->transform()->setPosition(mOwner->transform()->getCenter());
+
+    //アンカーを指す位置
+    auto h = Input::joyRhorizontal();
+    auto v = Input::joyRvertical();
+    if (!Math::nearZero(h) || !Math::nearZero(v)) {
+        if (h > 1.f) {
+            int a = 0;
+        }
+        //auto dir = Vector2::normalize(Vector2(h, -v));
+        //mLastInput.set(dir.x, dir.y);
+        mLastInput.set(h, -v);
+    }
 }
 
 void PlayerMoveComponent::clamp() {
