@@ -44,6 +44,7 @@
     <ClCompile Include="System\Game.cpp" />
     <ClCompile Include="System\Window.cpp" />
     <ClCompile Include="Component\AnchorComponent.cpp" />
+    <ClCompile Include="UI\AnchorPoint.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor\ActorManager.h" />
@@ -91,5 +92,6 @@
     <ClInclude Include="System\Game.h" />
     <ClInclude Include="System\Window.h" />
     <ClInclude Include="Component\AnchorComponent.h" />
+    <ClInclude Include="UI\AnchorPoint.h" />
   </ItemGroup>
 </Project>

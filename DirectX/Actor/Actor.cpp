@@ -60,11 +60,11 @@ void Actor::destroy(std::shared_ptr<Actor> actor, float sec) {
     actor->mDestroyTimer = std::make_unique<Time>(sec);
 }
 
-std::shared_ptr<ComponentManager> Actor::getComponentManager() const {
+std::shared_ptr<ComponentManager> Actor::componentManager() const {
     return mComponentManager;
 }
 
-std::shared_ptr<Transform2D> Actor::getTransform() const {
+std::shared_ptr<Transform2D> Actor::transform() const {
     return mTransform;
 }
 
@@ -72,7 +72,7 @@ ActorState Actor::getState() const {
     return mState;
 }
 
-const char* Actor::getTag() const {
+const char* Actor::tag() const {
     return mTag;
 }
 

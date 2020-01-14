@@ -15,7 +15,7 @@ public:
     void update();
     virtual void updateScene() = 0;
     void draw();
-    void next(std::shared_ptr<SceneBase> next);
+    void nextScene(std::shared_ptr<SceneBase> next);
     std::shared_ptr<SceneBase> getNextScene() const;
     void setRenderer(std::shared_ptr<Renderer> renderer);
 

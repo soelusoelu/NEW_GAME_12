@@ -1,42 +1,63 @@
-#pragma once
+ï»¿#pragma once
 
 #include "Component.h"
+#include "../Utility/Input.h"
 #include "../Utility/Math.h"
 #include <memory>
+
+enum class AnchorState {
+    EXTEND,
+    HIT,
+    SHRINK,
+    STOP
+};
 
 class Actor;
 class SpriteComponent;
 class CircleCollisionComponent;
+class Transform2D;
 
 class AnchorComponent : public Component {
 public:
-    AnchorComponent(Actor* owner, Actor* player, const Vector2& anchorDirection);
+    AnchorComponent(Actor* owner, std::shared_ptr<Transform2D> player, int updateOrder = 10);
     ~AnchorComponent();
     virtual void start() override;
     virtual void update() override;
+    void shot(const Vector2& direction);
+    bool isHit() const;
+    bool canShot() const;
+    const float maxLength() const;
+    Actor* hitEnemy() const;
 
 private:
-    //ƒAƒ“ƒJ[‚Ì“®‚«
+    //ã‚¢ãƒ³ã‚«ãƒ¼ã®å‹•ã
+    void rotate();
     void extend();
-    //ƒAƒ“ƒJ[‚Ì“–‚½‚è”»’è‚ğ–ˆƒtƒŒ[ƒ€XV
+    void shrink();
+    //ã‚¢ãƒ³ã‚«ãƒ¼ã®å½“ãŸã‚Šåˆ¤å®šã‚’æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°
     void updateCollider();
-    //“–‚½‚è”»’è
+    //å½“ãŸã‚Šåˆ¤å®š
     void hit();
-    //ƒAƒ“ƒJ[‚ªh‚³‚Á‚½‚Æ‚«‚ÌˆÚ“®§ŒÀ
+    //ã‚¢ãƒ³ã‚«ãƒ¼ãŒåˆºã•ã£ãŸã¨ãã®ç§»å‹•åˆ¶é™
     void hitClamp();
-    //€‚ÊğŒ
-    void dead();
-    //ƒvƒŒƒCƒ„[‚Ì’†SÀ•W‚Ìæ“¾
-    Vector2 playerCenter() const;
+    //æ­»ã¬æ¡ä»¶
+    void changeState();
+    //åº§æ¨™ã®å–å¾—
+    Vector2 position() const;
+    Vector2 enemyCenterPosition() const;
+    //ã‚¢ãƒ³ã‚«ãƒ¼ã®ä¼¸ç¸®
+    void computeScale();
 
 private:
-    Actor* mPlayer;
+    std::shared_ptr<Transform2D> mPlayer;
     std::shared_ptr<SpriteComponent> mSpriteComp;
     std::shared_ptr<CircleCollisionComponent> mCollide;
-    Vector2 mAnchorDirection;
-    float mAnchorIncrease;
+    const float MAX_LENGTH;
+    const float ANCHOR_INCREASE;
     float mCurrentAnchorLength;
-    bool mIsHit;
-    Vector2 mHitEnemyCenter;
-    static const float MAX_LENGTH;
+    float mThick;
+    Vector2 mTargetPoint;
+    Actor* mHitEnemy;
+    KeyCode mReleaseKey;
+    AnchorState mState;
 };

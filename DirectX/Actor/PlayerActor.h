@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "Actor.h"
+#include "../Utility/Math.h"
 #include <memory>
 
 class Renderer;
@@ -13,6 +14,9 @@ public:
     PlayerActor(std::shared_ptr<Renderer> renderer, const char* tag = "Player");
     ~PlayerActor();
     virtual void updateActor() override;
+    Vector2 getLastInput() const;
+    bool isHitAnchor() const;
+    const float anchorMaxLength() const;
 
 private:
     CircleCollisionComponent* mCollide;

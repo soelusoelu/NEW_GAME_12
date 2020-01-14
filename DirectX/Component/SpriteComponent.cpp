@@ -6,8 +6,8 @@
 SpriteComponent::SpriteComponent(Actor* owner, std::shared_ptr<Renderer> renderer, const char* fileName, float z) :
     Component(owner),
     mSprite(new Sprite(renderer, fileName, z, false)) {
-    mOwner->getTransform()->setPrimary(z);
-    mOwner->getTransform()->setPivot(mSprite->getPivot());
+    mOwner->transform()->setPrimary(z);
+    mOwner->transform()->setPivot(mSprite->getPivot());
 }
 
 SpriteComponent::~SpriteComponent() {
@@ -21,7 +21,7 @@ void SpriteComponent::update() {
 }
 
 void SpriteComponent::onUpdateWorldTransform() {
-    mSprite->setWorld(mOwner->getTransform()->getWorldTransform());
+    mSprite->setWorld(mOwner->transform()->getWorldTransform());
 }
 
 Sprite* SpriteComponent::getSprite() const {
@@ -46,7 +46,7 @@ Vector4 SpriteComponent::getColor() const {
 
 void SpriteComponent::setUV(float l, float t, float r, float b) {
     mSprite->setUV(l, t, r, b);
-    mOwner->getTransform()->setPivot(mSprite->getPivot());
+    mOwner->transform()->setPivot(mSprite->getPivot());
 }
 
 Vector4 SpriteComponent::getUV() const {
@@ -63,9 +63,17 @@ Vector2INT SpriteComponent::getCurrentTextureSize() const {
 
 Vector2INT SpriteComponent::getScreenTextureSize() const {
     return Vector2INT(
-        mSprite->getCurrentTextureSize().x * mOwner->getTransform()->getScale().x,
-        mSprite->getCurrentTextureSize().y * mOwner->getTransform()->getScale().y
+        mSprite->getCurrentTextureSize().x * mOwner->transform()->getScale().x,
+        mSprite->getCurrentTextureSize().y * mOwner->transform()->getScale().y
     );
+}
+
+void SpriteComponent::setActive(bool value) {
+    mSprite->setActive(value);
+}
+
+bool SpriteComponent::getActive() const {
+    return mSprite->getActive();
 }
 
 SpriteState SpriteComponent::getState() const {
@@ -74,7 +82,7 @@ SpriteState SpriteComponent::getState() const {
 
 void SpriteComponent::setTexture(const char* fileName) {
     mSprite->setTexture(fileName);
-    mOwner->getTransform()->setPivot(mSprite->getPivot());
+    mOwner->transform()->setPivot(mSprite->getPivot());
 }
 
 std::shared_ptr<Texture> SpriteComponent::texture() const {

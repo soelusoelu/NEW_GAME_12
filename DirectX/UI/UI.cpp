@@ -21,7 +21,16 @@ UI::~UI() {
 }
 
 void UI::update() {
-    updateUI();
+    if (mState == UIState::ACTIVE) {
+        updateUI();
+    } else if (mState == UIState::NON_ACTIVE) {
+        for (auto&& sprite : mSprites) {
+            if (!sprite->getActive()) {
+                break;
+            }
+            sprite->setActive(false);
+        }
+    }
 }
 
 void UI::close() {
@@ -37,6 +46,14 @@ void UI::removeSprite(Sprite* sprite) {
     if (itr != mSprites.end()) {
         mSprites.erase(itr);
     }
+}
+
+void UI::setActive(bool value) {
+    mState = (value) ? UIState::ACTIVE : UIState::NON_ACTIVE;
+}
+
+bool UI::getActive() const {
+    return mState == UIState::ACTIVE;
 }
 
 UIState UI::getState() const {

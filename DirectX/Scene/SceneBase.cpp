@@ -34,7 +34,7 @@ void SceneBase::draw() {
     mSpriteManager->draw(mRenderer);
 }
 
-void SceneBase::next(std::shared_ptr<SceneBase> next) {
+void SceneBase::nextScene(std::shared_ptr<SceneBase> next) {
     mNext = next;
 }
 

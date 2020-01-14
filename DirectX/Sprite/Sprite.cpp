@@ -64,7 +64,7 @@ void Sprite::update() {
 }
 
 void Sprite::draw(const Matrix4 & proj) {
-    if (getState() == SpriteState::DEAD) {
+    if (mState != SpriteState::ACTIVE) {
         return;
     }
 
@@ -261,6 +261,14 @@ void Sprite::destroy(std::shared_ptr<Sprite> sprite) {
     sprite->mState = SpriteState::DEAD;
 }
 
+void Sprite::setActive(bool value) {
+    mState = (value) ? SpriteState::ACTIVE : SpriteState::NON_ACTIVE;
+}
+
+bool Sprite::getActive() const {
+    return mState == SpriteState::ACTIVE;
+}
+
 SpriteState Sprite::getState() const {
     return mState;
 }
@@ -308,7 +316,7 @@ void Sprite::setSpriteManager(SpriteManager * manager) {
 
 void Sprite::updateWorld() {
     //ワールド行列に変更が生じたら
-    if (!mWorldUpdateFlag || !mUpdateMyself) {
+    if (!mWorldUpdateFlag || !mUpdateMyself || mState != SpriteState::ACTIVE) {
         return;
     }
     mWorldUpdateFlag = false;
