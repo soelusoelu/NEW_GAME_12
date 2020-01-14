@@ -144,7 +144,6 @@ bool Input::getJoyUp(JoyCode joy) {
 }
 
 int Input::horizontal() {
-
     if (getKey(KeyCode::A) || getKey(KeyCode::LeftArrow)){
         return -1;
     } else if (getKey(KeyCode::D) || getKey(KeyCode::RightArrow)) {
@@ -155,7 +154,6 @@ int Input::horizontal() {
 }
 
 int Input::vertical() {
-
     if (getKey(KeyCode::W) || getKey(KeyCode::UpArrow)) {
         return 1;
     } else if (getKey(KeyCode::S) || getKey(KeyCode::DownArrow)) {
@@ -169,7 +167,13 @@ float Input::joyHorizontal()
 {
 	if (mCurrentJoyState.lX)
 	{
-		return mCurrentJoyState.lX / 1000.f;//20以上なら0を返すなど・・・
+		//最大1で返すため1000で割る
+		//return mCurrentJoyState.lX / 1000.f;//20以上なら0を返すなど・・・
+		//return (mCurrentJoyState.lX > 100.f) ? mCurrentJoyState.lX / 1000.f : 0.f;
+		if (mCurrentJoyState.lX > 100.f || mCurrentJoyState.lX < -100.f)//100以上なら
+		{
+			return mCurrentJoyState.lX / 1000.f;
+		}
 	}
 	else
 	{
@@ -181,7 +185,13 @@ float Input::joyVertical()
 {
 	if (mCurrentJoyState.lY)//
 	{
-		return -mCurrentJoyState.lY / 1000.f;
+		//なぜか反転してるから
+		//return -mCurrentJoyState.lY / 1000.f;
+		//return (mCurrentJoyState.lY > 100.f) ? mCurrentJoyState.lY / 1000.f : 0.f;
+		if (mCurrentJoyState.lY > 100.f || mCurrentJoyState.lY < -100.f)//100以上なら
+		{
+			return -mCurrentJoyState.lY / 1000.f;
+		}
 	}
 	else
 	{
