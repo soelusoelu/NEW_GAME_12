@@ -5,6 +5,7 @@
 #pragma comment(lib,"dxguid.lib")
 #pragma comment(lib, "dinput8.lib")
 
+
 enum class KeyCode {
     A = DIK_A,
     B = DIK_B,
@@ -75,12 +76,12 @@ enum class JoyCode {
     B = 1,
     X = 2,
     Y = 3,
-    LeftButton = 4,
-    RightButton = 5,
-    ViewButton = 6,
-    MenuButton = 7,
-    LeftStickButton = 8,
-    RightStickButton = 9,
+    LeftButton = 4,//Lボタン
+    RightButton = 5,//Rボタン
+    ViewButton = 6,//SELECT?
+    MenuButton = 7,//スタートボタン
+    LeftStickButton = 8,//左スティック押し込み
+    RightStickButton = 9,//右スティック押し込み
 };
 
 class Input {
@@ -101,9 +102,12 @@ public:
     static int horizontal();
     static int vertical();
 
+	static float joyHorizontal();
+	static float joyVertical();
+
 public:
     static LPDIRECTINPUT8 mDinput;
-    static LPDIRECTINPUTDEVICE8 mPadDevice;
+	static LPDIRECTINPUTDEVICE8 mPadDevice;
 
 private:
     static BYTE mCurrentKeys[256];
@@ -112,5 +116,6 @@ private:
     static DIJOYSTATE2 mPreviousJoyState;
 
     static LPDIRECTINPUTDEVICE8 mKeyDevice;
+
 };
 

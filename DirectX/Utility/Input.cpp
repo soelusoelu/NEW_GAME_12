@@ -2,6 +2,7 @@
 #include "../System/Game.h"
 #include <algorithm>
 
+
 BOOL CALLBACK enumJoysticksCallback(const DIDEVICEINSTANCE*, VOID*);
 BOOL CALLBACK enumObjectsCallback(const DIDEVICEOBJECTINSTANCE*, VOID*);
 
@@ -51,6 +52,7 @@ HRESULT Input::init(HWND hWnd) {
     return S_OK;
 }
 
+
 BOOL CALLBACK enumJoysticksCallback(const DIDEVICEINSTANCE* pdidInstance, VOID* pContext) {
     //複数列挙される場合、ユーザーに選択・確認させる
     WCHAR szConfirm[MAX_PATH];
@@ -63,6 +65,7 @@ BOOL CALLBACK enumJoysticksCallback(const DIDEVICEINSTANCE* pdidInstance, VOID* 
     if (FAILED(Input::mDinput->CreateDevice(pdidInstance->guidInstance, &Input::mPadDevice, NULL))) {
         return DIENUM_CONTINUE;
     }
+
     return DIENUM_STOP;
 }
 
@@ -87,6 +90,14 @@ void Input::end() {
     SAFE_RELEASE(mDinput);
     SAFE_RELEASE(mKeyDevice);
     SAFE_RELEASE(mPadDevice);
+
+	//追加
+	if (mPadDevice)
+	{
+		mPadDevice->Release();
+		mDinput->Release();
+	}
+	//ここまで
 }
 
 void Input::update() {
@@ -97,12 +108,14 @@ void Input::update() {
     if ((hr == DI_OK) || (hr == S_FALSE)) {
         mKeyDevice->GetDeviceState(sizeof(mCurrentKeys), &mCurrentKeys);
     }
-    if (mPadDevice) {
-        hr = mPadDevice->Acquire();
-        if ((hr == DI_OK) || (hr == S_FALSE)) {
-            mPadDevice->GetDeviceState(sizeof(DIJOYSTATE2), &mCurrentJoyState);
-        }
-    }
+
+	if (mPadDevice) {
+		hr = mPadDevice->Acquire();
+		if ((hr == DI_OK) || (hr == S_FALSE)) {
+			mPadDevice->GetDeviceState(sizeof(DIJOYSTATE2), &mCurrentJoyState);
+		}
+	}
+
 }
 
 bool Input::getKeyDown(KeyCode key) {
@@ -121,6 +134,7 @@ bool Input::getJoy(JoyCode joy) {
     return mCurrentJoyState.rgbButtons[static_cast<int>(joy)] & 0x80;
 }
 
+
 bool Input::getKeyUp(KeyCode key) {
     return (!(mCurrentKeys[static_cast<BYTE>(key)] & 0x80) && mPreviousKeys[static_cast<BYTE>(key)] & 0x80);
 }
@@ -130,7 +144,8 @@ bool Input::getJoyUp(JoyCode joy) {
 }
 
 int Input::horizontal() {
-    if (getKey(KeyCode::A) || getKey(KeyCode::LeftArrow)) {
+
+    if (getKey(KeyCode::A) || getKey(KeyCode::LeftArrow)){
         return -1;
     } else if (getKey(KeyCode::D) || getKey(KeyCode::RightArrow)) {
         return 1;
@@ -140,6 +155,7 @@ int Input::horizontal() {
 }
 
 int Input::vertical() {
+
     if (getKey(KeyCode::W) || getKey(KeyCode::UpArrow)) {
         return 1;
     } else if (getKey(KeyCode::S) || getKey(KeyCode::DownArrow)) {
@@ -147,6 +163,30 @@ int Input::vertical() {
     } else {
         return 0;
     }
+}
+
+float Input::joyHorizontal()
+{
+	if (mCurrentJoyState.lX)
+	{
+		return mCurrentJoyState.lX / 1000.f;//20以上なら0を返すなど・・・
+	}
+	else
+	{
+		return 0.f;
+	}
+}
+
+float Input::joyVertical()
+{
+	if (mCurrentJoyState.lY)//
+	{
+		return -mCurrentJoyState.lY / 1000.f;
+	}
+	else
+	{
+		return 0.f;
+	}
 }
 
 BYTE Input::mCurrentKeys[256] = { 0 };
