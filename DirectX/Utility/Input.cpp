@@ -176,10 +176,7 @@ float Input::joyHorizontal()
 			return mCurrentJoyState.lX / 1000.f;
 		}
 	}
-	else
-	{
-		return 0.f;
-	}
+	return 0.f;
 }
 
 float Input::joyVertical()
@@ -194,10 +191,7 @@ float Input::joyVertical()
 			return -mCurrentJoyState.lY / 1000.f;
 		}
 	}
-	else
-	{
-		return 0.f;
-	}
+	return 0.f;
 }
 
 float Input::joyRhorizontal()
@@ -212,10 +206,7 @@ float Input::joyRhorizontal()
 			return mCurrentJoyState.lRx / 1000.f;
 		}
 	}
-	else
-	{
-		return 0.f;
-	}
+	return 0.f;
 }
 
 float Input::joyRvertical()
@@ -230,10 +221,7 @@ float Input::joyRvertical()
 			return -mCurrentJoyState.lRy / 1000.f;
 		}
 	}
-	else
-	{
-		return 0.f;
-	}
+	return 0.f;
 }
 
 BYTE Input::mCurrentKeys[256] = { 0 };
