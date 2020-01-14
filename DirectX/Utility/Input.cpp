@@ -52,79 +52,6 @@ HRESULT Input::init(HWND hWnd) {
     return S_OK;
 }
 
-//追加
-// 1つのデバイスごとに呼び出されるコールバック関数
-BOOL PASCAL EnumJoyDeviceProc(HWND hWnd, LPCDIDEVICEINSTANCE lpddi, LPVOID pvRef)
-{
-	//DEBUG("コールバック呼び出し\n");
-
-	// ジョイスティックデバイスの作成
-	HRESULT ret = Input::mDinput->CreateDevice(lpddi->guidInstance, &Input::mPadDevice, NULL);
-	if (FAILED(ret)) {
-		//DEBUG("デバイス作成失敗\n");
-		return DIENUM_STOP;
-	}
-
-	// 入力データ形式のセット
-	ret = Input::mPadDevice->SetDataFormat(&c_dfDIJoystick);
-	if (FAILED(ret)) {
-		//DEBUG("入力データ形式のセット失敗\n");
-		Input::mPadDevice->Release();
-		return DIENUM_STOP;
-	}
-
-	// 排他制御のセット
-	ret = Input::mPadDevice->SetCooperativeLevel(hWnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
-	if (FAILED(ret)) {
-		//DEBUG("排他制御のセット失敗\n");
-		Input::mPadDevice->Release();
-		return DIENUM_STOP;
-	}
-
-	// 入力範囲のセット
-	DIPROPRANGE diprg;
-	diprg.diph.dwSize = sizeof(diprg);
-	diprg.diph.dwHeaderSize = sizeof(diprg.diph);
-	diprg.diph.dwHow = DIPH_BYOFFSET;
-	diprg.lMax = 1000;
-	diprg.lMin = -1000;
-
-	// X軸
-	diprg.diph.dwObj = DIJOFS_X;
-	Input::mPadDevice->SetProperty(DIPROP_RANGE, &diprg.diph);
-
-	// Y軸
-	diprg.diph.dwObj = DIJOFS_Y;
-	Input::mPadDevice->SetProperty(DIPROP_RANGE, &diprg.diph);
-
-	// Z軸
-	diprg.diph.dwObj = DIJOFS_Z;
-	Input::mPadDevice->SetProperty(DIPROP_RANGE, &diprg.diph);
-
-	// RX軸
-	diprg.diph.dwObj = DIJOFS_RX;
-	Input::mPadDevice->SetProperty(DIPROP_RANGE, &diprg.diph);
-
-	// RY軸
-	diprg.diph.dwObj = DIJOFS_RY;
-	Input::mPadDevice->SetProperty(DIPROP_RANGE, &diprg.diph);
-
-	// RZ軸
-	diprg.diph.dwObj = DIJOFS_RZ;
-	Input::mPadDevice->SetProperty(DIPROP_RANGE, &diprg.diph);
-
-	// 起動準備完了
-	Input::mPadDevice->Poll();
-
-	// 構築完了なら
-	//DEBUG("インスタンスの登録名 [%s]\n", lpddi->tszInstanceName);
-	//DEBUG("製品の登録名         [%s]\n", lpddi->tszProductName);
-	//DEBUG("構築完了\n");
-
-	// 最初の1つのみで終わる
-	return DIENUM_STOP;         // 次のデバイスを列挙するにはDIENUM_CONTINUEを返す
-}
-//ここまで
 
 BOOL CALLBACK enumJoysticksCallback(const DIDEVICEINSTANCE* pdidInstance, VOID* pContext) {
     //複数列挙される場合、ユーザーに選択・確認させる
@@ -181,21 +108,7 @@ void Input::update() {
     if ((hr == DI_OK) || (hr == S_FALSE)) {
         mKeyDevice->GetDeviceState(sizeof(mCurrentKeys), &mCurrentKeys);
     }
-    /*if (mPadDevice) {
-        hr = mPadDevice->Acquire();
-        if ((hr == DI_OK) || (hr == S_FALSE)) {
-            //mPadDevice->GetDeviceState(sizeof(DIJOYSTATE2), &mCurrentJoyState);
-			//変更
-			// ジョイスティックの入力
-			DIJOYSTATE joy;
-			ZeroMemory(&joy, sizeof(joy));
-			HRESULT ret = mPadDevice->GetDeviceState(sizeof(joy), &joy);
-			if (FAILED(ret)) {
-				// 失敗なら再び動作開始を行う
-				mPadDevice->Acquire();
-			}
-        }
-    }*/
+
 	if (mPadDevice) {
 		hr = mPadDevice->Acquire();
 		if ((hr == DI_OK) || (hr == S_FALSE)) {
@@ -203,22 +116,6 @@ void Input::update() {
 		}
 	}
 
-	//追加
-	//mPadDevice->Acquire();
-	// データ取得前にPollが必要なら
-	//if (dc.dwFlags&DIDC_POLLEDDATAFORMAT) {
-	//	lpJoystick->Poll();
-	//}
-
-	// ジョイスティックの入力
-	//DIJOYSTATE joy;
-	//ZeroMemory(&joy, sizeof(joy));
-	//HRESULT ret = mPadDevice->GetDeviceState(sizeof(joy), &joy);
-	//if (FAILED(ret)) {
-	//	// 失敗なら再び動作開始を行う
-	//	mPadDevice->Acquire();
-	//}
-	//ここまで
 }
 
 bool Input::getKeyDown(KeyCode key) {
@@ -272,7 +169,7 @@ float Input::joyHorizontal()
 {
 	if (mCurrentJoyState.lX)
 	{
-		return mCurrentJoyState.lX / 1000.f;
+		return mCurrentJoyState.lX / 1000.f;//20以上なら0を返すなど・・・
 	}
 	else
 	{
