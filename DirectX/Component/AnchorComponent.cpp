@@ -46,7 +46,7 @@ void AnchorComponent::update() {
 }
 
 void AnchorComponent::shot(const Vector2 & direction) {
-    mTargetPoint = position() + direction * MAX_LENGTH;
+    mTargetPoint = playerPosition() + direction * MAX_LENGTH;
     mHitEnemy = nullptr;
     mCurrentAnchorLength = 0.f;
     mState = AnchorState::EXTEND;
@@ -81,7 +81,7 @@ float AnchorComponent::hitAngle() const {
 void AnchorComponent::rotate() {
     if (mState != AnchorState::EXTEND || mState != AnchorState::HIT) {
         auto other = (isHit()) ? enemyCenterPosition(): mTargetPoint;
-        auto dir = other - position();
+        auto dir = other - playerPosition();
         auto rot = Math::toDegrees(Math::atan2(-dir.x, dir.y));
         mOwner->transform()->setRotation(rot);
     }
@@ -108,9 +108,9 @@ void AnchorComponent::updateCollider() {
         return;
     }
     //アンカーの先端にだけ当たり判定
-    auto dir = mTargetPoint - position();
+    auto dir = mTargetPoint - playerPosition();
     dir.normalize(); //重いねぇ
-    mCollide->set(position() + dir * mCurrentAnchorLength, 3.f);
+    mCollide->set(playerPosition() + dir * mCurrentAnchorLength, 3.f);
 }
 
 void AnchorComponent::hit() {
@@ -123,14 +123,11 @@ void AnchorComponent::hit() {
             //ヒットしたエネミーの登録
             mHitEnemy = hit->getOwner();
 
-            //アンカーとエネミーとの角度計算
-            auto dir = enemyCenterPosition() - position();
-            mHitAngle = Math::toDegrees(Math::atan2(dir.y, -dir.x));
+            //プレイヤーとエネミーとの角度計算
+            auto dir = enemyCenterPosition() - playerPosition();
+            mHitAngle = Math::toDegrees(Math::atan2(-dir.y, -dir.x));
 
-            auto pmc = mOwner->transform()->parent()->getOwner()->componentManager()->getComponent<PlayerMoveComponent>();
-            if (pmc) {
-                pmc->rotateDirection();
-            }
+            mOwner->transform()->parent()->getOwner()->componentManager()->getComponent<PlayerMoveComponent>()->rotateDirection();
 
             mState = AnchorState::HIT;
             mCollide->disabled();
@@ -146,6 +143,7 @@ void AnchorComponent::changeState() {
         }
     } else if (mState == AnchorState::HIT) {
         if (Input::getKeyDown(mReleaseKey) || Input::getJoyDown(mReleaseJoy)) {
+            mOwner->transform()->parent()->getOwner()->componentManager()->getComponent<PlayerMoveComponent>()->anchorReleaseAcceleration();
             mState = AnchorState::SHRINK;
         }
     } else if (mState == AnchorState::SHRINK) {
@@ -156,8 +154,8 @@ void AnchorComponent::changeState() {
     }
 }
 
-Vector2 AnchorComponent::position() const {
-    return mOwner->transform()->getPosition();
+Vector2 AnchorComponent::playerPosition() const {
+    return mOwner->transform()->parent()->getCenter();
 }
 
 Vector2 AnchorComponent::enemyCenterPosition() const {

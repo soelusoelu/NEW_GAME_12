@@ -26,12 +26,27 @@ Actor* Transform2D::getOwner() const {
 
 bool Transform2D::computeWorldTransform() {
     if (mIsRecomputeTransform) {
-        mIsRecomputeTransform = false;
+        if (auto p = mParent.lock()) {
+            mWorldTransform = Matrix4::createScale(Vector3(mScale * p->mScale, 1.f));
+            mWorldTransform *= Matrix4::createTranslation(-Vector3(mPivot, 0.f));
+            mWorldTransform *= Matrix4::createFromQuaternion(Quaternion::concatenate(mRotation, p->mRotation));
+            mWorldTransform *= Matrix4::createTranslation(mPosition + Vector3(p->mPosition.x, p->mPosition.y, 0.f) + Vector3(mPivot, 0.f));
 
-        mWorldTransform = Matrix4::createScale(Vector3(mScale, 1.f));
-        mWorldTransform *= Matrix4::createTranslation(-Vector3(mPivot, 0.f));
-        mWorldTransform *= Matrix4::createFromQuaternion(mRotation);
-        mWorldTransform *= Matrix4::createTranslation(mPosition + Vector3(mPivot, 0.f));
+            //相対移動(途中)
+            //mWorldTransform = Matrix4::createScale(Vector3(mScale, 1.f));
+            //mWorldTransform *= Matrix4::createTranslation(-Vector3(mPivot, 0.f));
+            //mWorldTransform *= Matrix4::createFromQuaternion(mRotation);
+            //mWorldTransform *= Matrix4::createTranslation(mPosition + Vector3(mPivot, 0.f));
+            //mWorldTransform *= p->mWorldTransform;
+            //mWorldTransform.m[3][2] = mPosition.z;
+        } else {
+            mWorldTransform = Matrix4::createScale(Vector3(mScale, 1.f));
+            mWorldTransform *= Matrix4::createTranslation(-Vector3(mPivot, 0.f));
+            mWorldTransform *= Matrix4::createFromQuaternion(mRotation);
+            mWorldTransform *= Matrix4::createTranslation(mPosition + Vector3(mPivot, 0.f));
+        }
+
+        mIsRecomputeTransform = false;
 
         return true;
     }
@@ -42,25 +57,28 @@ Matrix4 Transform2D::getWorldTransform() const {
     return mWorldTransform;
 }
 
-void Transform2D::setPosition(const Vector2 & pos) {
+void Transform2D::setPosition(const Vector2& pos) {
     mPosition.x = pos.x;
     mPosition.y = pos.y;
     mIsRecomputeTransform = true;
+    recomputeChildren();
 }
 
 Vector2 Transform2D::getPosition() const {
     return Vector2(mPosition.x, mPosition.y);
 }
 
-void Transform2D::translate(const Vector2 & translation) {
+void Transform2D::translate(const Vector2& translation) {
     mPosition.x += translation.x;
     mPosition.y += translation.y;
     mIsRecomputeTransform = true;
+    recomputeChildren();
 }
 
 void Transform2D::setPrimary(float z) {
     mPosition.z = z;
     mIsRecomputeTransform = true;
+    recomputeChildren();
 }
 
 float Transform2D::getDepth() const {
@@ -75,6 +93,7 @@ void Transform2D::setRotation(float angle) {
     mRotation.w = Math::cos(angle);
 
     mIsRecomputeTransform = true;
+    recomputeChildren();
 }
 
 Quaternion Transform2D::getRotation() const {
@@ -92,25 +111,28 @@ void Transform2D::rotate(float angle) {
     mRotation = Quaternion::concatenate(mRotation, inc);
 
     mIsRecomputeTransform = true;
+    recomputeChildren();
 }
 
-void Transform2D::setPivot(const Vector2 & pivot) {
+void Transform2D::setPivot(const Vector2& pivot) {
     mDefaultPivot = pivot;
     mPivot = pivot;
     mIsRecomputeTransform = true;
+    recomputeChildren();
 }
 
 Vector2 Transform2D::getPivot() const {
     return mPivot;
 }
 
-void Transform2D::setScale(const Vector2 & scale, bool isComputePivot) {
+void Transform2D::setScale(const Vector2& scale, bool isComputePivot) {
     if (isComputePivot) {
         mPivot = mDefaultPivot * scale;
     }
 
     mScale = scale;
     mIsRecomputeTransform = true;
+    recomputeChildren();
 }
 
 void Transform2D::setScale(float scale, bool isComputePivot) {
@@ -121,9 +143,10 @@ void Transform2D::setScale(float scale, bool isComputePivot) {
     mScale.x = scale;
     mScale.y = scale;
     mIsRecomputeTransform = true;
+    recomputeChildren();
 }
 
-void Transform2D::setScale(const Vector2 & scale, const Vector2INT & size) {
+void Transform2D::setScale(const Vector2& scale, const Vector2INT& size) {
     auto s = (mScale - scale) / 2.f;
     auto translation = Vector2(size.x * s.x, size.y * s.y);
     translate(translation);
@@ -133,9 +156,10 @@ void Transform2D::setScale(const Vector2 & scale, const Vector2INT & size) {
     mScale = scale;
 
     mIsRecomputeTransform = true;
+    recomputeChildren();
 }
 
-void Transform2D::setScale(float scale, const Vector2INT & size) {
+void Transform2D::setScale(float scale, const Vector2INT& size) {
     auto sX = (mScale.x - scale) / 2.f;
     auto sY = (mScale.y - scale) / 2.f;
     auto translation = Vector2(size.x * sX, size.y * sY);
@@ -147,6 +171,7 @@ void Transform2D::setScale(float scale, const Vector2INT & size) {
     mScale.y = scale;
 
     mIsRecomputeTransform = true;
+    recomputeChildren();
 }
 
 Vector2 Transform2D::getScale() const {
@@ -208,4 +233,13 @@ size_t Transform2D::getChildCount() const {
 
 void Transform2D::setParent(std::shared_ptr<Transform2D> parent) {
     mParent = parent;
+}
+
+void Transform2D::recomputeChildren() {
+    if (mChildren.empty()) {
+        return;
+    }
+    for (auto&& child : mChildren) {
+        child->mIsRecomputeTransform = true;
+    }
 }

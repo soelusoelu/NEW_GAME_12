@@ -6,7 +6,6 @@
 #include "../Component/SpriteComponent.h"
 #include "../Device/Time.h"
 #include "../System/Game.h"
-#include <iostream>
 
 PlayerMoveComponent::PlayerMoveComponent(Actor* owner, std::shared_ptr<Renderer> renderer, int updateOrder) :
     Component(owner, updateOrder),
@@ -31,8 +30,14 @@ PlayerMoveComponent::PlayerMoveComponent(Actor* owner, std::shared_ptr<Renderer>
 PlayerMoveComponent::~PlayerMoveComponent() = default;
 
 void PlayerMoveComponent::start() {
+    mOwner->transform()->setPosition(Vector2(100.f, 200.f));
+
     mOwner->transform()->addChild(mAnchor->transform());
+
     mSpriteComp = mOwner->componentManager()->getComponent<SpriteComponent>();
+
+    //アンカーの位置をプレイヤーの中心に
+    mAnchor->transform()->setPosition(mOwner->transform()->getPivot());
 }
 
 void PlayerMoveComponent::update() {
@@ -46,6 +51,10 @@ void PlayerMoveComponent::update() {
 
 Vector2 PlayerMoveComponent::getAcceleration() const {
     return mAcceleration;
+}
+
+void PlayerMoveComponent::anchorReleaseAcceleration() {
+    mAcceleration = moveDirection() * 200.f;
 }
 
 Vector2 PlayerMoveComponent::getLastInput() const {
@@ -94,8 +103,6 @@ void PlayerMoveComponent::move() {
     //現在の加速度で移動
     if (isHitAnchor()) {
         rotate();
-
-        mAcceleration += moveDirection() * 50.f;
     } else {
         mOwner->transform()->translate(mAcceleration * Time::deltaTime);
     }
@@ -130,9 +137,6 @@ void PlayerMoveComponent::anchorInjection() {
 }
 
 void PlayerMoveComponent::anchorUpdate() {
-    //アンカーの位置をプレイヤーの中心に
-    mAnchor->transform()->setPosition(centerPosition());
-
     //アンカーを指す位置
     auto h = Input::joyRhorizontal();
     auto v = Input::joyRvertical();

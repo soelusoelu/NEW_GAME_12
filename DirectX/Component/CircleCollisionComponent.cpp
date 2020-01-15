@@ -6,17 +6,13 @@
 CircleCollisionComponent::CircleCollisionComponent(Actor* owner) :
     Collider(owner),
     mCircle(nullptr),
-    mIsAutoUpdate(true)
-{
+    mIsAutoUpdate(true) {
 }
 
 CircleCollisionComponent::~CircleCollisionComponent() = default;
 
 void CircleCollisionComponent::startCollider() {
-    mCircle = std::make_shared<Circle>(
-        mOwner->transform()->getPosition() + mOwner->transform()->getPivot(),
-        mOwner->transform()->getPivot().x
-    );
+    mCircle = std::make_shared<Circle>(mOwner->transform()->getCenter(), mOwner->transform()->getPivot().x);
 }
 
 void CircleCollisionComponent::updateCollider() {
@@ -26,13 +22,10 @@ void CircleCollisionComponent::onUpdateWorldTransformCollider() {
     if (!mIsAutoUpdate) {
         return;
     }
-    mCircle->set(
-        mOwner->transform()->getPosition() + mOwner->transform()->getPivot(),
-        mOwner->transform()->getPivot().x
-    );
+    mCircle->set(mOwner->transform()->getCenter(), mOwner->transform()->getPivot().x);
 }
 
-void CircleCollisionComponent::set(const Vector2& center, float radius) {
+void CircleCollisionComponent::set(const Vector2 & center, float radius) {
     mCircle->set(center, radius);
     if (mIsAutoUpdate) {
         mIsAutoUpdate = false;

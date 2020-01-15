@@ -17,6 +17,7 @@ public:
     virtual void start() override;
     virtual void update() override;
     Vector2 getAcceleration() const;
+    void anchorReleaseAcceleration();
     Vector2 getLastInput() const;
     bool isHitAnchor() const;
     const float anchorMaxLength() const;

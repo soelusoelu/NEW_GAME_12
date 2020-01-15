@@ -57,6 +57,7 @@ public:
 
 private:
     void setParent(std::shared_ptr<Transform2D> parent);
+    void recomputeChildren();
 
 private:
     Actor* mOwner;
