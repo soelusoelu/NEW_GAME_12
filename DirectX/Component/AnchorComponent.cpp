@@ -127,6 +127,11 @@ void AnchorComponent::hit() {
             auto dir = enemyCenterPosition() - position();
             mHitAngle = Math::toDegrees(Math::atan2(dir.y, -dir.x));
 
+            auto pmc = mOwner->parent()->componentManager()->getComponent<PlayerMoveComponent>();
+            if (pmc) {
+                pmc->rotateDirection();
+            }
+
             mState = AnchorState::HIT;
             mCollide->disabled();
             break;

@@ -13,6 +13,9 @@ ActorManager::~ActorManager() = default;
 void ActorManager::update() {
     mUpdatingActors = true;
     for (auto&& actor : mActors) {
+        if (actor->parent()) { //親がいるなら任せる
+            continue;
+        }
         actor->update();
     }
     mUpdatingActors = false;
@@ -22,7 +25,7 @@ void ActorManager::update() {
     remove();
 }
 
-void ActorManager::add(Actor* add) {
+void ActorManager::add(Actor * add) {
     if (mUpdatingActors) {
         mPendingActors.emplace_back(add);
     } else {

@@ -21,17 +21,17 @@ PlayerMoveComponent::PlayerMoveComponent(Actor* owner, std::shared_ptr<Renderer>
     mDecelerationSpeed(30.f),
     mDestroyRange(3.f),
     mRotateCount(0.f),
+    mRotateDirection(1.f),
     mPreviousPos(Vector2::zero),
     mAnchorKey(KeyCode::Q),
     mAnchorJoy(JoyCode::RightButton),
     mLastInput(Vector2::right) {
 }
 
-PlayerMoveComponent::~PlayerMoveComponent() {
-    Actor::destroy(mAnchor);
-}
+PlayerMoveComponent::~PlayerMoveComponent() = default;
 
 void PlayerMoveComponent::start() {
+    mOwner->addChild(mAnchor);
     mSpriteComp = mOwner->componentManager()->getComponent<SpriteComponent>();
 }
 
@@ -44,6 +44,10 @@ void PlayerMoveComponent::update() {
     dead();
 }
 
+Vector2 PlayerMoveComponent::getAcceleration() const {
+    return mAcceleration;
+}
+
 Vector2 PlayerMoveComponent::getLastInput() const {
     return mLastInput;
 }
@@ -54,6 +58,17 @@ bool PlayerMoveComponent::isHitAnchor() const {
 
 const float PlayerMoveComponent::anchorMaxLength() const {
     return mAnchor->maxLength();
+}
+
+void PlayerMoveComponent::rotateDirection() {
+    auto dir = centerPosition() - mPreviousPos;
+    auto enemyPos = mAnchor->hitEnemy()->transform()->getCenter();
+    auto temp = enemyPos - centerPosition();
+    if (temp.y > 0) {
+        mRotateDirection = (dir.x > 0) ? 1.f : -1.f;
+    } else {
+        mRotateDirection = (dir.x > 0) ? -1.f : 1.f;
+    }
 }
 
 void PlayerMoveComponent::move() {
@@ -78,17 +93,22 @@ void PlayerMoveComponent::move() {
 
     //現在の加速度で移動
     if (isHitAnchor()) {
-        auto rate = (Math::abs(mAcceleration.x) + Math::abs(mAcceleration.y)) / 2.f;
-        mRotateCount += Time::deltaTime * rate;
-        auto angle = mAnchor->hitAngle() + mRotateCount;
-        mOwner->transform()->setPosition(
-            mAnchor->hitEnemy()->transform()->getPosition() + Vector2(Math::cos(angle), Math::sin(angle)) * mAnchor->currentLength()
-        );
+        rotate();
 
         mAcceleration += moveDirection() * 50.f;
     } else {
         mOwner->transform()->translate(mAcceleration * Time::deltaTime);
     }
+}
+
+void PlayerMoveComponent::rotate() {
+    auto rate = (Math::abs(mAcceleration.x) + Math::abs(mAcceleration.y)) / 2.f;
+    mRotateCount += Time::deltaTime * rate;
+    auto angle = (mAnchor->hitAngle() + mRotateCount);
+    angle *= mRotateDirection;
+    mOwner->transform()->setPosition(
+        mAnchor->hitEnemy()->transform()->getPosition() + Vector2(Math::cos(angle), Math::sin(angle)) * mAnchor->currentLength()
+    );
 }
 
 void PlayerMoveComponent::deceleration() {

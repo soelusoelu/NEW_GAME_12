@@ -16,12 +16,15 @@ public:
     ~PlayerMoveComponent();
     virtual void start() override;
     virtual void update() override;
+    Vector2 getAcceleration() const;
     Vector2 getLastInput() const;
     bool isHitAnchor() const;
     const float anchorMaxLength() const;
+    void rotateDirection();
 
 private:
     void move();
+    void rotate();
     void deceleration();
     void anchorInjection();
     void anchorUpdate();
@@ -42,6 +45,7 @@ private:
     float mDecelerationSpeed; //減速度
     float mDestroyRange; //死亡範囲
     float mRotateCount;
+    float mRotateDirection;
     Vector2 mPreviousPos;
     KeyCode mAnchorKey;
     JoyCode mAnchorJoy;

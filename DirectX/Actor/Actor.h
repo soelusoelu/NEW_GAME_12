@@ -16,6 +16,7 @@ class ActorManager;
 class Actor {
 protected:
     Actor(const char* tag = "");
+    Actor(Actor* parent, const char* tag = "");
 public:
     virtual ~Actor();
 
@@ -26,6 +27,14 @@ public:
 
     //ワールド行列の更新
     void computeWorldTransform();
+
+    //親子関係
+    void addChild(Actor* child);
+    void removeChild(Actor* child);
+    void removeChild(const char* tag);
+    Actor* findChild(const char* tag);
+    Actor* parent() const;
+    Actor* root() const;
 
     //アクター削除
     static void destroy(Actor* actor);
@@ -45,11 +54,15 @@ public:
 
 private:
     void destroyTimer();
+    void setParent(Actor* parent);
 
 private:
     std::shared_ptr<ComponentManager> mComponentManager;
     std::shared_ptr<Transform2D> mTransform;
     std::unique_ptr<Time> mDestroyTimer;
+    Actor* mParent;
+    Actor** mChildren;
+    unsigned mChildCount;
     ActorState mState;
     const char* mTag;
 

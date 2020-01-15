@@ -46,7 +46,7 @@ void GamePlay::updateScene() {
 
         auto p = mActorManager->getPlayer();
         if (!p) {
-            nextScene(std::make_shared<Title>());
+            //nextScene(std::make_shared<Title>());
         }
     } else if (mState == GameState::PAUSED) {
 
