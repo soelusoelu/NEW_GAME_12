@@ -9,9 +9,8 @@
 #include "../Device/Time.h"
 #include "../Utility/Input.h"
 
-AnchorComponent::AnchorComponent(Actor* owner, std::shared_ptr<Transform2D> player, int updateOrder) :
+AnchorComponent::AnchorComponent(Actor* owner, int updateOrder) :
     Component(owner, updateOrder),
-    mPlayer(player),
     mSpriteComp(nullptr),
     mCollide(nullptr),
     MAX_LENGTH(300.f),
@@ -20,6 +19,7 @@ AnchorComponent::AnchorComponent(Actor* owner, std::shared_ptr<Transform2D> play
     mThick(2.f),
     mTargetPoint(Vector2::zero),
     mHitEnemy(nullptr),
+    mHitAngle(0.f),
     mReleaseKey(KeyCode::Q),
     mReleaseJoy(JoyCode::RightButton),
     mState(AnchorState::STOP) {
@@ -42,7 +42,6 @@ void AnchorComponent::update() {
     shrink();
     updateCollider();
     hit();
-    hitClamp();
     changeState();
 }
 
@@ -67,8 +66,16 @@ const float AnchorComponent::maxLength() const {
     return MAX_LENGTH;
 }
 
+float AnchorComponent::currentLength() const {
+    return mCurrentAnchorLength;
+}
+
 Actor* AnchorComponent::hitEnemy() const {
     return mHitEnemy;
+}
+
+float AnchorComponent::hitAngle() const {
+    return mHitAngle;
 }
 
 void AnchorComponent::rotate() {
@@ -113,29 +120,18 @@ void AnchorComponent::hit() {
     auto hits = mCollide->onCollisionEnter();
     for (auto&& hit : hits) {
         if (hit->getOwner()->tag() == "Enemy") {
+            //ヒットしたエネミーの登録
             mHitEnemy = hit->getOwner();
-            auto enemyTrans = hit->getOwner()->transform();
 
-            //アンカーの長さを固定
-            mCurrentAnchorLength = Vector2::distance(enemyCenterPosition(), position());
-            computeScale();
+            //アンカーとエネミーとの角度計算
+            auto dir = enemyCenterPosition() - position();
+            mHitAngle = Math::toDegrees(Math::atan2(dir.y, -dir.x));
 
             mState = AnchorState::HIT;
             mCollide->disabled();
             break;
         }
     }
-}
-
-void AnchorComponent::hitClamp() {
-    if (mState != AnchorState::HIT) {
-        return;
-    }
-    //円を描くために無理やり
-    auto dis = Vector2::distance(enemyCenterPosition(), position());
-    auto dir = enemyCenterPosition() - position();
-    dir.normalize();
-    mPlayer->translate(dir * (dis - mCurrentAnchorLength));
 }
 
 void AnchorComponent::changeState() {

@@ -19,7 +19,7 @@ class Transform2D;
 
 class AnchorComponent : public Component {
 public:
-    AnchorComponent(Actor* owner, std::shared_ptr<Transform2D> player, int updateOrder = 10);
+    AnchorComponent(Actor* owner, int updateOrder = 10);
     ~AnchorComponent();
     virtual void start() override;
     virtual void update() override;
@@ -27,7 +27,9 @@ public:
     bool isHit() const;
     bool canShot() const;
     const float maxLength() const;
+    float currentLength() const;
     Actor* hitEnemy() const;
+    float hitAngle() const;
 
 private:
     //アンカーの動き
@@ -38,8 +40,6 @@ private:
     void updateCollider();
     //当たり判定
     void hit();
-    //アンカーが刺さったときの移動制限
-    void hitClamp();
     //死ぬ条件
     void changeState();
     //座標の取得
@@ -49,7 +49,6 @@ private:
     void computeScale();
 
 private:
-    std::shared_ptr<Transform2D> mPlayer;
     std::shared_ptr<SpriteComponent> mSpriteComp;
     std::shared_ptr<CircleCollisionComponent> mCollide;
     const float MAX_LENGTH;
@@ -58,6 +57,7 @@ private:
     float mThick;
     Vector2 mTargetPoint;
     Actor* mHitEnemy;
+    float mHitAngle;
     KeyCode mReleaseKey;
     JoyCode mReleaseJoy;
     AnchorState mState;

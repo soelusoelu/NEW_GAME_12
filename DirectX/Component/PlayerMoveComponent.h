@@ -27,6 +27,8 @@ private:
     void anchorUpdate();
     void clamp();
     void dead();
+    Vector2 centerPosition() const;
+    Vector2 moveDirection() const;
 
 private:
     AnchorActor* mAnchor;
@@ -39,6 +41,8 @@ private:
     float mAnchorAccelerationRange; //アンカー時加速度範囲
     float mDecelerationSpeed; //減速度
     float mDestroyRange; //死亡範囲
+    float mRotateCount;
+    Vector2 mPreviousPos;
     KeyCode mAnchorKey;
     JoyCode mAnchorJoy;
     Vector2 mLastInput;

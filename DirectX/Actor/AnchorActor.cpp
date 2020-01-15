@@ -4,11 +4,11 @@
 #include "../Component/CircleCollisionComponent.h"
 #include "../Component/SpriteComponent.h"
 
-AnchorActor::AnchorActor(std::shared_ptr<Renderer> renderer, std::shared_ptr<Transform2D> player, const char* tag) :
+AnchorActor::AnchorActor(std::shared_ptr<Renderer> renderer, const char* tag) :
     Actor(tag),
     mCollide(new CircleCollisionComponent(this)),
     mSprite(new SpriteComponent(this, renderer, "black.png", 0.55f)),
-    mAnchor(new AnchorComponent(this, player)) {
+    mAnchor(new AnchorComponent(this)) {
 }
 
 AnchorActor::~AnchorActor() = default;
@@ -32,6 +32,14 @@ const float AnchorActor::maxLength() const {
     return mAnchor->maxLength();
 }
 
+float AnchorActor::currentLength() const {
+    return mAnchor->currentLength();
+}
+
 Actor* AnchorActor::hitEnemy() const {
     return mAnchor->hitEnemy();
+}
+
+float AnchorActor::hitAngle() const {
+    return mAnchor->hitAngle();
 }

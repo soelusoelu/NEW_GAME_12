@@ -10,16 +10,18 @@
 
 PlayerMoveComponent::PlayerMoveComponent(Actor* owner, std::shared_ptr<Renderer> renderer, int updateOrder) :
     Component(owner, updateOrder),
-    mAnchor(new AnchorActor(renderer, mOwner->transform())),
+    mAnchor(new AnchorActor(renderer)),
     mRenderer(renderer),
     mSpriteComp(nullptr),
     mAcceleration(Vector2(30.f, 0.f)),
     mAccelerationSpeed(120.f),
-    mAccelerationRange(100.f),
+    mAccelerationRange(200.f),
     mAnchorAccelerationTimes(5.f),
-    mAnchorAccelerationRange(300.f),
+    mAnchorAccelerationRange(400.f),
     mDecelerationSpeed(30.f),
     mDestroyRange(3.f),
+    mRotateCount(0.f),
+    mPreviousPos(Vector2::zero),
     mAnchorKey(KeyCode::Q),
     mAnchorJoy(JoyCode::RightButton),
     mLastInput(Vector2::right) {
@@ -55,18 +57,19 @@ const float PlayerMoveComponent::anchorMaxLength() const {
 }
 
 void PlayerMoveComponent::move() {
-    auto h = Input::joyHorizontal();
-    auto v = Input::joyVertical();
+    //1フレーム前の座標を記憶
+    mPreviousPos = centerPosition();
+
+    auto h = Input::horizontal();
+    auto v = Input::vertical();
+    //auto h = Input::joyHorizontal();
+    //auto v = Input::joyVertical();
     if (!Math::nearZero(h) || !Math::nearZero(v)) {
-        //mLastInput.set(h, -v);
         auto fh = h * mAccelerationSpeed * Time::deltaTime;
         auto fv = v * mAccelerationSpeed * Time::deltaTime;
 
         auto a = Vector2(fh, -fv);
-        if (isHitAnchor()) {
-            a *= mAnchorAccelerationTimes;
-        }
-        mAcceleration += a;
+        mAcceleration += (isHitAnchor()) ? a * mAnchorAccelerationTimes : a;
     }
 
     //最大最小加速度
@@ -74,7 +77,18 @@ void PlayerMoveComponent::move() {
     mAcceleration.clamp(Vector2(-range, -range), Vector2(range, range));
 
     //現在の加速度で移動
-    mOwner->transform()->translate(mAcceleration * Time::deltaTime);
+    if (isHitAnchor()) {
+        auto rate = (Math::abs(mAcceleration.x) + Math::abs(mAcceleration.y)) / 2.f;
+        mRotateCount += Time::deltaTime * rate;
+        auto angle = mAnchor->hitAngle() + mRotateCount;
+        mOwner->transform()->setPosition(
+            mAnchor->hitEnemy()->transform()->getPosition() + Vector2(Math::cos(angle), Math::sin(angle)) * mAnchor->currentLength()
+        );
+
+        mAcceleration += moveDirection() * 50.f;
+    } else {
+        mOwner->transform()->translate(mAcceleration * Time::deltaTime);
+    }
 }
 
 void PlayerMoveComponent::deceleration() {
@@ -92,11 +106,12 @@ void PlayerMoveComponent::anchorInjection() {
         return;
     }
     mAnchor->shot(mLastInput);
+    mRotateCount = 0.f;
 }
 
 void PlayerMoveComponent::anchorUpdate() {
     //アンカーの位置をプレイヤーの中心に
-    mAnchor->transform()->setPosition(mOwner->transform()->getCenter());
+    mAnchor->transform()->setPosition(centerPosition());
 
     //アンカーを指す位置
     auto h = Input::joyRhorizontal();
@@ -122,4 +137,12 @@ void PlayerMoveComponent::dead() {
         Math::abs(mAcceleration.y) < mDestroyRange) {
         //Actor::destroy(mOwner);
     }
+}
+
+Vector2 PlayerMoveComponent::centerPosition() const {
+    return mOwner->transform()->getCenter();
+}
+
+Vector2 PlayerMoveComponent::moveDirection() const {
+    return Vector2::normalize(centerPosition() - mPreviousPos);
 }
