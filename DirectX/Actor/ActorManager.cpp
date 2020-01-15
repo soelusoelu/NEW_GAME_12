@@ -13,9 +13,6 @@ ActorManager::~ActorManager() = default;
 void ActorManager::update() {
     mUpdatingActors = true;
     for (auto&& actor : mActors) {
-        if (actor->parent()) { //親がいるなら任せる
-            continue;
-        }
         actor->update();
     }
     mUpdatingActors = false;

@@ -127,7 +127,7 @@ void AnchorComponent::hit() {
             auto dir = enemyCenterPosition() - position();
             mHitAngle = Math::toDegrees(Math::atan2(dir.y, -dir.x));
 
-            auto pmc = mOwner->parent()->componentManager()->getComponent<PlayerMoveComponent>();
+            auto pmc = mOwner->transform()->parent()->getOwner()->componentManager()->getComponent<PlayerMoveComponent>();
             if (pmc) {
                 pmc->rotateDirection();
             }

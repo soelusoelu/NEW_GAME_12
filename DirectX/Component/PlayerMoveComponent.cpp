@@ -31,7 +31,7 @@ PlayerMoveComponent::PlayerMoveComponent(Actor* owner, std::shared_ptr<Renderer>
 PlayerMoveComponent::~PlayerMoveComponent() = default;
 
 void PlayerMoveComponent::start() {
-    mOwner->addChild(mAnchor);
+    mOwner->transform()->addChild(mAnchor->transform());
     mSpriteComp = mOwner->componentManager()->getComponent<SpriteComponent>();
 }
 

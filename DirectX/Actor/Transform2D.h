@@ -1,11 +1,18 @@
 ﻿#pragma once
 
 #include "../Utility/Math.h"
+#include <memory>
+#include <list>
 
-class Transform2D {
+class Actor;
+
+class Transform2D : public std::enable_shared_from_this<Transform2D> {
 public:
-    Transform2D();
+    Transform2D(Actor* owner);
     ~Transform2D();
+
+    //アタッチ元のアクターを返す
+    Actor* getOwner() const;
 
     //ワールド行列更新
     bool computeWorldTransform();
@@ -38,14 +45,29 @@ public:
 
     //位置+ピボット
     Vector2 getCenter() const;
+    
+    //親子関係
+    void addChild(std::shared_ptr<Transform2D> child);
+    void removeChild(std::shared_ptr<Transform2D> child);
+    void removeChild(const char* tag);
+    std::shared_ptr<Transform2D> getChild(const char* tag) const;
+    std::shared_ptr<Transform2D> parent() const;
+    std::shared_ptr<Transform2D> root() const;
+    size_t getChildCount() const;
 
 private:
+    void setParent(std::shared_ptr<Transform2D> parent);
+
+private:
+    Actor* mOwner;
     Matrix4 mWorldTransform;
     Vector3 mPosition;
     Quaternion mRotation;
     Vector2 mDefaultPivot;
     Vector2 mPivot;
     Vector2 mScale;
+    std::weak_ptr<Transform2D> mParent;
+    std::list<std::shared_ptr<Transform2D>> mChildren;
     bool mIsRecomputeTransform;
 };
 

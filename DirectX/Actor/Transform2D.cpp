@@ -1,16 +1,28 @@
 ﻿#include "Transform2D.h"
+#include "Actor.h"
 
-Transform2D::Transform2D() :
+Transform2D::Transform2D(Actor* owner) :
+    mOwner(owner),
     mWorldTransform(Matrix4::identity),
     mPosition(Vector3::zero),
     mRotation(Quaternion::identity),
     mDefaultPivot(Vector2::zero),
     mPivot(Vector2::zero),
     mScale(Vector2::one),
+    mParent(),
+    mChildren(0),
     mIsRecomputeTransform(true) {
 }
 
-Transform2D::~Transform2D() = default;
+Transform2D::~Transform2D() {
+    for (auto&& child : mChildren) {
+        Actor::destroy(child->mOwner);
+    }
+}
+
+Actor* Transform2D::getOwner() const {
+    return mOwner;
+}
 
 bool Transform2D::computeWorldTransform() {
     if (mIsRecomputeTransform) {
@@ -143,4 +155,57 @@ Vector2 Transform2D::getScale() const {
 
 Vector2 Transform2D::getCenter() const {
     return Vector2(mPosition.x, mPosition.y) + mPivot;
+}
+
+void Transform2D::addChild(std::shared_ptr<Transform2D> child) {
+    mChildren.emplace_back(child);
+    child->setParent(shared_from_this());
+}
+
+void Transform2D::removeChild(std::shared_ptr<Transform2D> child) {
+    removeChild(child->mOwner->tag());
+}
+
+void Transform2D::removeChild(const char* tag) {
+    for (auto itr = mChildren.begin(); itr != mChildren.end(); ++itr) {
+        if ((*itr)->mOwner->tag() == tag) {
+            Actor::destroy((*itr)->mOwner);
+            mChildren.erase(itr);
+            return;
+        }
+    }
+}
+
+std::shared_ptr<Transform2D> Transform2D::getChild(const char* tag) const {
+    std::shared_ptr<Transform2D> child = nullptr;
+    for (const auto& c : mChildren) {
+        if (c->mOwner->tag() == tag) {
+            child = c;
+        }
+    }
+    return child;
+}
+
+std::shared_ptr<Transform2D> Transform2D::parent() const {
+    return mParent.lock();
+}
+
+std::shared_ptr<Transform2D> Transform2D::root() const {
+    std::shared_ptr<Transform2D> root = mParent.lock();
+    while (root) {
+        auto p = root->mParent.lock();
+        if (!p) {
+            break;
+        }
+        root = p;
+    }
+    return root;
+}
+
+size_t Transform2D::getChildCount() const {
+    return mChildren.size();
+}
+
+void Transform2D::setParent(std::shared_ptr<Transform2D> parent) {
+    mParent = parent;
 }
