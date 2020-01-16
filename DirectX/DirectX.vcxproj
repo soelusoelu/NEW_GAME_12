@@ -142,6 +142,7 @@
     <ClCompile Include="Actor\Actor.cpp" />
     <ClCompile Include="Actor\AnchorActor.cpp" />
     <ClCompile Include="Actor\Enemy.cpp" />
+    <ClCompile Include="Device\Camera2d.cpp" />
     <ClCompile Include="UI\AnchorPoint.cpp" />
     <ClCompile Include="Component\AnchorComponent.cpp" />
     <ClCompile Include="Component\CircleCollisionComponent.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="Actor\Actor.h" />
     <ClInclude Include="Actor\AnchorActor.h" />
     <ClInclude Include="Actor\Enemy.h" />
+    <ClInclude Include="Device\Camera2d.h" />
     <ClInclude Include="UI\AnchorPoint.h" />
     <ClInclude Include="Component\AnchorComponent.h" />
     <ClInclude Include="Component\CircleCollisionComponent.h" />

@@ -17,8 +17,8 @@ void SpriteManager::update() {
     sortByZ();
 }
 
-void SpriteManager::draw(std::shared_ptr<Renderer> renderer) {
-    Texture::drawAll(mSprites, renderer);
+void SpriteManager::draw(std::shared_ptr<Renderer> renderer, const Vector2& CameraPos) {
+	Texture::drawAll(mSprites, renderer, CameraPos);
 }
 
 void SpriteManager::add(Sprite* add) {

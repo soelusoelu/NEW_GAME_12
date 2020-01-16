@@ -32,7 +32,7 @@ public:
     void createInputLayout(std::shared_ptr<Renderer> renderer, ID3D10Blob* compiledShader);
     void createVertexBuffer(std::shared_ptr<Renderer> renderer);
     void createVertexBuffer(std::shared_ptr<Renderer> renderer, const Vector2INT& size);
-    static void drawAll(std::list<std::shared_ptr<Sprite>> sprites, std::shared_ptr<Renderer> renderer);
+	static void drawAll(std::list<std::shared_ptr<Sprite>> sprites, std::shared_ptr<Renderer> renderer, const Vector2& CameraPos);
     ID3D11ShaderResourceView* texture() const;
     const TextureDesc& desc() const;
     std::shared_ptr<Buffer> getVertexBuffer() const;
