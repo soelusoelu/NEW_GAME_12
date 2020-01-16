@@ -9,6 +9,7 @@ SceneBase::SceneBase() :
     mUIManager(new UIManager()),
     mSpriteManager(new SpriteManager()),
     mRenderer(nullptr),
+	mCamera2d(nullptr),
     mNext(nullptr),
     mIsStarted(false) {
     UI::setUIManager(mUIManager);
@@ -31,7 +32,15 @@ void SceneBase::draw() {
     if (!mRenderer) {
         return;
     }
-    mSpriteManager->draw(mRenderer);
+	if (mCamera2d)
+	{
+		mSpriteManager->draw(mRenderer, mCamera2d->getCameraPos());
+	}
+	else
+	{
+		mSpriteManager->draw(mRenderer);
+	}
+	
 }
 
 void SceneBase::nextScene(std::shared_ptr<SceneBase> next) {

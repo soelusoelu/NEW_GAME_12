@@ -1,5 +1,5 @@
 ﻿#pragma once
-
+#include "../Utility/Math.h"
 #include <memory>
 #include <list>
 
@@ -11,7 +11,7 @@ public:
     SpriteManager();
     ~SpriteManager();
     void update();
-    void draw(std::shared_ptr<Renderer> renderer);
+	void draw(std::shared_ptr<Renderer> renderer, const Vector2& CameraPos = Vector2::zero);
     void add(Sprite* add);
     void add(std::shared_ptr<Sprite> add);
     void clear();
