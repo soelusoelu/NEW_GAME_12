@@ -4,7 +4,6 @@
 #include "PlayerMoveComponent.h"
 #include "../Actor/Actor.h"
 #include "../Actor/Transform2D.h"
-#include "../Device/Random.h"
 #include "../Device/Time.h"
 
 EnemyComponent::EnemyComponent(Actor* owner) :
@@ -19,9 +18,6 @@ EnemyComponent::~EnemyComponent() = default;
 
 void EnemyComponent::start() {
     mCollider = mOwner->componentManager()->getComponent<CircleCollisionComponent>();
-
-    mOwner->transform()->setScale(Random::randomRange(0.3f, 1.f));
-    mOwner->transform()->setPosition(Random::randomRange(Vector2::one * 200.f, Vector2::one * 600.f));
 }
 
 void EnemyComponent::update() {

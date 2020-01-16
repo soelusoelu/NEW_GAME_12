@@ -70,7 +70,7 @@ const float PlayerMoveComponent::anchorMaxLength() const {
 }
 
 void PlayerMoveComponent::rotateDirection() {
-    auto dir = centerPosition() - mPreviousPos;
+    auto dir = getMoveDirection();
     auto enemyPos = mAnchor->hitEnemy()->transform()->getCenter();
     auto temp = enemyPos - centerPosition();
     if (temp.y > 0) {
@@ -109,7 +109,7 @@ void PlayerMoveComponent::rotate() {
     mRotateCount += Time::deltaTime * rate;
     auto angle = (mAnchor->hitAngle() + mRotateCount);
     angle *= mRotateDirection;
-    mOwner->transform()->setPosition(
+    mOwner->transform()->setPosition( //アンカーがずれる原因
         mAnchor->hitEnemy()->transform()->getPosition() + Vector2(Math::cos(angle), Math::sin(angle)) * mAnchor->currentLength()
     );
 }

@@ -117,8 +117,7 @@ void AnchorComponent::hit() {
     if (mState != AnchorState::EXTEND) {
         return;
     }
-    auto hits = mCollide->onCollisionEnter();
-    for (auto&& hit : hits) {
+    for (auto&& hit : mCollide->onCollisionEnter()) {
         if (hit->getOwner()->tag() == "Enemy") {
             //ヒットしたエネミーの登録
             mHitEnemy = hit->getOwner();
