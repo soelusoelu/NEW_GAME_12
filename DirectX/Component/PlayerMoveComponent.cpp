@@ -14,9 +14,9 @@ PlayerMoveComponent::PlayerMoveComponent(Actor* owner, std::shared_ptr<Renderer>
     mSpriteComp(nullptr),
     mAcceleration(Vector2(30.f, 0.f)),
     mAccelerationSpeed(120.f),
-    mAccelerationRange(200.f),
+    mAccelerationRange(400.f),
     mAnchorAccelerationTimes(5.f),
-    mAnchorAccelerationRange(400.f),
+    mAnchorAccelerationRange(600.f),
     mDecelerationSpeed(30.f),
     mDestroyRange(3.f),
     mRotateCount(0.f),
@@ -49,12 +49,12 @@ void PlayerMoveComponent::update() {
     dead();
 }
 
-Vector2 PlayerMoveComponent::getAcceleration() const {
-    return mAcceleration;
+Vector2 PlayerMoveComponent::getMoveDirection() const {
+    return centerPosition() - mPreviousPos;
 }
 
 void PlayerMoveComponent::anchorReleaseAcceleration() {
-    mAcceleration = moveDirection() * 200.f;
+    mAcceleration = getMoveDirection() * 30.f;
 }
 
 Vector2 PlayerMoveComponent::getLastInput() const {
@@ -95,10 +95,6 @@ void PlayerMoveComponent::move() {
         auto a = Vector2(fh, -fv);
         mAcceleration += (isHitAnchor()) ? a * mAnchorAccelerationTimes : a;
     }
-
-    //最大最小加速度
-    auto range = (isHitAnchor()) ? mAnchorAccelerationRange : mAccelerationRange;
-    mAcceleration.clamp(Vector2(-range, -range), Vector2(range, range));
 
     //現在の加速度で移動
     if (isHitAnchor()) {
@@ -148,12 +144,16 @@ void PlayerMoveComponent::anchorUpdate() {
 }
 
 void PlayerMoveComponent::clamp() {
-    auto t = mOwner->transform();
-    t->setPosition(Vector2::clamp(
-        t->getPosition(),
-        Vector2::zero,
-        Vector2(Game::WINDOW_WIDTH, Game::WINDOW_HEIGHT) - Vector2(mSpriteComp->getScreenTextureSize().x, mSpriteComp->getScreenTextureSize().y)
-    ));
+    //auto t = mOwner->transform();
+    //t->setPosition(Vector2::clamp(
+    //    t->getPosition(),
+    //    Vector2::zero,
+    //    Vector2(Game::WINDOW_WIDTH, Game::WINDOW_HEIGHT) - Vector2(mSpriteComp->getScreenTextureSize().x, mSpriteComp->getScreenTextureSize().y)
+    //));
+
+    //最大最小加速度
+    auto range = (isHitAnchor()) ? mAnchorAccelerationRange : mAccelerationRange;
+    mAcceleration.clamp(Vector2(-range, -range), Vector2(range, range));
 }
 
 void PlayerMoveComponent::dead() {
@@ -165,8 +165,4 @@ void PlayerMoveComponent::dead() {
 
 Vector2 PlayerMoveComponent::centerPosition() const {
     return mOwner->transform()->getCenter();
-}
-
-Vector2 PlayerMoveComponent::moveDirection() const {
-    return Vector2::normalize(centerPosition() - mPreviousPos);
 }

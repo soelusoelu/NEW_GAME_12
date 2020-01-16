@@ -1,15 +1,15 @@
 ﻿#include "Time.h"
 
 Time::Time(float sec) :
-    mCurrentTime(0),
-    mLimitTime(sec * 60.f + 0.5f),
+    mCurrentTime(0.f),
+    mLimitTime(sec),
     mIsOverLimit(false) {
 }
 
 Time::~Time() = default;
 
 void Time::update() {
-    mCurrentTime++;
+    mCurrentTime += Time::deltaTime;
 
     if (mCurrentTime >= mLimitTime) {
         mIsOverLimit = true;
@@ -17,7 +17,7 @@ void Time::update() {
 }
 
 void Time::reset() {
-    mCurrentTime = 0;
+    mCurrentTime = 0.f;
     mIsOverLimit = false;
 }
 
@@ -26,15 +26,7 @@ bool Time::isTime() const {
 }
 
 void Time::setLimitTime(float sec) {
-    mLimitTime = sec * 60.f + 0.5f;
-}
-
-int Time::getLimitTime() const {
-    return mLimitTime;
-}
-
-int Time::currentTimer() const {
-    return mCurrentTime / 60;
+    mLimitTime = sec;
 }
 
 float Time::deltaTime = 0.01666f;

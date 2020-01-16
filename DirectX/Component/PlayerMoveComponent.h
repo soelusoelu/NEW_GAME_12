@@ -16,7 +16,7 @@ public:
     ~PlayerMoveComponent();
     virtual void start() override;
     virtual void update() override;
-    Vector2 getAcceleration() const;
+    Vector2 getMoveDirection() const;
     void anchorReleaseAcceleration();
     Vector2 getLastInput() const;
     bool isHitAnchor() const;
@@ -32,7 +32,6 @@ private:
     void clamp();
     void dead();
     Vector2 centerPosition() const;
-    Vector2 moveDirection() const;
 
 private:
     AnchorActor* mAnchor;

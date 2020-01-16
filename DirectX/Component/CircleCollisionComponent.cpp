@@ -22,6 +22,7 @@ void CircleCollisionComponent::onUpdateWorldTransformCollider() {
     if (!mIsAutoUpdate) {
         return;
     }
+    auto c = mOwner->transform()->getCenter();
     mCircle->set(mOwner->transform()->getCenter(), mOwner->transform()->getPivot().x);
 }
 

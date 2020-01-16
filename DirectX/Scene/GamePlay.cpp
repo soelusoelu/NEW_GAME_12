@@ -29,7 +29,9 @@ GamePlay::~GamePlay() {
 
 void GamePlay::startScene() {
     new PlayerActor(mRenderer);
-    new Enemy(mRenderer, Vector2(500.f, 300.f), Scale::SMALL, Type::NORMAL);
+    for (size_t i = 0; i < 3; i++) {
+        new Enemy(mRenderer);
+    }
     new AnchorPoint(mRenderer, mActorManager->getPlayer());
 }
 

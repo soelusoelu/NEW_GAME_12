@@ -14,9 +14,11 @@ public:
     PlayerActor(std::shared_ptr<Renderer> renderer, const char* tag = "Player");
     ~PlayerActor();
     virtual void updateActor() override;
+    void anchorReleaseAcceleration();
     Vector2 getLastInput() const;
     bool isHitAnchor() const;
     const float anchorMaxLength() const;
+    void rotateDirection();
 
 private:
     CircleCollisionComponent* mCollide;

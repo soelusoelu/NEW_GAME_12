@@ -16,6 +16,10 @@ PlayerActor::~PlayerActor() = default;
 void PlayerActor::updateActor() {
 }
 
+void PlayerActor::anchorReleaseAcceleration() {
+    mMove->anchorReleaseAcceleration();
+}
+
 Vector2 PlayerActor::getLastInput() const {
     return mMove->getLastInput();
 }
@@ -26,4 +30,8 @@ bool PlayerActor::isHitAnchor() const {
 
 const float PlayerActor::anchorMaxLength() const {
     return mMove->anchorMaxLength();
+}
+
+void PlayerActor::rotateDirection() {
+    mMove->rotateDirection();
 }

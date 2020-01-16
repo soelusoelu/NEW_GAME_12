@@ -4,35 +4,30 @@
 #include "../Utility/Math.h"
 #include <memory>
 
-class Actor;
-class Collider;
-
-enum class SkippedFlag
-{
-	FALSE, //îÚÇŒÇ≥ÇÍÇƒÇ¢Ç»Ç¢Ç»ÇÁ
-	TRUE   //îÚÇŒÇ≥ÇÍÇƒÇ¢ÇÈÇ»ÇÁ
+enum class State {
+    NORMAL,
+    HIT
 };
 
-class EnemyComponent:public Component
-{
+class Actor;
+class CircleCollisionComponent;
+class Time;
+
+class EnemyComponent : public Component {
 public:
-	EnemyComponent(Actor* owner);
-	~EnemyComponent();
-	// Component ÇâÓÇµÇƒåpè≥Ç≥ÇÍÇ‹ÇµÇΩ
-	virtual void start() override;
-	virtual void update() override;
-
-	void move(const Vector2& movement);
-	void hit();
-	Vector2 normal();
-	Vector2 shot();
-	Vector2 tackle(const Vector2& movement);
-
-	Vector2 search();
+    EnemyComponent(Actor* owner);
+    ~EnemyComponent();
+    virtual void start() override;
+    virtual void update() override;
 
 private:
-	SkippedFlag mFlag;
-	Vector2 mDestination;//é©ï™ÇÃå≥ÇÃà íu
-	std::shared_ptr<Collider>mCol;
+    void move();
+    void hit();
+
+private:
+    std::shared_ptr<CircleCollisionComponent> mCollider;
+    std::unique_ptr<Time> mHittedTimer;
+    Vector2 mHitDir;
+    State mState;
 };
 

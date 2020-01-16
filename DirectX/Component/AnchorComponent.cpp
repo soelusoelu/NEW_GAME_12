@@ -2,9 +2,9 @@
 #include "CircleCollisionComponent.h"
 #include "Collider.h"
 #include "ComponentManager.h"
-#include "PlayerMoveComponent.h"
 #include "SpriteComponent.h"
 #include "../Actor/Actor.h"
+#include "../Actor/PlayerActor.h"
 #include "../Actor/Transform2D.h"
 #include "../Device/Time.h"
 #include "../Utility/Input.h"
@@ -127,7 +127,10 @@ void AnchorComponent::hit() {
             auto dir = enemyCenterPosition() - playerPosition();
             mHitAngle = Math::toDegrees(Math::atan2(-dir.y, -dir.x));
 
-            mOwner->transform()->parent()->getOwner()->componentManager()->getComponent<PlayerMoveComponent>()->rotateDirection();
+            auto player = dynamic_cast<PlayerActor*>(mOwner->transform()->parent()->getOwner());
+            if (player) {
+                player->rotateDirection();
+            }
 
             mState = AnchorState::HIT;
             mCollide->disabled();
@@ -143,7 +146,10 @@ void AnchorComponent::changeState() {
         }
     } else if (mState == AnchorState::HIT) {
         if (Input::getKeyDown(mReleaseKey) || Input::getJoyDown(mReleaseJoy)) {
-            mOwner->transform()->parent()->getOwner()->componentManager()->getComponent<PlayerMoveComponent>()->anchorReleaseAcceleration();
+            auto player = dynamic_cast<PlayerActor*>(mOwner->transform()->parent()->getOwner());
+            if (player) {
+                player->anchorReleaseAcceleration();
+            }
             mState = AnchorState::SHRINK;
         }
     } else if (mState == AnchorState::SHRINK) {
