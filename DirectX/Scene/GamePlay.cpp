@@ -3,6 +3,7 @@
 #include "../Actor/ActorManager.h"
 #include "../Actor/PlayerActor.h"
 #include "../Component/Collider.h"
+#include "../Device/Camera2d.h"
 #include "../Device/Physics.h"
 #include "../Scene/Title.h"
 #include "../System/Game.h"
@@ -33,6 +34,8 @@ void GamePlay::startScene() {
         new Enemy(mRenderer);
     }
     new AnchorPoint(mRenderer, mActorManager->getPlayer());
+	mCamera2d = std::make_shared<Camera2d>(mActorManager->getPlayer());
+	mCamera2d->init(1000, 1000);
 }
 
 void GamePlay::updateScene() {
@@ -41,6 +44,10 @@ void GamePlay::updateScene() {
         mActorManager->update();
         //総当たり判定
         mPhysics->sweepAndPrune();
+
+		//カメラ
+		mCamera2d->setPlayer(mActorManager->getPlayer());
+		mCamera2d->update();
 
         if (Input::getKeyDown(mPauseKey)) {
             new Pause(shared_from_this(), mRenderer);

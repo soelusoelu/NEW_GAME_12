@@ -1,7 +1,8 @@
 ﻿#pragma once
-
+#include "../Device/Camera2d.h"
 #include <memory>
 
+class Camera2d;
 class UIManager;
 class SpriteManager;
 class Renderer;
@@ -26,6 +27,7 @@ protected:
     UIManager* mUIManager;
     SpriteManager* mSpriteManager;
     std::shared_ptr<Renderer> mRenderer;
+	std::shared_ptr<Camera2d> mCamera2d;
 
 private:
     std::shared_ptr<SceneBase> mNext;
