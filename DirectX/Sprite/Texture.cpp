@@ -82,7 +82,7 @@ void Texture::createVertexBuffer(std::shared_ptr<Renderer> renderer, const Vecto
     mVertexBuffer = renderer->createBuffer(bd, &sub);
 }
 
-void Texture::drawAll(std::list<std::shared_ptr<Sprite>> sprites, std::shared_ptr<Renderer> renderer, const Vector2& CameraPos) {
+void Texture::drawAll(std::list<std::shared_ptr<Sprite>> sprites, std::shared_ptr<Renderer> renderer, const Vector2& cameraPosition) {
     if (sprites.empty()) {
         return;
     }
@@ -90,8 +90,8 @@ void Texture::drawAll(std::list<std::shared_ptr<Sprite>> sprites, std::shared_pt
     //プロジェクション
     Matrix4 proj = Matrix4::identity;
     //原点をスクリーン左上にするために平行移動
-	proj.m[3][0] = -1.f - (CameraPos.x) / Game::WINDOW_WIDTH*2.f;
-	proj.m[3][1] = 1.f + (CameraPos.y) / Game::WINDOW_HEIGHT*2.f;
+    proj.m[3][0] = -1.f - (cameraPosition.x) / Game::WINDOW_WIDTH * 2.f;
+    proj.m[3][1] = 1.f + (cameraPosition.y) / Game::WINDOW_HEIGHT * 2.f;
     //ピクセル単位で扱うために
     proj.m[0][0] = 2.f / Game::WINDOW_WIDTH;
     proj.m[1][1] = -2.f / Game::WINDOW_HEIGHT;
@@ -102,6 +102,10 @@ void Texture::drawAll(std::list<std::shared_ptr<Sprite>> sprites, std::shared_pt
     renderer->setIndexBuffer(mIndexBuffer);
 
     for (auto itr = sprites.begin(); itr != sprites.end(); ++itr) {
+        if ((*itr)->isUsageUI()) {
+            proj.m[3][0] = -1.f;
+            proj.m[3][1] = 1.f;
+        }
         (*itr)->draw(proj);
     }
 }

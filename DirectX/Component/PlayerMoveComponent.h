@@ -18,7 +18,7 @@ public:
     virtual void update() override;
     Vector2 getMoveDirection() const;
     void anchorReleaseAcceleration();
-    Vector2 getLastInput() const;
+    Vector2 getAnchorDirection() const;
     bool isHitAnchor() const;
     const float anchorMaxLength() const;
     void rotateDirection();
@@ -31,12 +31,10 @@ private:
     void anchorUpdate();
     void clamp();
     void dead();
-    Vector2 centerPosition() const;
 
 private:
     AnchorActor* mAnchor;
     std::shared_ptr<Renderer> mRenderer;
-    std::shared_ptr<SpriteComponent> mSpriteComp;
     Vector2 mAcceleration; //現加速度
     float mAccelerationSpeed; //追加速度
     float mAccelerationRange; //加速度範囲
@@ -49,6 +47,6 @@ private:
     Vector2 mPreviousPos;
     KeyCode mAnchorKey;
     JoyCode mAnchorJoy;
-    Vector2 mLastInput;
+    Vector2 mAnchorDir;
 };
 

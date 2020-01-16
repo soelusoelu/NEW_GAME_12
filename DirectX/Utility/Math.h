@@ -1077,8 +1077,7 @@ public:
         // ps * qv + qs * pv + pv x qv
         Vector3 qv(q.x, q.y, q.z);
         Vector3 pv(p.x, p.y, p.z);
-        //Vector3 newVec = p.w * qv + q.w * pv + Vector3::Cross(pv, qv);
-        Vector3 newVec = p.w * qv + q.w * pv + Vector3::cross(qv, pv); //こっちでは？
+        Vector3 newVec = p.w * qv + q.w * pv + Vector3::cross(pv, qv);
         retVal.x = newVec.x;
         retVal.y = newVec.y;
         retVal.z = newVec.z;

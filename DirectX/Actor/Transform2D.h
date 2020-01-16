@@ -37,14 +37,9 @@ public:
     Vector2 getPivot() const;
 
     //倍率で拡縮
-    void setScale(const Vector2& scale, bool isComputePivot = true);
-    void setScale(float scale, bool isComputePivot = true);
-    void setScale(const Vector2& scale, const Vector2INT& size);
-    void setScale(float scale, const Vector2INT& size);
+    void setScale(const Vector2& scale);
+    void setScale(float scale);
     Vector2 getScale() const;
-
-    //位置+ピボット
-    Vector2 getCenter() const;
     
     //親子関係
     void addChild(std::shared_ptr<Transform2D> child);
@@ -57,7 +52,7 @@ public:
 
 private:
     void setParent(std::shared_ptr<Transform2D> parent);
-    void recomputeChildren();
+    void recomputeTransform();
 
 private:
     Actor* mOwner;

@@ -80,7 +80,7 @@ float AnchorComponent::hitAngle() const {
 
 void AnchorComponent::rotate() {
     if (mState != AnchorState::EXTEND || mState != AnchorState::HIT) {
-        auto other = (isHit()) ? enemyCenterPosition(): mTargetPoint;
+        auto other = (isHit()) ? enemyPosition(): mTargetPoint;
         auto dir = other - playerPosition();
         auto rot = Math::toDegrees(Math::atan2(-dir.x, dir.y));
         mOwner->transform()->setRotation(rot);
@@ -123,11 +123,12 @@ void AnchorComponent::hit() {
             mHitEnemy = hit->getOwner();
 
             //プレイヤーとエネミーとの角度計算
-            auto dir = enemyCenterPosition() - playerPosition();
+            auto dir = enemyPosition() - playerPosition();
             mHitAngle = Math::toDegrees(Math::atan2(-dir.y, -dir.x));
 
-            auto player = dynamic_cast<PlayerActor*>(mOwner->transform()->parent()->getOwner());
-            if (player) {
+            auto actor = mOwner->transform()->parent()->getOwner();
+            if (actor) {
+                auto player = dynamic_cast<PlayerActor*>(actor);
                 player->rotateDirection();
             }
 
@@ -145,8 +146,9 @@ void AnchorComponent::changeState() {
         }
     } else if (mState == AnchorState::HIT) {
         if (Input::getKeyDown(mReleaseKey) || Input::getJoyDown(mReleaseJoy)) {
-            auto player = dynamic_cast<PlayerActor*>(mOwner->transform()->parent()->getOwner());
-            if (player) {
+            auto actor = mOwner->transform()->parent()->getOwner();
+            if (actor) {
+                auto player = dynamic_cast<PlayerActor*>(actor);
                 player->anchorReleaseAcceleration();
             }
             mState = AnchorState::SHRINK;
@@ -160,16 +162,16 @@ void AnchorComponent::changeState() {
 }
 
 Vector2 AnchorComponent::playerPosition() const {
-    return mOwner->transform()->parent()->getCenter();
+    return mOwner->transform()->parent()->getPosition();
 }
 
-Vector2 AnchorComponent::enemyCenterPosition() const {
+Vector2 AnchorComponent::enemyPosition() const {
     if (!mHitEnemy) {
         return Vector2::zero;
     }
-    return mHitEnemy->transform()->getCenter();
+    return mHitEnemy->transform()->getPosition();
 }
 
 void AnchorComponent::computeScale() {
-    mOwner->transform()->setScale(Vector2(mThick, mCurrentAnchorLength), false);
+    mOwner->transform()->setScale(Vector2(mThick, mCurrentAnchorLength));
 }

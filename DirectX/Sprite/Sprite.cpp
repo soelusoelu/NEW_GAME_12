@@ -9,7 +9,7 @@
 #include "../System/VertexStreamDesc.h"
 #include <cassert>
 
-Sprite::Sprite(std::shared_ptr<Renderer> renderer, const char* fileName, float z, bool updateMyself) :
+Sprite::Sprite(std::shared_ptr<Renderer> renderer, const char* fileName, float z, SpriteUsage usage, bool updateMyself) :
     mRenderer(renderer),
     mDefaultSize(Vector2INT::zero),
     mCurrentSize(Vector2INT::zero),
@@ -21,6 +21,7 @@ Sprite::Sprite(std::shared_ptr<Renderer> renderer, const char* fileName, float z
     mPivot(Vector2::zero),
     mWorld(Matrix4::identity),
     mState(SpriteState::ACTIVE),
+    mUsage(usage),
     mTexture(mRenderer->createTexture(fileName)),
     mShader(mRenderer->createShader("Texture.hlsl", "VS", "PS")),
     mFileName(fileName),
@@ -52,6 +53,7 @@ Sprite::Sprite(const Sprite & sprite) :
     mPivot(sprite.mPivot),
     mWorld(sprite.mWorld),
     mState(SpriteState::ACTIVE),
+    mUsage(sprite.mUsage),
     mTexture(sprite.mTexture),
     mShader(sprite.mShader),
     mFileName(sprite.mFileName),
@@ -271,6 +273,10 @@ bool Sprite::getActive() const {
 
 SpriteState Sprite::getState() const {
     return mState;
+}
+
+bool Sprite::isUsageUI() const {
+    return mUsage == SpriteUsage::UI;
 }
 
 void Sprite::setWorld(const Matrix4 & world) {

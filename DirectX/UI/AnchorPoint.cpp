@@ -7,7 +7,8 @@
 AnchorPoint::AnchorPoint(std::shared_ptr<Renderer> renderer, std::shared_ptr<PlayerActor> player) :
     UI(),
     mPlayer(player),
-    mPoint(new Sprite(renderer, "Anchor.png", 0.1f)) {
+    mPoint(new Sprite(renderer, "Anchor.png", 0.1f)),
+    mLength(200.f) {
     addSprite(mPoint);
 }
 
@@ -20,17 +21,17 @@ void AnchorPoint::updateUI() {
         if (!mPoint->getActive()) {
             return;
         }
-        auto t = p->transform();
         auto full = Vector2(mPoint->getScreenTextureSize().x, mPoint->getScreenTextureSize().y);
         auto half = full / 2.f;
-        mPoint->setPosition(t->getCenter() - half + p->getLastInput() * 200.f);
+        auto point = (p->transform()->getPosition() + Vector2::normalize(p->getAnchorDirection()) * mLength) - half;
+        mPoint->setPosition(point);
 
         //ポイント範囲調整
-        mPoint->setPosition(Vector2::clamp(
-            mPoint->getPosition(),
-            Vector2::zero,
-            Vector2(Game::WINDOW_WIDTH, Game::WINDOW_HEIGHT) - full
-        ));
+        //mPoint->setPosition(Vector2::clamp(
+        //    mPoint->getPosition(),
+        //    Vector2::zero,
+        //    Vector2(Game::WINDOW_WIDTH, Game::WINDOW_HEIGHT) - full
+        //));
     } else {
         close();
     }

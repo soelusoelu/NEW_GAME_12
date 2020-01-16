@@ -9,6 +9,11 @@ enum class SpriteState {
     DEAD
 };
 
+enum class SpriteUsage {
+    UI,
+    NONE
+};
+
 class SpriteManager;
 class Shader;
 class Texture;
@@ -16,7 +21,7 @@ class Renderer;
 
 class Sprite {
 public:
-    Sprite(std::shared_ptr<Renderer> renderer, const char* fileName, float z, bool updateMyself = true);
+    Sprite(std::shared_ptr<Renderer> renderer, const char* fileName, float z, SpriteUsage usage = SpriteUsage::NONE, bool updateMyself = true);
     ~Sprite();
     Sprite(const Sprite& sprite);
     //SpriteManagerにて毎フレーム実行
@@ -64,6 +69,7 @@ public:
     void setActive(bool value);
     bool getActive() const;
     SpriteState getState() const;
+    bool isUsageUI() const;
     //World行列
     void setWorld(const Matrix4& world);
     Matrix4 getWorld() const;
@@ -98,6 +104,7 @@ private:
     Vector2 mPivot;
     Matrix4 mWorld;
     SpriteState mState;
+    SpriteUsage mUsage;
     std::shared_ptr<Texture> mTexture;
     std::shared_ptr<Shader> mShader;
     const char* mFileName;

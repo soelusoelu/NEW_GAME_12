@@ -1,5 +1,4 @@
 ﻿#include "CircleCollisionComponent.h"
-#include "ComponentManager.h"
 #include "../Actor/Actor.h"
 #include "../Actor/Transform2D.h"
 
@@ -12,7 +11,9 @@ CircleCollisionComponent::CircleCollisionComponent(Actor* owner) :
 CircleCollisionComponent::~CircleCollisionComponent() = default;
 
 void CircleCollisionComponent::startCollider() {
-    mCircle = std::make_shared<Circle>(mOwner->transform()->getCenter(), mOwner->transform()->getPivot().x);
+    auto pivot = mOwner->transform()->getPivot();
+    auto radius = Math::Max<float>(pivot.x, pivot.y);
+    mCircle = std::make_shared<Circle>(mOwner->transform()->getPosition(), radius);
 }
 
 void CircleCollisionComponent::updateCollider() {
@@ -22,8 +23,11 @@ void CircleCollisionComponent::onUpdateWorldTransformCollider() {
     if (!mIsAutoUpdate) {
         return;
     }
-    auto c = mOwner->transform()->getCenter();
-    mCircle->set(mOwner->transform()->getCenter(), mOwner->transform()->getPivot().x);
+
+    auto pivot = mOwner->transform()->getPivot();
+    auto radius = Math::Max<float>(pivot.x, pivot.y);
+
+    mCircle->set(mOwner->transform()->getPosition(), radius);
 }
 
 void CircleCollisionComponent::set(const Vector2 & center, float radius) {

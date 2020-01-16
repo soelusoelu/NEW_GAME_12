@@ -91,14 +91,6 @@ void Input::end() {
     SAFE_RELEASE(mDinput);
     SAFE_RELEASE(mKeyDevice);
     SAFE_RELEASE(mPadDevice);
-
-	//追加
-	if (mPadDevice)
-	{
-		mPadDevice->Release();
-		mDinput->Release();
-	}
-	//ここまで
 }
 
 void Input::update() {
@@ -110,12 +102,12 @@ void Input::update() {
         mKeyDevice->GetDeviceState(sizeof(mCurrentKeys), &mCurrentKeys);
     }
 
-	if (mPadDevice) {
-		hr = mPadDevice->Acquire();
-		if ((hr == DI_OK) || (hr == S_FALSE)) {
-			mPadDevice->GetDeviceState(sizeof(DIJOYSTATE2), &mCurrentJoyState);
-		}
-	}
+    if (mPadDevice) {
+        hr = mPadDevice->Acquire();
+        if ((hr == DI_OK) || (hr == S_FALSE)) {
+            mPadDevice->GetDeviceState(sizeof(DIJOYSTATE2), &mCurrentJoyState);
+        }
+    }
 
 }
 
@@ -144,7 +136,7 @@ bool Input::getJoyUp(JoyCode joy) {
 }
 
 int Input::horizontal() {
-    if (getKey(KeyCode::A) || getKey(KeyCode::LeftArrow)){
+    if (getKey(KeyCode::A) || getKey(KeyCode::LeftArrow)) {
         return -1;
     } else if (getKey(KeyCode::D) || getKey(KeyCode::RightArrow)) {
         return 1;
@@ -163,64 +155,48 @@ int Input::vertical() {
     }
 }
 
-float Input::joyHorizontal()
-{
-	if (mCurrentJoyState.lX)
-	{
-		//最大1で返すため1000で割る
-		//return mCurrentJoyState.lX / 1000.f;//20以上なら0を返すなど・・・
-		//return (mCurrentJoyState.lX > 100.f) ? mCurrentJoyState.lX / 1000.f : 0.f;
-		if (Math::abs(mCurrentJoyState.lX) > 100.f)//100以上なら
-		{
-			return mCurrentJoyState.lX / 1000.f;
-		}
-	}
-	return 0.f;
+float Input::joyHorizontal() {
+    //最大1で返すため1000で割る
+    //return mCurrentJoyState.lX / 1000.f;//20以上なら0を返すなど・・・
+    //return (mCurrentJoyState.lX > 100.f) ? mCurrentJoyState.lX / 1000.f : 0.f;
+    if (Math::abs(mCurrentJoyState.lX) > 100.f)//100以上なら
+    {
+        return mCurrentJoyState.lX / 1000.f;
+    }
+    return 0.f;
 }
 
-float Input::joyVertical()
-{
-	if (mCurrentJoyState.lY)//
-	{
-		//なぜか反転してるから
-		//return -mCurrentJoyState.lY / 1000.f;
-		//return (mCurrentJoyState.lY > 100.f) ? mCurrentJoyState.lY / 1000.f : 0.f;
-		if (Math::abs(mCurrentJoyState.lY) > 100.f)//100以上なら
-		{
-			return -mCurrentJoyState.lY / 1000.f;
-		}
-	}
-	return 0.f;
+float Input::joyVertical() {
+    //なぜか反転してるから
+    //return -mCurrentJoyState.lY / 1000.f;
+    //return (mCurrentJoyState.lY > 100.f) ? mCurrentJoyState.lY / 1000.f : 0.f;
+    if (Math::abs(mCurrentJoyState.lY) > 100.f)//100以上なら
+    {
+        return -mCurrentJoyState.lY / 1000.f;
+    }
+    return 0.f;
 }
 
-float Input::joyRhorizontal()
-{
-	if (mCurrentJoyState.lRx)
-	{
-		//最大1で返すため1000で割る
-		//return mCurrentJoyState.lX / 1000.f;//20以上なら0を返すなど・・・
-		//return (mCurrentJoyState.lX > 100.f) ? mCurrentJoyState.lX / 1000.f : 0.f;
-		if (Math::abs(mCurrentJoyState.lRx) > 100.f)//100以上なら
-		{
-			return mCurrentJoyState.lRx / 1000.f;
-		}
-	}
-	return 0.f;
+float Input::joyRhorizontal() {
+    //最大1で返すため1000で割る
+    //return mCurrentJoyState.lX / 1000.f;//20以上なら0を返すなど・・・
+    //return (mCurrentJoyState.lX > 100.f) ? mCurrentJoyState.lX / 1000.f : 0.f;
+    if (Math::abs(mCurrentJoyState.lRx) > 100.f)//100以上なら
+    {
+        return mCurrentJoyState.lRx / 1000.f;
+    }
+    return 0.f;
 }
 
-float Input::joyRvertical()
-{
-	if (mCurrentJoyState.lRy)//
-	{
-		//なぜか反転してるから
-		//return -mCurrentJoyState.lY / 1000.f;
-		//return (mCurrentJoyState.lY > 100.f) ? mCurrentJoyState.lY / 1000.f : 0.f;
-		if (Math::abs(mCurrentJoyState.lRy) > 100.f)//100以上なら
-		{
-			return -mCurrentJoyState.lRy / 1000.f;
-		}
-	}
-	return 0.f;
+float Input::joyRvertical() {
+    //なぜか反転してるから
+    //return -mCurrentJoyState.lY / 1000.f;
+    //return (mCurrentJoyState.lY > 100.f) ? mCurrentJoyState.lY / 1000.f : 0.f;
+    if (Math::abs(mCurrentJoyState.lRy) > 100.f)//100以上なら
+    {
+        return -mCurrentJoyState.lRy / 1000.f;
+    }
+    return 0.f;
 }
 
 BYTE Input::mCurrentKeys[256] = { 0 };

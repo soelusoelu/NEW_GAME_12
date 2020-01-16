@@ -5,7 +5,7 @@
 
 SpriteComponent::SpriteComponent(Actor* owner, std::shared_ptr<Renderer> renderer, const char* fileName, float z) :
     Component(owner),
-    mSprite(new Sprite(renderer, fileName, z, false)) {
+    mSprite(new Sprite(renderer, fileName, z, SpriteUsage::NONE, false)) {
     mOwner->transform()->setPrimary(z);
     mOwner->transform()->setPivot(mSprite->getPivot());
 }

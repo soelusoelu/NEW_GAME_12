@@ -15,7 +15,7 @@ public:
     ~PlayerActor();
     virtual void updateActor() override;
     void anchorReleaseAcceleration();
-    Vector2 getLastInput() const;
+    Vector2 getAnchorDirection() const;
     bool isHitAnchor() const;
     const float anchorMaxLength() const;
     void rotateDirection();

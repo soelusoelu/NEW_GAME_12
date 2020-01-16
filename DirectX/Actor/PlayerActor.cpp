@@ -20,8 +20,8 @@ void PlayerActor::anchorReleaseAcceleration() {
     mMove->anchorReleaseAcceleration();
 }
 
-Vector2 PlayerActor::getLastInput() const {
-    return mMove->getLastInput();
+Vector2 PlayerActor::getAnchorDirection() const {
+    return mMove->getAnchorDirection();
 }
 
 bool PlayerActor::isHitAnchor() const {
