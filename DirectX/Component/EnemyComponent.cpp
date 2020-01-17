@@ -11,7 +11,7 @@ EnemyComponent::EnemyComponent(Actor* owner) :
     mCollider(nullptr),
     mHittedTimer(std::make_unique<Time>(2.f)),
     mHitDir(Vector2::zero),
-    mState(State::NORMAL) {
+    mState(EnemyState::NORMAL) {
 }
 
 EnemyComponent::~EnemyComponent() = default;
@@ -26,13 +26,13 @@ void EnemyComponent::update() {
 }
 
 void EnemyComponent::move() {
-    if (mState != State::HIT) {
+    if (mState != EnemyState::HIT) {
         return;
     }
     mHittedTimer->update();
     if (mHittedTimer->isTime()) {
         mHittedTimer->reset();
-        mState = State::NORMAL;
+        mState = EnemyState::NORMAL;
     } else {
         auto s = mOwner->transform()->getScale();
         auto rate = Vector2::one - s;
@@ -51,7 +51,7 @@ void EnemyComponent::hit() {
             }
             mHitDir = pmc->getMoveDirection();
 
-            mState = State::HIT;
+            mState = EnemyState::HIT;
         }
     }
 

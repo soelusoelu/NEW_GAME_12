@@ -3,6 +3,7 @@
 #include "../Component/EnemyComponent.h"
 #include "../Component/ShotEnemyComponent.h"
 #include "../Component/SpriteComponent.h"
+#include "../Component/TackleEnemyComponent.h"
 
 EnemyActor::EnemyActor(std::shared_ptr<Renderer> renderer, EnemyType type, const char* tag) :
     Actor(tag),
@@ -14,7 +15,7 @@ EnemyActor::EnemyActor(std::shared_ptr<Renderer> renderer, EnemyType type, const
     } else if (type == EnemyType::SHOT) {
         new ShotEnemyComponent(renderer, this);
     } else if (type == EnemyType::TACKLE) {
-
+        new TackleEnemyComponent(this);
     }
 }
 

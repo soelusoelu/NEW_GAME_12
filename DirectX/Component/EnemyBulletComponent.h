@@ -4,7 +4,7 @@
 #include "../Utility/Math.h"
 #include <memory>
 
-enum class State {
+enum class BulletState {
     READY,
     UPDATING,
 };
@@ -32,6 +32,6 @@ private:
     std::unique_ptr<Time> mEndTimer;
     static const float BULLET_SPEED;
     Vector2 mBulletDir;
-    State mState;
+    BulletState mState;
 };
 

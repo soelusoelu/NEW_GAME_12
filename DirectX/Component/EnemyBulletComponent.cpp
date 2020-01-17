@@ -14,7 +14,7 @@ EnemyBulletComponent::EnemyBulletComponent(Actor* owner) :
     mSprite(nullptr),
     mEndTimer(std::make_unique<Time>(5.f)),
     mBulletDir(Vector2::zero),
-    mState(State::READY) {
+    mState(BulletState::READY) {
 }
 
 EnemyBulletComponent::~EnemyBulletComponent() = default;
@@ -27,7 +27,7 @@ void EnemyBulletComponent::start() {
 }
 
 void EnemyBulletComponent::update() {
-    if (mState != State::UPDATING) {
+    if (mState != BulletState::UPDATING) {
         return;
     }
     mOwner->transform()->translate(mBulletDir * BULLET_SPEED * Time::deltaTime);
@@ -49,18 +49,18 @@ void EnemyBulletComponent::shot() {
     auto toPlayer = player->transform()->getPosition() - mOwner->transform()->parent()->getPosition();
     mBulletDir = Vector2::normalize(toPlayer);
 
-    mState = State::UPDATING;
+    mState = BulletState::UPDATING;
     mCollider->enabled();
     mSprite->setActive(true);
     mOwner->transform()->setPosition(Vector2::zero);
 }
 
 bool EnemyBulletComponent::isReady() const {
-    return mState == State::READY;
+    return mState == BulletState::READY;
 }
 
 void EnemyBulletComponent::end() {
-    mState = State::READY;
+    mState = BulletState::READY;
     mCollider->disabled();
     mSprite->setActive(false);
     mEndTimer->reset();

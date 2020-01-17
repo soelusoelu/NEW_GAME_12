@@ -9,8 +9,7 @@ EnemyFactory::EnemyFactory(std::shared_ptr<Renderer> renderer) :
     mRenderer(renderer),
     mCSV(std::make_unique<CSVReader>()),
     mEnemyList(0),
-    mSpawnTimer(0.f)
-{
+    mSpawnTimer(0.f) {
     mEnemyList = mCSV->loadString("EnemyList.csv");
 
     for (size_t i = 0; i < mCSV->getHeight(); i++) {
@@ -34,7 +33,7 @@ void EnemyFactory::update() {
     }
 }
 
-void EnemyFactory::create(const EnemyData& data) {
+void EnemyFactory::create(const EnemyData & data) {
     auto e = new EnemyActor(mRenderer, data.type);
     e->transform()->setScale(data.scale);
     e->transform()->setPosition(data.position);

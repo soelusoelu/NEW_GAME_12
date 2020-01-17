@@ -4,7 +4,7 @@
 #include "../Utility/Math.h"
 #include <memory>
 
-enum class State {
+enum class EnemyState {
     NORMAL,
     HIT
 };
@@ -28,6 +28,6 @@ private:
     std::shared_ptr<CircleCollisionComponent> mCollider;
     std::unique_ptr<Time> mHittedTimer;
     Vector2 mHitDir;
-    State mState;
+    EnemyState mState;
 };
 

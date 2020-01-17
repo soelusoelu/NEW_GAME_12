@@ -33,4 +33,8 @@ float Time::currentTime() const {
     return mCurrentTime;
 }
 
+float Time::limitTime() const {
+    return mLimitTime;
+}
+
 float Time::deltaTime = 0.01666f;
