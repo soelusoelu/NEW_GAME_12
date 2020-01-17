@@ -10,31 +10,60 @@
 
 EnemyBulletComponent::EnemyBulletComponent(Actor* owner) :
     Component(owner),
-    mPlayer(),
     mCollider(nullptr),
-    mBulletSpeed(600.f),
-    mBulletDir(Vector2::zero) {
+    mSprite(nullptr),
+    mEndTimer(std::make_unique<Time>(5.f)),
+    mBulletDir(Vector2::zero),
+    mState(State::READY) {
 }
 
 EnemyBulletComponent::~EnemyBulletComponent() = default;
 
 void EnemyBulletComponent::start() {
-    mPlayer = mOwner->getActorManager()->getPlayer();
     mCollider = mOwner->componentManager()->getComponent<CircleCollisionComponent>();
-    mOwner->componentManager()->getComponent<SpriteComponent>()->setActive(true);
-
-    if (auto p = mPlayer.lock()) {
-        auto toPlayer = p->transform()->getPosition() - mOwner->transform()->parent()->getPosition();
-        mBulletDir = Vector2::normalize(toPlayer);
-    }
+    mCollider->disabled();
+    mSprite = mOwner->componentManager()->getComponent<SpriteComponent>();
+    mSprite->setActive(false);
 }
 
 void EnemyBulletComponent::update() {
-    mOwner->transform()->translate(mBulletDir * mBulletSpeed * Time::deltaTime);
+    if (mState != State::UPDATING) {
+        return;
+    }
+    mOwner->transform()->translate(mBulletDir * BULLET_SPEED * Time::deltaTime);
+
+    mEndTimer->update();
+    if (mEndTimer->isTime()) {
+        end();
+    }
 
     for (auto&& c : mCollider->onCollisionEnter()) {
         if (c->getOwner()->tag() == "Player") {
-            Actor::destroy(mOwner);
+            end();
         }
     }
 }
+
+void EnemyBulletComponent::shot() {
+    auto player = mOwner->getActorManager()->getPlayer();
+    auto toPlayer = player->transform()->getPosition() - mOwner->transform()->parent()->getPosition();
+    mBulletDir = Vector2::normalize(toPlayer);
+
+    mState = State::UPDATING;
+    mCollider->enabled();
+    mSprite->setActive(true);
+    mOwner->transform()->setPosition(Vector2::zero);
+}
+
+bool EnemyBulletComponent::isReady() const {
+    return mState == State::READY;
+}
+
+void EnemyBulletComponent::end() {
+    mState = State::READY;
+    mCollider->disabled();
+    mSprite->setActive(false);
+    mEndTimer->reset();
+}
+
+const float EnemyBulletComponent::BULLET_SPEED = 600.f;

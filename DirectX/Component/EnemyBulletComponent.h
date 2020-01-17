@@ -4,9 +4,15 @@
 #include "../Utility/Math.h"
 #include <memory>
 
+enum class State {
+    READY,
+    UPDATING,
+};
+
 class Actor;
 class CircleCollisionComponent;
-class PlayerActor;
+class SpriteComponent;
+class Time;
 
 class EnemyBulletComponent : public Component {
 public:
@@ -14,11 +20,18 @@ public:
     ~EnemyBulletComponent();
     virtual void start() override;
     virtual void update() override;
+    void shot();
+    bool isReady() const;
 
 private:
-    std::weak_ptr<PlayerActor> mPlayer;
+    void end();
+
+private:
     std::shared_ptr<CircleCollisionComponent> mCollider;
-    float mBulletSpeed;
+    std::shared_ptr<SpriteComponent> mSprite;
+    std::unique_ptr<Time> mEndTimer;
+    static const float BULLET_SPEED;
     Vector2 mBulletDir;
+    State mState;
 };
 

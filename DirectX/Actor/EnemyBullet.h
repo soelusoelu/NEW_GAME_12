@@ -12,6 +12,8 @@ public:
     EnemyBullet(std::shared_ptr<Renderer> renderer, const char* tag = "EnemyBullet");
     ~EnemyBullet();
     virtual void updateActor() override;
+    void shot();
+    bool isReady() const;
 
 private:
     CircleCollisionComponent* mCircle;

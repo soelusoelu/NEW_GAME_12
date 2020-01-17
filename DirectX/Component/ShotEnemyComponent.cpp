@@ -8,19 +8,35 @@
 ShotEnemyComponent::ShotEnemyComponent(std::shared_ptr<Renderer> renderer, Actor* owner) :
     Component(owner),
     mRenderer(renderer),
-    mShotTimer(std::make_unique<Time>(2.f)) {
+    mShotTimer(std::make_unique<Time>(2.f)),
+    mEnemyBulletList(0) {
 }
 
 ShotEnemyComponent::~ShotEnemyComponent() = default;
 
 void ShotEnemyComponent::start() {
+    for (size_t i = 0; i < MAX_BULLET_COUNT; i++) {
+        auto e = new EnemyBullet(mRenderer);
+        mEnemyBulletList.emplace_back(e);
+        mOwner->transform()->addChild(e->transform());
+    }
 }
 
 void ShotEnemyComponent::update() {
     mShotTimer->update();
     if (mShotTimer->isTime()) {
         mShotTimer->reset();
-        auto e = new EnemyBullet(mRenderer);
-        mOwner->transform()->addChild(e->transform());
+        shot();
     }
 }
+
+void ShotEnemyComponent::shot() {
+    for (auto&& b : mEnemyBulletList) {
+        if (b->isReady()) {
+            b->shot();
+            break;
+        }
+    }
+}
+
+const int ShotEnemyComponent::MAX_BULLET_COUNT = 5;

@@ -50,6 +50,7 @@
     <ClCompile Include="Component\EnemyBulletComponent.cpp" />
     <ClCompile Include="Actor\EnemyActor.cpp" />
     <ClCompile Include="Actor\EnemyFactory.cpp" />
+    <ClCompile Include="Component\TackleEnemyComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor\ActorManager.h" />
@@ -103,5 +104,6 @@
     <ClInclude Include="Component\EnemyBulletComponent.h" />
     <ClInclude Include="Actor\EnemyActor.h" />
     <ClInclude Include="Actor\EnemyFactory.h" />
+    <ClInclude Include="Component\TackleEnemyComponent.h" />
   </ItemGroup>
 </Project>

@@ -15,3 +15,11 @@ EnemyBullet::~EnemyBullet() = default;
 
 void EnemyBullet::updateActor() {
 }
+
+void EnemyBullet::shot() {
+    mBullet->shot();
+}
+
+bool EnemyBullet::isReady() const {
+    return mBullet->isReady();
+}
