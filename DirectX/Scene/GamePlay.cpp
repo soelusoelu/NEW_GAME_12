@@ -1,7 +1,7 @@
 ﻿#include "GamePlay.h"
 #include "../Actor/Actor.h"
 #include "../Actor/ActorManager.h"
-#include "../Actor/Enemy.h"
+#include "../Actor/EnemyFactory.h"
 #include "../Actor/PlayerActor.h"
 #include "../Component/Collider.h"
 #include "../Device/Camera2d.h"
@@ -14,6 +14,7 @@
 GamePlay::GamePlay() :
     SceneBase(),
     mActorManager(new ActorManager()),
+    mEnemyCreater(nullptr),
     mPhysics(new Physics()),
     mState(GameState::PLAY),
     mPauseKey(KeyCode::Alpha1) {
@@ -31,22 +32,23 @@ GamePlay::~GamePlay() {
 void GamePlay::startScene() {
     new PlayerActor(mRenderer);
     new AnchorPoint(mRenderer, mActorManager->getPlayer());
-    mEnemyCreater = std::make_unique<Enemy>(mRenderer);
-    mEnemyCreater->create(EnemyScale::MIDDLE, EnemyType::SHOT);
-	mCamera2d = std::make_shared<Camera2d>(mActorManager->getPlayer());
-	mCamera2d->init(1000, 1000);
+    mEnemyCreater = std::make_unique<EnemyFactory>(mRenderer);
+    mCamera2d = std::make_shared<Camera2d>(mActorManager->getPlayer());
+    mCamera2d->init(1000, 1000);
 }
 
 void GamePlay::updateScene() {
     if (mState == GameState::PLAY) {
+        //エネミー生成
+        mEnemyCreater->update();
         //総アクターアップデート
         mActorManager->update();
         //総当たり判定
         mPhysics->sweepAndPrune();
 
-		//カメラ
-		mCamera2d->setPlayer(mActorManager->getPlayer());
-		mCamera2d->update();
+        //カメラ
+        //mCamera2d->setPlayer(mActorManager->getPlayer());
+        mCamera2d->update();
 
         if (Input::getKeyDown(mPauseKey)) {
             new Pause(shared_from_this(), mRenderer);

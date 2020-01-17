@@ -29,4 +29,8 @@ void Time::setLimitTime(float sec) {
     mLimitTime = sec;
 }
 
+float Time::currentTime() const {
+    return mCurrentTime;
+}
+
 float Time::deltaTime = 0.01666f;

@@ -8,6 +8,7 @@ public:
     void reset();
     bool isTime() const;
     void setLimitTime(float sec);
+    float currentTime() const;
 
 public:
     static float deltaTime;

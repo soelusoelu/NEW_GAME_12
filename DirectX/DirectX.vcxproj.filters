@@ -7,7 +7,6 @@
     <ClCompile Include="Actor\ActorManager.cpp" />
     <ClCompile Include="Actor\Actor.cpp" />
     <ClCompile Include="Actor\AnchorActor.cpp" />
-    <ClCompile Include="Actor\Enemy.cpp" />
     <ClCompile Include="Component\CircleCollisionComponent.cpp" />
     <ClCompile Include="Component\Collider.cpp" />
     <ClCompile Include="Component\ComponentManager.cpp" />
@@ -50,12 +49,12 @@
     <ClCompile Include="Actor\EnemyBullet.cpp" />
     <ClCompile Include="Component\EnemyBulletComponent.cpp" />
     <ClCompile Include="Actor\EnemyActor.cpp" />
+    <ClCompile Include="Actor\EnemyFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor\ActorManager.h" />
     <ClInclude Include="Actor\Actor.h" />
     <ClInclude Include="Actor\AnchorActor.h" />
-    <ClInclude Include="Actor\Enemy.h" />
     <ClInclude Include="Component\CircleCollisionComponent.h" />
     <ClInclude Include="Component\Collider.h" />
     <ClInclude Include="Component\ComponentManager.h" />
@@ -103,5 +102,6 @@
     <ClInclude Include="Actor\EnemyBullet.h" />
     <ClInclude Include="Component\EnemyBulletComponent.h" />
     <ClInclude Include="Actor\EnemyActor.h" />
+    <ClInclude Include="Actor\EnemyFactory.h" />
   </ItemGroup>
 </Project>

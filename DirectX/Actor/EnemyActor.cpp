@@ -5,6 +5,7 @@
 #include "../Component/SpriteComponent.h"
 
 EnemyActor::EnemyActor(std::shared_ptr<Renderer> renderer, EnemyType type, const char* tag) :
+    Actor(tag),
     mCollide(new CircleCollisionComponent(this)),
     mSprite(new SpriteComponent(this, renderer, "player.png", 0.6f)),
     mEnemy(new EnemyComponent(this)) {

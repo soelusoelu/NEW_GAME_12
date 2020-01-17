@@ -82,7 +82,7 @@ void AnchorComponent::rotate() {
     if (mState != AnchorState::EXTEND || mState != AnchorState::HIT) {
         auto other = (isHit()) ? enemyPosition(): mTargetPoint;
         auto dir = other - playerPosition();
-        auto rot = Math::toDegrees(Math::atan2(-dir.x, dir.y));
+        auto rot = Math::toDegrees(Math::atan2(dir.y, dir.x));
         mOwner->transform()->setRotation(rot);
     }
 }
@@ -109,7 +109,8 @@ void AnchorComponent::updateCollider() {
     }
     //アンカーの先端にだけ当たり判定
     auto dir = mTargetPoint - playerPosition();
-    dir.normalize(); //重いねぇ
+    dir.normalize();
+    auto pos = playerPosition();
     mCollide->set(playerPosition() + dir * mCurrentAnchorLength, 3.f);
 }
 
@@ -173,5 +174,5 @@ Vector2 AnchorComponent::enemyPosition() const {
 }
 
 void AnchorComponent::computeScale() {
-    mOwner->transform()->setScale(Vector2(mThick, mCurrentAnchorLength));
+    mOwner->transform()->setScale(Vector2(mCurrentAnchorLength, mThick));
 }

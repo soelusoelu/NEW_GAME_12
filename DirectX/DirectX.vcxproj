@@ -141,12 +141,12 @@
     <ClCompile Include="Actor\ActorManager.cpp" />
     <ClCompile Include="Actor\Actor.cpp" />
     <ClCompile Include="Actor\AnchorActor.cpp" />
-    <ClCompile Include="Actor\Enemy.cpp" />
     <ClCompile Include="Device\Camera2d.cpp" />
     <ClCompile Include="Component\ShotEnemyComponent.cpp" />
     <ClCompile Include="Actor\EnemyBullet.cpp" />
     <ClCompile Include="Component\EnemyBulletComponent.cpp" />
     <ClCompile Include="Actor\EnemyActor.cpp" />
+    <ClCompile Include="Actor\EnemyFactory.cpp" />
     <ClCompile Include="UI\AnchorPoint.cpp" />
     <ClCompile Include="Component\AnchorComponent.cpp" />
     <ClCompile Include="Component\CircleCollisionComponent.cpp" />
@@ -189,12 +189,12 @@
     <ClInclude Include="Actor\ActorManager.h" />
     <ClInclude Include="Actor\Actor.h" />
     <ClInclude Include="Actor\AnchorActor.h" />
-    <ClInclude Include="Actor\Enemy.h" />
     <ClInclude Include="Device\Camera2d.h" />
     <ClInclude Include="Component\ShotEnemyComponent.h" />
     <ClInclude Include="Actor\EnemyBullet.h" />
     <ClInclude Include="Component\EnemyBulletComponent.h" />
     <ClInclude Include="Actor\EnemyActor.h" />
+    <ClInclude Include="Actor\EnemyFactory.h" />
     <ClInclude Include="UI\AnchorPoint.h" />
     <ClInclude Include="Component\AnchorComponent.h" />
     <ClInclude Include="Component\CircleCollisionComponent.h" />

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Actor.h"
-#include "Enemy.h"
+#include "EnemyFactory.h"
 #include <memory>
 
 class Renderer;

@@ -10,7 +10,7 @@ enum class GameState {
 };
 
 class ActorManager;
-class Enemy;
+class EnemyFactory;
 class Physics;
 
 class GamePlay : public SceneBase, public std::enable_shared_from_this<GamePlay> {
@@ -25,7 +25,7 @@ public:
 
 private:
     ActorManager* mActorManager;
-    std::unique_ptr<Enemy> mEnemyCreater;
+    std::unique_ptr<EnemyFactory> mEnemyCreater;
     Physics* mPhysics;
     GameState mState;
     KeyCode mPauseKey;
