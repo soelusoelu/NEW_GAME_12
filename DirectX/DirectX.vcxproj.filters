@@ -46,6 +46,10 @@
     <ClCompile Include="Component\AnchorComponent.cpp" />
     <ClCompile Include="UI\AnchorPoint.cpp" />
     <ClCompile Include="Device\Camera2d.cpp" />
+    <ClCompile Include="Component\ShotEnemyComponent.cpp" />
+    <ClCompile Include="Actor\EnemyBullet.cpp" />
+    <ClCompile Include="Component\EnemyBulletComponent.cpp" />
+    <ClCompile Include="Actor\EnemyActor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor\ActorManager.h" />
@@ -95,5 +99,9 @@
     <ClInclude Include="Component\AnchorComponent.h" />
     <ClInclude Include="UI\AnchorPoint.h" />
     <ClInclude Include="Device\Camera2d.h" />
+    <ClInclude Include="Component\ShotEnemyComponent.h" />
+    <ClInclude Include="Actor\EnemyBullet.h" />
+    <ClInclude Include="Component\EnemyBulletComponent.h" />
+    <ClInclude Include="Actor\EnemyActor.h" />
   </ItemGroup>
 </Project>

@@ -27,7 +27,12 @@ void CircleCollisionComponent::onUpdateWorldTransformCollider() {
     auto pivot = mOwner->transform()->getPivot();
     auto radius = Math::Max<float>(pivot.x, pivot.y);
 
-    mCircle->set(mOwner->transform()->getPosition(), radius);
+    auto parent = mOwner->transform()->parent();
+    if (parent) {
+        mCircle->set(parent->getPosition() + mOwner->transform()->getPosition(), radius);
+    } else {
+        mCircle->set(mOwner->transform()->getPosition(), radius);
+    }
 }
 
 void CircleCollisionComponent::set(const Vector2 & center, float radius) {

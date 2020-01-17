@@ -3,7 +3,7 @@
 #include "../Actor/AnchorActor.h"
 #include "../Actor/Transform2D.h"
 #include "../Component/ComponentManager.h"
-#include "../Component/SpriteComponent.h"
+#include "../Component/CircleCollisionComponent.h"
 #include "../Device/Time.h"
 #include "../System/Game.h"
 
@@ -11,6 +11,7 @@ PlayerMoveComponent::PlayerMoveComponent(Actor* owner, std::shared_ptr<Renderer>
     Component(owner, updateOrder),
     mAnchor(new AnchorActor(renderer)),
     mRenderer(renderer),
+    mCollider(nullptr),
     mAcceleration(Vector2(30.f, 0.f)),
     mAccelerationSpeed(120.f),
     mAccelerationRange(400.f),
@@ -30,6 +31,7 @@ PlayerMoveComponent::~PlayerMoveComponent() = default;
 
 void PlayerMoveComponent::start() {
     mOwner->transform()->setPosition(Vector2(100.f, 200.f));
+    mCollider = mOwner->componentManager()->getComponent<CircleCollisionComponent>();
 
     mOwner->transform()->addChild(mAnchor->transform());
     mAnchor->transform()->setPivot(mAnchor->transform()->getPosition());
@@ -41,6 +43,7 @@ void PlayerMoveComponent::update() {
     anchorUpdate();
     anchorInjection();
     clamp();
+    hit();
     dead();
 }
 
@@ -134,6 +137,9 @@ void PlayerMoveComponent::anchorUpdate() {
     auto h = Input::joyRhorizontal();
     auto v = Input::joyRvertical();
     if (!Math::nearZero(h) || !Math::nearZero(v)) {
+        if (Math::abs(h) < 0.5f && Math::abs(v) < 0.5f) {
+            return;
+        }
         mAnchorDir.set(h, -v);
     }
 }
@@ -149,6 +155,18 @@ void PlayerMoveComponent::clamp() {
     //最大最小加速度
     auto range = (isHitAnchor()) ? mAnchorAccelerationRange : mAccelerationRange;
     mAcceleration.clamp(Vector2(-range, -range), Vector2(range, range));
+}
+
+void PlayerMoveComponent::hit() {
+    for (auto&& c : mCollider->onCollisionEnter()) {
+        if (c->getOwner()->tag() == "EnemyBullet") {
+            //減速
+            Vector2 d;
+            d.x = (mAcceleration.x > 0.f) ? -300.f : 300.f;
+            d.y = (mAcceleration.y > 0.f) ? -300.f : 300.f;
+            mAcceleration += d * Time::deltaTime;
+        }
+    }
 }
 
 void PlayerMoveComponent::dead() {

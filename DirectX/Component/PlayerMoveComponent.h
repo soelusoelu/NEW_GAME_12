@@ -8,7 +8,7 @@
 class Actor;
 class AnchorActor;
 class Renderer;
-class SpriteComponent;
+class CircleCollisionComponent;
 
 class PlayerMoveComponent : public Component {
 public:
@@ -30,11 +30,13 @@ private:
     void anchorInjection();
     void anchorUpdate();
     void clamp();
+    void hit();
     void dead();
 
 private:
     AnchorActor* mAnchor;
     std::shared_ptr<Renderer> mRenderer;
+    std::shared_ptr<CircleCollisionComponent> mCollider;
     Vector2 mAcceleration; //現加速度
     float mAccelerationSpeed; //追加速度
     float mAccelerationRange; //加速度範囲

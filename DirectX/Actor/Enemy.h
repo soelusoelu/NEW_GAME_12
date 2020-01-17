@@ -1,21 +1,27 @@
 #pragma once
 
-#include "Actor.h"
 #include <memory>
 
-class Renderer;
-class CircleCollisionComponent;
-class SpriteComponent;
-class EnemyComponent;
+enum class EnemyScale {
+    SMALL,
+    MIDDLE,
+    BIG
+};
 
-class Enemy : public Actor {
+enum class EnemyType {
+    NORMAL,
+    SHOT,
+    TACKLE
+};
+
+class Renderer;
+
+class Enemy {
 public:
-    Enemy(std::shared_ptr<Renderer>renderer, const char* tag = "Enemy");
+    Enemy(std::shared_ptr<Renderer>renderer);
     ~Enemy();
-    virtual void updateActor() override;
+    void create(EnemyScale scale, EnemyType type);
 
 private:
-    CircleCollisionComponent* mCollide;
-    SpriteComponent* mSprite;
-    EnemyComponent* mEnemy;
+    std::shared_ptr<Renderer> mRenderer;
 };
