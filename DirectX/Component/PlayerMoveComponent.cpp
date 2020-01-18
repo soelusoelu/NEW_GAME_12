@@ -5,6 +5,7 @@
 #include "../Component/ComponentManager.h"
 #include "../Component/CircleCollisionComponent.h"
 #include "../Device/Time.h"
+#include "../System/Game.h"
 
 PlayerMoveComponent::PlayerMoveComponent(Actor* owner, std::shared_ptr<Renderer> renderer, int updateOrder) :
     Component(owner, updateOrder),
@@ -30,6 +31,7 @@ PlayerMoveComponent::~PlayerMoveComponent() = default;
 
 void PlayerMoveComponent::start() {
     mOwner->transform()->setPosition(Vector2(100.f, 200.f));
+    mOwner->transform()->setPrimary(2);
     mCollider = mOwner->componentManager()->getComponent<CircleCollisionComponent>();
 
     mOwner->transform()->addChild(mAnchor->transform());
@@ -146,8 +148,8 @@ void PlayerMoveComponent::clamp() {
     //auto t = mOwner->transform();
     //t->setPosition(Vector2::clamp(
     //    t->getPosition(),
-    //    Vector2::zero,
-    //    Vector2(Game::WINDOW_WIDTH, Game::WINDOW_HEIGHT) - Vector2(mSpriteComp->getScreenTextureSize().x, mSpriteComp->getScreenTextureSize().y)
+    //    Vector2::zero + mOwner->transform()->getSize() / 2.f,
+    //    Vector2(Game::WINDOW_WIDTH, Game::WINDOW_HEIGHT) - mOwner->transform()->getSize() / 2.f
     //));
 
     //最大最小加速度

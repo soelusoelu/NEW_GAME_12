@@ -9,7 +9,7 @@
 EnemyActor::EnemyActor(std::shared_ptr<Renderer> renderer, EnemyType type, const std::string& scale, const char* tag) :
     Actor(tag),
     mCollide(new CircleCollisionComponent(this)),
-    mSprite(new SpriteComponent(this, renderer, "player.png", 0.6f)),
+    mSprite(new SpriteComponent(this, renderer, "player.png")),
     mHP(new HitPointComponent(this, 1)), //HP‚Í‰¼
     mEnemy(new EnemyComponent(this)) {
     if (type == EnemyType::NORMAL) {

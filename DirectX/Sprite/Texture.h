@@ -3,8 +3,8 @@
 #include "../System/DirectXIncLib.h"
 #include "../System/TextureDesc.h"
 #include "../Utility/Math.h"
-#include <list>
 #include <memory>
+#include <vector>
 
 //頂点の構造体
 struct TextureVertex {
@@ -30,7 +30,7 @@ public:
     ~Texture();
     static void end();
     void createInputLayout(std::shared_ptr<Renderer> renderer, ID3D10Blob* compiledShader);
-    static void drawAll(std::list<std::shared_ptr<Sprite>> sprites, std::shared_ptr<Renderer> renderer, const Vector2& cameraPosition);
+    static void drawAll(std::vector<std::shared_ptr<Sprite>> sprites, std::shared_ptr<Renderer> renderer, const Vector2& cameraPosition);
     ID3D11ShaderResourceView* texture() const;
     const TextureDesc& desc() const;
     std::shared_ptr<InputElement> getVertexlayout() const;

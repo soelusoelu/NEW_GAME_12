@@ -24,8 +24,8 @@ public:
     Vector2 getWorldPosition() const;
     void translate(const Vector2& translation);
 
-    //描画優先順位
-    void setPrimary(float z);
+    //描画優先順位 基準50(1～100)
+    void setPrimary(int primary);
     float getDepth() const;
 
     //回転
@@ -57,6 +57,9 @@ public:
     std::shared_ptr<Transform2D> root() const;
     size_t getChildCount() const;
 
+public:
+    static bool zSortFlag;
+
 private:
     void setParent(std::shared_ptr<Transform2D> parent);
     void shouldRecomputeTransform();
@@ -72,5 +75,7 @@ private:
     std::weak_ptr<Transform2D> mParent;
     std::list<std::shared_ptr<Transform2D>> mChildren;
     bool mIsRecomputeTransform;
+
+    static int mCount;
 };
 

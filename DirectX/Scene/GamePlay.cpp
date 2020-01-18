@@ -31,9 +31,10 @@ GamePlay::~GamePlay() {
 
 void GamePlay::startScene() {
     new PlayerActor(mRenderer);
-    new AnchorPoint(mRenderer, mActorManager->getPlayer());
     mEnemyCreater = std::make_unique<EnemyFactory>(mRenderer);
-    mCamera2d = std::make_shared<Camera2d>(mActorManager->getPlayer());
+    auto p = mActorManager->getPlayer();
+    new AnchorPoint(mRenderer, p);
+    mCamera2d = std::make_shared<Camera2d>(p);
     mCamera2d->init(1000, 1000);
 }
 

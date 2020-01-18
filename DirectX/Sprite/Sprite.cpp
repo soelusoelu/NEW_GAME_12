@@ -9,11 +9,11 @@
 #include "../System/VertexStreamDesc.h"
 #include <cassert>
 
-Sprite::Sprite(std::shared_ptr<Renderer> renderer, const char* fileName, float z) :
-    Sprite(renderer, fileName, z, nullptr) {
+Sprite::Sprite(std::shared_ptr<Renderer> renderer, const char* fileName) :
+    Sprite(renderer, fileName, nullptr) {
 }
 
-Sprite::Sprite(std::shared_ptr<Renderer> renderer, const char* fileName, float z, std::shared_ptr<Transform2D> transform) :
+Sprite::Sprite(std::shared_ptr<Renderer> renderer, const char* fileName, std::shared_ptr<Transform2D> transform) :
     mRenderer(renderer),
     mTransform(transform),
     mTexture(mRenderer->createTexture(fileName)),
@@ -33,7 +33,6 @@ Sprite::Sprite(std::shared_ptr<Renderer> renderer, const char* fileName, float z
     mTextureSize = Vector2(desc.width, desc.height);
 
     //Transformに通知
-    mTransform->setPrimary(z);
     mTransform->setSize(mTextureSize);
 
     mTexture->createInputLayout(mRenderer, mShader->getCompiledShader());
@@ -202,5 +201,4 @@ void Sprite::setSpriteManager(SpriteManager * manager) {
     mSpriteManager = manager;
 }
 
-bool Sprite::ZSortFlag = false;
 SpriteManager* Sprite::mSpriteManager = nullptr;

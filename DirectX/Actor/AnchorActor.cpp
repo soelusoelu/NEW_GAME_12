@@ -7,7 +7,7 @@
 AnchorActor::AnchorActor(std::shared_ptr<Renderer> renderer, const char* tag) :
     Actor(tag),
     mCollide(new CircleCollisionComponent(this)),
-    mSprite(new SpriteComponent(this, renderer, "black.png", 0.55f)),
+    mSprite(new SpriteComponent(this, renderer, "black.png")),
     mAnchor(new AnchorComponent(this)) {
 }
 

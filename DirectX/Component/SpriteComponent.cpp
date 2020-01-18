@@ -3,9 +3,9 @@
 #include "../Actor/Transform2D.h"
 #include "../Sprite/Sprite.h"
 
-SpriteComponent::SpriteComponent(Actor* owner, std::shared_ptr<Renderer> renderer, const char* fileName, float z) :
+SpriteComponent::SpriteComponent(Actor* owner, std::shared_ptr<Renderer> renderer, const char* fileName) :
     Component(owner),
-    mSprite(new Sprite(renderer, fileName, z, mOwner->transform())) {
+    mSprite(new Sprite(renderer, fileName, mOwner->transform())) {
 }
 
 SpriteComponent::~SpriteComponent() {

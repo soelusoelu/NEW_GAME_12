@@ -54,10 +54,10 @@ void SpriteManager::remove() {
 }
 
 void SpriteManager::sortByZ() {
-    if (Sprite::ZSortFlag) { //z値を変更したやつがいればソート
-        Sprite::ZSortFlag = false;
-        //std::sort(mSprites.begin(), mSprites.end(), [](std::shared_ptr<Sprite> a, std::shared_ptr<Sprite> b) {
-        //    return a->getDepth() > b->getDepth();
-        //});
+    if (Transform2D::zSortFlag) { //z値を変更したやつがいればソート
+        Transform2D::zSortFlag = false;
+        std::sort(mSprites.begin(), mSprites.end(), [](std::shared_ptr<Sprite> a, std::shared_ptr<Sprite> b) {
+            return a->transform()->getDepth() > b->transform()->getDepth();
+        });
     }
 }

@@ -44,7 +44,7 @@ void Texture::createInputLayout(std::shared_ptr<Renderer> renderer, ID3D10Blob* 
     mVertexLayout = renderer->createInputLayout(layout, numElements, compiledShader);
 }
 
-void Texture::drawAll(std::list<std::shared_ptr<Sprite>> sprites, std::shared_ptr<Renderer> renderer, const Vector2& cameraPosition) {
+void Texture::drawAll(std::vector<std::shared_ptr<Sprite>> sprites, std::shared_ptr<Renderer> renderer, const Vector2& cameraPosition) {
     if (sprites.empty()) {
         return;
     }

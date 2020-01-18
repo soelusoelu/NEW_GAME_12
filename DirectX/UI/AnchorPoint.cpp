@@ -7,9 +7,9 @@
 AnchorPoint::AnchorPoint(std::shared_ptr<Renderer> renderer, std::shared_ptr<PlayerActor> player) :
     UI(),
     mPlayer(player),
-    mPoint(new Sprite(renderer, "Anchor.png", 0.1f)),
+    mPoint(new Sprite(renderer, "Anchor.png")),
     mLength(200.f) {
-    addSprite(mPoint);
+    addSprite(mPoint, false);
 }
 
 AnchorPoint::~AnchorPoint() = default;

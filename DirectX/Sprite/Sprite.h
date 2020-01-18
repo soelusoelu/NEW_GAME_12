@@ -17,8 +17,8 @@ class Renderer;
 
 class Sprite {
 public:
-    Sprite(std::shared_ptr<Renderer> renderer, const char* fileName, float z);
-    Sprite(std::shared_ptr<Renderer> renderer, const char* fileName, float z, std::shared_ptr<Transform2D> transform);
+    Sprite(std::shared_ptr<Renderer> renderer, const char* fileName);
+    Sprite(std::shared_ptr<Renderer> renderer, const char* fileName, std::shared_ptr<Transform2D> transform);
     ~Sprite();
     Sprite(const Sprite& sprite);
     //SpriteManagerにて毎フレーム実行
@@ -57,9 +57,6 @@ public:
 
     //SpriteManagerの登録
     static void setSpriteManager(SpriteManager* manager);
-
-public:
-    static bool ZSortFlag;
 
 private:
     std::shared_ptr<Renderer> mRenderer;

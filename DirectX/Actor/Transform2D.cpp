@@ -12,12 +12,15 @@ Transform2D::Transform2D(Actor* owner) :
     mParent(),
     mChildren(0),
     mIsRecomputeTransform(true) {
+    mCount++;
+    setPrimary(50);
 }
 
 Transform2D::~Transform2D() {
     for (auto&& child : mChildren) {
         Actor::destroy(child->mOwner);
     }
+    mCount--;
 }
 
 Actor* Transform2D::getOwner() const {
@@ -69,9 +72,13 @@ void Transform2D::translate(const Vector2& translation) {
     shouldRecomputeTransform();
 }
 
-void Transform2D::setPrimary(float z) {
-    mPosition.z = z;
+void Transform2D::setPrimary(int primary) { //とりあえず
+    float p = static_cast<float>(primary) / 125.f;
+    float c = static_cast<float>(mCount) / 50000.f;
+    mPosition.z = p - c + 0.1f;
+    mPosition.z = Math::clamp<float>(mPosition.z, 0.f, 1.f);
     shouldRecomputeTransform();
+    zSortFlag = true;
 }
 
 float Transform2D::getDepth() const {
@@ -222,3 +229,6 @@ void Transform2D::shouldRecomputeTransform() {
         child->mIsRecomputeTransform = true;
     }
 }
+
+bool Transform2D::zSortFlag = false;
+int Transform2D::mCount = 0;

@@ -6,7 +6,7 @@
 EnemyBullet::EnemyBullet(std::shared_ptr<Renderer> renderer, const char* tag) :
     Actor(tag),
     mCircle(new CircleCollisionComponent(this)),
-    mSprite(new SpriteComponent(this, renderer, "fire.png", 0.4f)),
+    mSprite(new SpriteComponent(this, renderer, "fire.png")),
     mBullet(new EnemyBulletComponent(this)) {
     mSprite->setActive(false);
 }

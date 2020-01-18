@@ -27,7 +27,7 @@ protected:
     UIManager* mUIManager;
     SpriteManager* mSpriteManager;
     std::shared_ptr<Renderer> mRenderer;
-	std::shared_ptr<Camera2d> mCamera2d;
+    std::shared_ptr<Camera2d> mCamera2d;
 
 private:
     std::shared_ptr<SceneBase> mNext;

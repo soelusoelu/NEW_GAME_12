@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "../Utility/Math.h"
 #include <memory>
-#include <list>
+#include <vector>
 
 class Renderer;
 class Sprite;
@@ -24,6 +24,6 @@ private:
     SpriteManager& operator=(const SpriteManager&) = delete;
 
 private:
-    std::list<std::shared_ptr<Sprite>> mSprites;
+    std::vector<std::shared_ptr<Sprite>> mSprites;
 };
 
