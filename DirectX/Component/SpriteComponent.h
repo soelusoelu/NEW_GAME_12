@@ -15,8 +15,6 @@ public:
     ~SpriteComponent();
     virtual void start() override;
     virtual void update() override;
-    virtual void onUpdateWorldTransform() override;
-
     //色味、たぶん0～1
     void setColor(const Vector3& color);
     void setColor(float r, float g, float b);
@@ -28,10 +26,6 @@ public:
     Vector4 getUV() const;
     //テクスチャサイズの取得
     Vector2 getTextureSize() const;
-    //テクスチャの現在のサイズを取得
-    Vector2 getCurrentTextureSize() const;
-    //スクリーン表示上のサイズの取得
-    Vector2 getOnScreenTextureSize() const;
     //状態管理
     void setActive(bool value);
     bool getActive() const;

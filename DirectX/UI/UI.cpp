@@ -38,6 +38,7 @@ void UI::close() {
 }
 
 void UI::addSprite(Sprite* sprite) {
+    sprite->setUI();
     mSprites.emplace_back(sprite);
 }
 

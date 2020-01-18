@@ -9,11 +9,6 @@ enum class SpriteState {
     DEAD
 };
 
-enum class SpriteUsage {
-    UI,
-    NONE
-};
-
 class Transform2D;
 class SpriteManager;
 class Shader;
@@ -22,7 +17,8 @@ class Renderer;
 
 class Sprite {
 public:
-    Sprite(std::shared_ptr<Renderer> renderer, const char* fileName, float z, SpriteUsage usage = SpriteUsage::NONE, bool updateMyself = true);
+    Sprite(std::shared_ptr<Renderer> renderer, const char* fileName, float z);
+    Sprite(std::shared_ptr<Renderer> renderer, const char* fileName, float z, std::shared_ptr<Transform2D> transform);
     ~Sprite();
     Sprite(const Sprite& sprite);
     //SpriteManagerにて毎フレーム実行
@@ -44,19 +40,14 @@ public:
     Vector4 getUV() const;
     //テクスチャサイズの取得
     Vector2 getTextureSize() const;
-    //テクスチャの現在のサイズを取得
-    Vector2 getCurrentTextureSize() const;
-    //スクリーン表示上のサイズの取得
-    Vector2 getOnScreenTextureSize() const;
     //状態管理
     static void destroy(Sprite* sprite);
     static void destroy(std::shared_ptr<Sprite> sprite);
     void setActive(bool value);
     bool getActive() const;
     SpriteState getState() const;
+    void setUI();
     bool isUI() const;
-    //World行列
-    void setWorld(const Matrix4& world);
     //テクスチャの取得
     std::shared_ptr<Texture> texture() const;
     //シェーダーの取得
@@ -75,14 +66,12 @@ private:
     std::shared_ptr<Transform2D> mTransform;
     std::shared_ptr<Texture> mTexture;
     std::shared_ptr<Shader> mShader;
-    Vector2 mDefaultSize;
-    Vector2 mCurrentSize;
+    Vector2 mTextureSize;
     Vector4 mColor;
     Vector4 mUV;
     SpriteState mState;
-    SpriteUsage mUsage;
+    bool mIsUI;
     const char* mFileName;
-    bool mUpdateMyself;
 
     static SpriteManager* mSpriteManager;
 };

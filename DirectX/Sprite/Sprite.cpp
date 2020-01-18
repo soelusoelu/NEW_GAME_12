@@ -9,28 +9,32 @@
 #include "../System/VertexStreamDesc.h"
 #include <cassert>
 
-Sprite::Sprite(std::shared_ptr<Renderer> renderer, const char* fileName, float z, SpriteUsage usage, bool updateMyself) :
+Sprite::Sprite(std::shared_ptr<Renderer> renderer, const char* fileName, float z) :
+    Sprite(renderer, fileName, z, nullptr) {
+}
+
+Sprite::Sprite(std::shared_ptr<Renderer> renderer, const char* fileName, float z, std::shared_ptr<Transform2D> transform) :
     mRenderer(renderer),
-    mTransform(std::make_unique<Transform2D>()),
+    mTransform(transform),
     mTexture(mRenderer->createTexture(fileName)),
     mShader(mRenderer->createShader("Texture.hlsl", "VS", "PS")),
-    mDefaultSize(Vector2::zero),
-    mCurrentSize(Vector2::zero),
+    mTextureSize(Vector2::zero),
     mColor(ColorPalette::white, 1.f),
     mUV(0.f, 0.f, 1.f, 1.f),
     mState(SpriteState::ACTIVE),
-    mUsage(usage),
-    mFileName(fileName),
-    mUpdateMyself(updateMyself) {
+    mIsUI(false),
+    mFileName(fileName) {
+    if (!mTransform) {
+        mTransform = std::make_shared<Transform2D>();
+    }
 
     //デスクをもとにサイズ取得
     auto desc = mTexture->desc();
-    mDefaultSize = Vector2(desc.width, desc.height);
-    mCurrentSize = mDefaultSize;
+    mTextureSize = Vector2(desc.width, desc.height);
 
     //Transformに通知
     mTransform->setPrimary(z);
-    mTransform->setTextureSize(mCurrentSize);
+    mTransform->setSize(mTextureSize);
 
     mTexture->createInputLayout(mRenderer, mShader->getCompiledShader());
 
@@ -43,20 +47,18 @@ Sprite::~Sprite() = default;
 
 Sprite::Sprite(const Sprite & sprite) :
     mTransform(sprite.mTransform),
-    mDefaultSize(sprite.mDefaultSize),
-    mCurrentSize(sprite.mCurrentSize),
+    mTextureSize(sprite.mTextureSize),
     mTexture(sprite.mTexture),
     mShader(sprite.mShader),
     mColor(sprite.mColor),
     mUV(sprite.mUV),
     mState(SpriteState::ACTIVE),
-    mUsage(sprite.mUsage),
-    mFileName(sprite.mFileName),
-    mUpdateMyself(sprite.mUpdateMyself) {
+    mIsUI(sprite.mIsUI),
+    mFileName(sprite.mFileName) {
 }
 
 void Sprite::update() {
-    if (mUpdateMyself && mState == SpriteState::ACTIVE) {
+    if (mState == SpriteState::ACTIVE) {
         mTransform->computeWorldTransform();
     }
 }
@@ -140,11 +142,12 @@ void Sprite::setUV(float l, float t, float r, float b) {
     mUV.w = b;
 
     //サイズ修正
-    mCurrentSize.x = mDefaultSize.x * (r - l);
-    mCurrentSize.y = mDefaultSize.y * (b - t);
+    Vector2 size;
+    size.x = mTextureSize.x * (r - l);
+    size.y = mTextureSize.y * (b - t);
 
     //テクスチャサイズを変更したことを通知
-    mTransform->setTextureSize(mCurrentSize);
+    mTransform->setSize(size);
 }
 
 Vector4 Sprite::getUV() const {
@@ -152,15 +155,7 @@ Vector4 Sprite::getUV() const {
 }
 
 Vector2 Sprite::getTextureSize() const {
-    return mDefaultSize;
-}
-
-Vector2 Sprite::getCurrentTextureSize() const {
-    return mCurrentSize;
-}
-
-Vector2 Sprite::getOnScreenTextureSize() const {
-    return mCurrentSize * mTransform->getWorldScale();
+    return mTextureSize;
 }
 
 void Sprite::destroy(Sprite * sprite) {
@@ -183,12 +178,12 @@ SpriteState Sprite::getState() const {
     return mState;
 }
 
-bool Sprite::isUI() const {
-    return mUsage == SpriteUsage::UI;
+void Sprite::setUI() {
+    mIsUI = true;
 }
 
-void Sprite::setWorld(const Matrix4 & world) {
-    mTransform->setWorldTransform(world);
+bool Sprite::isUI() const {
+    return mIsUI;
 }
 
 std::shared_ptr<Texture> Sprite::texture() const {

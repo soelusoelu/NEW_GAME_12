@@ -32,7 +32,7 @@ void AnchorComponent::start() {
     mSpriteComp->setActive(false);
     mCollide = mOwner->componentManager()->getComponent<CircleCollisionComponent>();
 
-    mOwner->transform()->setPivot(Vector2(-mSpriteComp->getCurrentTextureSize().x * 0.5f, 0.f));
+    mOwner->transform()->setPivot(Vector2(-mOwner->transform()->getSize().x * 0.5f, 0.f));
 }
 
 void AnchorComponent::update() {

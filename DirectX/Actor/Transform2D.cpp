@@ -1,10 +1,6 @@
 ﻿#include "Transform2D.h"
 #include "Actor.h"
 
-Transform2D::Transform2D() :
-    Transform2D(nullptr) {
-}
-
 Transform2D::Transform2D(Actor* owner) :
     mOwner(owner),
     mWorldTransform(Matrix4::identity),
@@ -12,7 +8,7 @@ Transform2D::Transform2D(Actor* owner) :
     mRotation(Quaternion::identity),
     mPivot(Vector2::zero),
     mScale(Vector2::one),
-    mTextureSize(Vector2::zero),
+    mSize(Vector2::zero),
     mParent(),
     mChildren(0),
     mIsRecomputeTransform(true) {
@@ -30,8 +26,8 @@ Actor* Transform2D::getOwner() const {
 
 bool Transform2D::computeWorldTransform() {
     if (mIsRecomputeTransform) {
-        mWorldTransform = Matrix4::createScale(Vector3(mTextureSize, 1.f)); //テクスチャサイズに
-        mWorldTransform *= Matrix4::createTranslation(-Vector3(mTextureSize * 0.5f + mPivot, 0.f)); //中心 + ピボットを原点に
+        mWorldTransform = Matrix4::createScale(Vector3(mSize, 1.f)); //テクスチャサイズに
+        mWorldTransform *= Matrix4::createTranslation(-Vector3(mSize * 0.5f + mPivot, 0.f)); //中心 + ピボットを原点に
         mWorldTransform *= Matrix4::createScale(Vector3(getWorldScale(), 1.f));
         mWorldTransform *= Matrix4::createFromQuaternion(getWorldRotation());
         mWorldTransform *= Matrix4::createTranslation(Vector3(getWorldPosition(), mPosition.z));
@@ -41,10 +37,6 @@ bool Transform2D::computeWorldTransform() {
         return true;
     }
     return false;
-}
-
-void Transform2D::setWorldTransform(const Matrix4& world) {
-    mWorldTransform = world;
 }
 
 Matrix4 Transform2D::getWorldTransform() const {
@@ -158,13 +150,13 @@ Vector2 Transform2D::getWorldScale() const {
     return scale;
 }
 
-void Transform2D::setTextureSize(const Vector2& size) {
-    mTextureSize = size;
+void Transform2D::setSize(const Vector2& size) {
+    mSize = size;
     shouldRecomputeTransform();
 }
 
-Vector2 Transform2D::getTextureSize() const {
-    return mTextureSize;
+Vector2 Transform2D::getSize() const {
+    return mSize;
 }
 
 void Transform2D::addChild(std::shared_ptr<Transform2D> child) {

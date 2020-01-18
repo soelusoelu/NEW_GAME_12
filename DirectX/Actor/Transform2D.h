@@ -8,8 +8,7 @@ class Actor;
 
 class Transform2D : public std::enable_shared_from_this<Transform2D> {
 public:
-    Transform2D();
-    Transform2D(Actor* owner);
+    Transform2D(Actor* owner = nullptr);
     ~Transform2D();
 
     //アタッチ元のアクターを返す
@@ -17,7 +16,6 @@ public:
 
     //ワールド行列更新
     bool computeWorldTransform();
-    void setWorldTransform(const Matrix4& world);
     Matrix4 getWorldTransform() const;
 
     //ピクセル単位で位置指定
@@ -46,9 +44,9 @@ public:
     Vector2 getScale() const;
     Vector2 getWorldScale() const;
 
-    //テクスチャサイズ
-    void setTextureSize(const Vector2& size);
-    Vector2 getTextureSize() const;
+    //ポリゴンサイズ
+    void setSize(const Vector2& size);
+    Vector2 getSize() const;
 
     //親子関係
     void addChild(std::shared_ptr<Transform2D> child);
@@ -70,7 +68,7 @@ private:
     Quaternion mRotation;
     Vector2 mPivot;
     Vector2 mScale;
-    Vector2 mTextureSize;
+    Vector2 mSize;
     std::weak_ptr<Transform2D> mParent;
     std::list<std::shared_ptr<Transform2D>> mChildren;
     bool mIsRecomputeTransform;

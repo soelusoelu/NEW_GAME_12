@@ -5,9 +5,7 @@
 
 SpriteComponent::SpriteComponent(Actor* owner, std::shared_ptr<Renderer> renderer, const char* fileName, float z) :
     Component(owner),
-    mSprite(new Sprite(renderer, fileName, z, SpriteUsage::NONE, false)) {
-    mOwner->transform()->setPrimary(z);
-    mOwner->transform()->setTextureSize(mSprite->getCurrentTextureSize());
+    mSprite(new Sprite(renderer, fileName, z, mOwner->transform())) {
 }
 
 SpriteComponent::~SpriteComponent() {
@@ -18,10 +16,6 @@ void SpriteComponent::start() {
 }
 
 void SpriteComponent::update() {
-}
-
-void SpriteComponent::onUpdateWorldTransform() {
-    mSprite->setWorld(mOwner->transform()->getWorldTransform());
 }
 
 void SpriteComponent::setColor(const Vector3& color) {
@@ -42,7 +36,6 @@ Vector4 SpriteComponent::getColor() const {
 
 void SpriteComponent::setUV(float l, float t, float r, float b) {
     mSprite->setUV(l, t, r, b);
-    mOwner->transform()->setTextureSize(mSprite->getCurrentTextureSize());
 }
 
 Vector4 SpriteComponent::getUV() const {
@@ -51,14 +44,6 @@ Vector4 SpriteComponent::getUV() const {
 
 Vector2 SpriteComponent::getTextureSize() const {
     return mSprite->getTextureSize();
-}
-
-Vector2 SpriteComponent::getCurrentTextureSize() const {
-    return mSprite->getCurrentTextureSize();
-}
-
-Vector2 SpriteComponent::getOnScreenTextureSize() const {
-    return mSprite->getCurrentTextureSize() * mOwner->transform()->getWorldScale();
 }
 
 void SpriteComponent::setActive(bool value) {
