@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Component.h"
+#include "../Component.h"
 #include <memory>
 #include <list>
 
@@ -11,7 +11,7 @@ class EnemyBullet;
 
 class ShotEnemyComponent : public Component {
 public:
-    ShotEnemyComponent(std::shared_ptr<Renderer> renderer, Actor* owner);
+    ShotEnemyComponent(Actor* owner, std::shared_ptr<Renderer> renderer);
     ~ShotEnemyComponent();
     virtual void start() override;
     virtual void update() override;

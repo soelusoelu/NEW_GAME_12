@@ -15,6 +15,7 @@ enum class EnemyType {
 struct EnemyData {
     Vector2 position;
     float scale;
+    std::string scaleName;
     EnemyType type;
     float spawnTime;
 };

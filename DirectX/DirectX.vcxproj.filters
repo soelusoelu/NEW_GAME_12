@@ -20,7 +20,6 @@
     <ClCompile Include="Actor\PlayerActor.cpp" />
     <ClCompile Include="Component\SpriteComponent.cpp" />
     <ClCompile Include="Component\PlayerMoveComponent.cpp" />
-    <ClCompile Include="Component\EnemyComponent.cpp" />
     <ClCompile Include="Shader\Shader.cpp" />
     <ClCompile Include="Sprite\Sprite.cpp" />
     <ClCompile Include="Sprite\SpriteManager.cpp" />
@@ -45,12 +44,14 @@
     <ClCompile Include="Component\AnchorComponent.cpp" />
     <ClCompile Include="UI\AnchorPoint.cpp" />
     <ClCompile Include="Device\Camera2d.cpp" />
-    <ClCompile Include="Component\ShotEnemyComponent.cpp" />
     <ClCompile Include="Actor\EnemyBullet.cpp" />
-    <ClCompile Include="Component\EnemyBulletComponent.cpp" />
     <ClCompile Include="Actor\EnemyActor.cpp" />
     <ClCompile Include="Actor\EnemyFactory.cpp" />
-    <ClCompile Include="Component\TackleEnemyComponent.cpp" />
+    <ClCompile Include="Component\Enemy\EnemyComponent.cpp" />
+    <ClCompile Include="Component\Enemy\EnemyBulletComponent.cpp" />
+    <ClCompile Include="Component\Enemy\ShotEnemyComponent.cpp" />
+    <ClCompile Include="Component\Enemy\TackleEnemyComponent.cpp" />
+    <ClCompile Include="Component\HitPointComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor\ActorManager.h" />
@@ -69,7 +70,6 @@
     <ClInclude Include="Actor\PlayerActor.h" />
     <ClInclude Include="Component\SpriteComponent.h" />
     <ClInclude Include="Component\PlayerMoveComponent.h" />
-    <ClInclude Include="Component\EnemyComponent.h" />
     <ClInclude Include="Shader\Shader.h" />
     <ClInclude Include="Sprite\Sprite.h" />
     <ClInclude Include="Sprite\SpriteManager.h" />
@@ -99,11 +99,13 @@
     <ClInclude Include="Component\AnchorComponent.h" />
     <ClInclude Include="UI\AnchorPoint.h" />
     <ClInclude Include="Device\Camera2d.h" />
-    <ClInclude Include="Component\ShotEnemyComponent.h" />
     <ClInclude Include="Actor\EnemyBullet.h" />
-    <ClInclude Include="Component\EnemyBulletComponent.h" />
     <ClInclude Include="Actor\EnemyActor.h" />
     <ClInclude Include="Actor\EnemyFactory.h" />
-    <ClInclude Include="Component\TackleEnemyComponent.h" />
+    <ClInclude Include="Component\Enemy\EnemyComponent.h" />
+    <ClInclude Include="Component\Enemy\EnemyBulletComponent.h" />
+    <ClInclude Include="Component\Enemy\ShotEnemyComponent.h" />
+    <ClInclude Include="Component\Enemy\TackleEnemyComponent.h" />
+    <ClInclude Include="Component\HitPointComponent.h" />
   </ItemGroup>
 </Project>

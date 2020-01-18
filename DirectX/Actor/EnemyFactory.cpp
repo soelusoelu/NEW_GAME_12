@@ -34,7 +34,7 @@ void EnemyFactory::update() {
 }
 
 void EnemyFactory::create(const EnemyData & data) {
-    auto e = new EnemyActor(mRenderer, data.type);
+    auto e = new EnemyActor(mRenderer, data.type, data.scaleName);
     e->transform()->setScale(data.scale);
     e->transform()->setPosition(data.position);
 }
@@ -46,6 +46,7 @@ void EnemyFactory::parse(unsigned row) {
     data.position.x = atoi(mEnemyList.at(num + 1).c_str());
     data.position.y = atoi(mEnemyList.at(num + 2).c_str());
     data.scale = selectScale(mEnemyList.at(num + 3));
+    data.scaleName = mEnemyList.at(num + 3);
     data.type = selectType(mEnemyList.at(num + 4));
     data.spawnTime = atoi(mEnemyList.at(num + 5).c_str());
     data.spawnTime /= 60.f;

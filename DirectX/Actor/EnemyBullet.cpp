@@ -1,7 +1,7 @@
 #include "EnemyBullet.h"
+#include "../Component/Enemy/EnemyBulletComponent.h"
 #include "../Component/CircleCollisionComponent.h"
 #include "../Component/SpriteComponent.h"
-#include "../Component/EnemyBulletComponent.h"
 
 EnemyBullet::EnemyBullet(std::shared_ptr<Renderer> renderer, const char* tag) :
     Actor(tag),

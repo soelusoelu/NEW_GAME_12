@@ -1,10 +1,10 @@
 #include "EnemyComponent.h"
-#include "CircleCollisionComponent.h"
-#include "ComponentManager.h"
-#include "PlayerMoveComponent.h"
-#include "../Actor/Actor.h"
-#include "../Actor/Transform2D.h"
-#include "../Device/Time.h"
+#include "../CircleCollisionComponent.h"
+#include "../ComponentManager.h"
+#include "../PlayerMoveComponent.h"
+#include "../../Actor/Actor.h"
+#include "../../Actor/Transform2D.h"
+#include "../../Device/Time.h"
 
 EnemyComponent::EnemyComponent(Actor* owner) :
     Component(owner),

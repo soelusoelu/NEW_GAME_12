@@ -1,11 +1,11 @@
 #include "TackleEnemyComponent.h"
-#include "ComponentManager.h"
-#include "SpriteComponent.h"
-#include "../Actor/Actor.h"
-#include "../Actor/PlayerActor.h"
-#include "../Actor/ActorManager.h"
-#include "../Actor/Transform2D.h"
-#include "../Device/Time.h"
+#include "../ComponentManager.h"
+#include "../SpriteComponent.h"
+#include "../../Actor/Actor.h"
+#include "../../Actor/PlayerActor.h"
+#include "../../Actor/ActorManager.h"
+#include "../../Actor/Transform2D.h"
+#include "../../Device/Time.h"
 
 TackleEnemyComponent::TackleEnemyComponent(Actor* owner) :
     Component(owner),

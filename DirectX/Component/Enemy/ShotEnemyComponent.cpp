@@ -1,11 +1,11 @@
 #include "ShotEnemyComponent.h"
-#include "ComponentManager.h"
-#include "../Actor/Actor.h"
-#include "../Actor/EnemyBullet.h"
-#include "../Actor/Transform2D.h"
-#include "../Device/Time.h"
+#include "../ComponentManager.h"
+#include "../../Actor/Actor.h"
+#include "../../Actor/EnemyBullet.h"
+#include "../../Actor/Transform2D.h"
+#include "../../Device/Time.h"
 
-ShotEnemyComponent::ShotEnemyComponent(std::shared_ptr<Renderer> renderer, Actor* owner) :
+ShotEnemyComponent::ShotEnemyComponent(Actor* owner, std::shared_ptr<Renderer> renderer) :
     Component(owner),
     mRenderer(renderer),
     mShotTimer(std::make_unique<Time>(2.f)),

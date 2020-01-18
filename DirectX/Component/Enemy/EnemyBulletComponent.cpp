@@ -1,12 +1,12 @@
 #include "EnemyBulletComponent.h"
-#include "CircleCollisionComponent.h"
-#include "ComponentManager.h"
-#include "SpriteComponent.h"
-#include "../Actor/Actor.h"
-#include "../Actor/ActorManager.h"
-#include "../Actor/PlayerActor.h"
-#include "../Actor/Transform2D.h"
-#include "../Device/Time.h"
+#include "../CircleCollisionComponent.h"
+#include "../ComponentManager.h"
+#include "../SpriteComponent.h"
+#include "../../Actor/Actor.h"
+#include "../../Actor/ActorManager.h"
+#include "../../Actor/PlayerActor.h"
+#include "../../Actor/Transform2D.h"
+#include "../../Device/Time.h"
 
 EnemyBulletComponent::EnemyBulletComponent(Actor* owner) :
     Component(owner),

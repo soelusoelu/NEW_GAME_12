@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Component.h"
-#include "../Utility/Math.h"
+#include "../Component.h"
+#include "../../Utility/Math.h"
 #include <memory>
 
 enum class BulletState {
