@@ -27,13 +27,13 @@ Actor* Transform2D::getOwner() const {
 bool Transform2D::computeWorldTransform() {
     if (mIsRecomputeTransform) {
         if (auto p = mParent.lock()) {
-            mWorldTransform = Matrix4::createScale(Vector3(mScale * p->mScale, 1.f));
-            mWorldTransform *= Matrix4::createTranslation(-Vector3(mPivot, 0.f));
+            mWorldTransform = Matrix4::createTranslation(-Vector3(mDefaultPivot, 0.f));
+            mWorldTransform *= Matrix4::createScale(Vector3(mScale * p->mScale, 1.f));
             mWorldTransform *= Matrix4::createFromQuaternion(Quaternion::concatenate(mRotation, p->mRotation));
-            mWorldTransform *= Matrix4::createTranslation(mPosition + Vector3(p->mPosition.x, p->mPosition.y, 0.f) + Vector3(mPivot, 0.f));
+            mWorldTransform *= Matrix4::createTranslation(mPosition + Vector3(p->mPosition.x, p->mPosition.y, 0.f));
 
             //相対移動(途中)
-            //mWorldTransform = Matrix4::createTranslation(-Vector3(mPivot, 0.f));
+            //mWorldTransform = Matrix4::createTranslation(-Vector3(mDefaultPivot, 0.f));
             //mWorldTransform *= Matrix4::createScale(Vector3(mScale, 1.f));
             //mWorldTransform *= Matrix4::createFromQuaternion(mRotation);
             //mWorldTransform *= Matrix4::createTranslation(mPosition);
