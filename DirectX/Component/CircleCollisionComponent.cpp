@@ -11,9 +11,9 @@ CircleCollisionComponent::CircleCollisionComponent(Actor* owner) :
 CircleCollisionComponent::~CircleCollisionComponent() = default;
 
 void CircleCollisionComponent::startCollider() {
-    auto pivot = mOwner->transform()->getPivot();
+    auto pivot = mOwner->transform()->getPivot() * mOwner->transform()->getWorldScale();
     auto radius = Math::Max<float>(pivot.x, pivot.y);
-    mCircle = std::make_shared<Circle>(mOwner->transform()->getPosition(), radius);
+    mCircle = std::make_shared<Circle>(mOwner->transform()->getWorldPosition(), radius);
 }
 
 void CircleCollisionComponent::updateCollider() {
@@ -24,16 +24,10 @@ void CircleCollisionComponent::onUpdateWorldTransformCollider() {
         return;
     }
 
-    auto pivot = mOwner->transform()->getPivot() * mOwner->transform()->getScale();
+    auto pivot = mOwner->transform()->getPivot() * mOwner->transform()->getWorldScale();
     auto radius = Math::Max<float>(pivot.x, pivot.y);
 
-    auto parent = mOwner->transform()->parent();
-    if (parent) {
-        radius *= parent->getScale().x;
-        mCircle->set(parent->getPosition() + mOwner->transform()->getPosition(), radius);
-    } else {
-        mCircle->set(mOwner->transform()->getPosition(), radius);
-    }
+    mCircle->set(mOwner->transform()->getWorldPosition(), radius);
 }
 
 void CircleCollisionComponent::set(const Vector2 & center, float radius) {

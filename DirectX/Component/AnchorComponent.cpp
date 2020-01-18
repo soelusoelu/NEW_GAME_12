@@ -46,7 +46,7 @@ void AnchorComponent::update() {
 }
 
 void AnchorComponent::shot(const Vector2 & direction) {
-    mTargetPoint = playerPosition() + direction * MAX_LENGTH;
+    mTargetPoint = worldPosition() + direction * MAX_LENGTH;
     mHitEnemy = nullptr;
     mCurrentAnchorLength = 0.f;
     mState = AnchorState::EXTEND;
@@ -81,7 +81,7 @@ float AnchorComponent::hitAngle() const {
 void AnchorComponent::rotate() {
     if (mState != AnchorState::EXTEND || mState != AnchorState::HIT) {
         auto other = (isHit()) ? enemyPosition(): mTargetPoint;
-        auto dir = other - playerPosition();
+        auto dir = other - worldPosition();
         auto rot = Math::toDegrees(Math::atan2(dir.y, dir.x));
         mOwner->transform()->setRotation(rot);
     }
@@ -108,10 +108,10 @@ void AnchorComponent::updateCollider() {
         return;
     }
     //アンカーの先端にだけ当たり判定
-    auto dir = mTargetPoint - playerPosition();
+    auto dir = mTargetPoint - worldPosition();
     dir.normalize();
-    auto pos = playerPosition();
-    mCollide->set(playerPosition() + dir * mCurrentAnchorLength, 3.f);
+    auto pos = worldPosition();
+    mCollide->set(worldPosition() + dir * mCurrentAnchorLength, 3.f);
 }
 
 void AnchorComponent::hit() {
@@ -124,7 +124,7 @@ void AnchorComponent::hit() {
             mHitEnemy = hit->getOwner();
 
             //プレイヤーとエネミーとの角度計算
-            auto dir = enemyPosition() - playerPosition();
+            auto dir = enemyPosition() - worldPosition();
             mHitAngle = Math::toDegrees(Math::atan2(-dir.y, -dir.x));
 
             auto actor = mOwner->transform()->parent()->getOwner();
@@ -162,8 +162,8 @@ void AnchorComponent::changeState() {
     }
 }
 
-Vector2 AnchorComponent::playerPosition() const {
-    return mOwner->transform()->parent()->getPosition();
+Vector2 AnchorComponent::worldPosition() const {
+    return mOwner->transform()->getWorldPosition();
 }
 
 Vector2 AnchorComponent::enemyPosition() const {

@@ -63,8 +63,8 @@ Vector2INT SpriteComponent::getCurrentTextureSize() const {
 
 Vector2INT SpriteComponent::getScreenTextureSize() const {
     return Vector2INT(
-        mSprite->getCurrentTextureSize().x * mOwner->transform()->getScale().x,
-        mSprite->getCurrentTextureSize().y * mOwner->transform()->getScale().y
+        mSprite->getCurrentTextureSize().x * mOwner->transform()->getWorldScale().x,
+        mSprite->getCurrentTextureSize().y * mOwner->transform()->getWorldScale().y
     );
 }
 

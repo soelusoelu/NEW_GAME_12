@@ -21,6 +21,7 @@ public:
     //ピクセル単位で位置指定
     void setPosition(const Vector2& pos);
     Vector2 getPosition() const;
+    Vector2 getWorldPosition() const;
     void translate(const Vector2& translation);
 
     //描画優先順位
@@ -30,6 +31,7 @@ public:
     //回転
     void setRotation(float angle);
     Quaternion getRotation() const;
+    Quaternion getWorldRotation() const;
     void rotate(float angle);
 
     //回転ピボット位置
@@ -40,6 +42,7 @@ public:
     void setScale(const Vector2& scale);
     void setScale(float scale);
     Vector2 getScale() const;
+    Vector2 getWorldScale() const;
     
     //親子関係
     void addChild(std::shared_ptr<Transform2D> child);
@@ -52,7 +55,7 @@ public:
 
 private:
     void setParent(std::shared_ptr<Transform2D> parent);
-    void recomputeTransform();
+    void shouldRecomputeTransform();
 
 private:
     Actor* mOwner;
