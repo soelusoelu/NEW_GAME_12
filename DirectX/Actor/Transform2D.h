@@ -34,7 +34,7 @@ public:
     Quaternion getWorldRotation() const;
     void rotate(float angle);
 
-    //回転ピボット位置
+    //回転縮小ピボット位置
     void setPivot(const Vector2& pivot);
     Vector2 getPivot() const;
 
@@ -43,7 +43,11 @@ public:
     void setScale(float scale);
     Vector2 getScale() const;
     Vector2 getWorldScale() const;
-    
+
+    //テクスチャサイズ
+    void setTextureSize(const Vector2INT& size);
+    Vector2 getTextureSizeDiv2() const;
+
     //親子関係
     void addChild(std::shared_ptr<Transform2D> child);
     void removeChild(std::shared_ptr<Transform2D> child);
@@ -62,9 +66,9 @@ private:
     Matrix4 mWorldTransform;
     Vector3 mPosition;
     Quaternion mRotation;
-    Vector2 mDefaultPivot;
     Vector2 mPivot;
     Vector2 mScale;
+    Vector2 mTextureSizeDiv2;
     std::weak_ptr<Transform2D> mParent;
     std::list<std::shared_ptr<Transform2D>> mChildren;
     bool mIsRecomputeTransform;

@@ -7,7 +7,7 @@ SpriteComponent::SpriteComponent(Actor* owner, std::shared_ptr<Renderer> rendere
     Component(owner),
     mSprite(new Sprite(renderer, fileName, z, SpriteUsage::NONE, false)) {
     mOwner->transform()->setPrimary(z);
-    mOwner->transform()->setPivot(mSprite->getPivot());
+    mOwner->transform()->setTextureSize(mSprite->getCurrentTextureSize());
 }
 
 SpriteComponent::~SpriteComponent() {
@@ -46,7 +46,7 @@ Vector4 SpriteComponent::getColor() const {
 
 void SpriteComponent::setUV(float l, float t, float r, float b) {
     mSprite->setUV(l, t, r, b);
-    mOwner->transform()->setPivot(mSprite->getPivot());
+    mOwner->transform()->setTextureSize(mSprite->getCurrentTextureSize());
 }
 
 Vector4 SpriteComponent::getUV() const {
@@ -82,7 +82,7 @@ SpriteState SpriteComponent::getState() const {
 
 void SpriteComponent::setTexture(const char* fileName) {
     mSprite->setTexture(fileName);
-    mOwner->transform()->setPivot(mSprite->getPivot());
+    mOwner->transform()->setTextureSize(mSprite->getCurrentTextureSize());
 }
 
 std::shared_ptr<Texture> SpriteComponent::texture() const {

@@ -6,9 +6,9 @@ Transform2D::Transform2D(Actor* owner) :
     mWorldTransform(Matrix4::identity),
     mPosition(Vector3::zero),
     mRotation(Quaternion::identity),
-    mDefaultPivot(Vector2::zero),
     mPivot(Vector2::zero),
     mScale(Vector2::one),
+    mTextureSizeDiv2(Vector2::one),
     mParent(),
     mChildren(0),
     mIsRecomputeTransform(true) {
@@ -26,7 +26,7 @@ Actor* Transform2D::getOwner() const {
 
 bool Transform2D::computeWorldTransform() {
     if (mIsRecomputeTransform) {
-        mWorldTransform = Matrix4::createTranslation(-Vector3(mDefaultPivot, 0.f));
+        mWorldTransform = Matrix4::createTranslation(-Vector3(mTextureSizeDiv2 + mPivot, 0.f));
         mWorldTransform *= Matrix4::createScale(Vector3(getWorldScale(), 1.f));
         mWorldTransform *= Matrix4::createFromQuaternion(getWorldRotation());
         mWorldTransform *= Matrix4::createTranslation(Vector3(getWorldPosition(), mPosition.z));
@@ -115,7 +115,6 @@ void Transform2D::rotate(float angle) {
 }
 
 void Transform2D::setPivot(const Vector2& pivot) {
-    mDefaultPivot = pivot;
     mPivot = pivot;
     shouldRecomputeTransform();
 }
@@ -126,14 +125,12 @@ Vector2 Transform2D::getPivot() const {
 
 void Transform2D::setScale(const Vector2& scale) {
     mScale = scale;
-    mPivot = mDefaultPivot * scale;
     shouldRecomputeTransform();
 }
 
 void Transform2D::setScale(float scale) {
     mScale.x = scale;
     mScale.y = scale;
-    mPivot = mDefaultPivot * scale;
     shouldRecomputeTransform();
 }
 
@@ -150,6 +147,15 @@ Vector2 Transform2D::getWorldScale() const {
         root = root->mParent.lock();
     }
     return scale;
+}
+
+void Transform2D::setTextureSize(const Vector2INT& size) {
+    mTextureSizeDiv2 = Vector2(size.x, size.y) / 2.f;
+    shouldRecomputeTransform();
+}
+
+Vector2 Transform2D::getTextureSizeDiv2() const {
+    return mTextureSizeDiv2;
 }
 
 void Transform2D::addChild(std::shared_ptr<Transform2D> child) {

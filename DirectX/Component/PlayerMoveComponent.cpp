@@ -34,7 +34,6 @@ void PlayerMoveComponent::start() {
     mCollider = mOwner->componentManager()->getComponent<CircleCollisionComponent>();
 
     mOwner->transform()->addChild(mAnchor->transform());
-    mAnchor->transform()->setPivot(mAnchor->transform()->getPosition());
 }
 
 void PlayerMoveComponent::update() {

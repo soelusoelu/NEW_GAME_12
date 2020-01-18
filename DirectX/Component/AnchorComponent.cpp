@@ -31,6 +31,8 @@ void AnchorComponent::start() {
     mSpriteComp = mOwner->componentManager()->getComponent<SpriteComponent>();
     mSpriteComp->setActive(false);
     mCollide = mOwner->componentManager()->getComponent<CircleCollisionComponent>();
+
+    mOwner->transform()->setPivot(Vector2(-mOwner->transform()->getTextureSizeDiv2().x, 0.f));
 }
 
 void AnchorComponent::update() {

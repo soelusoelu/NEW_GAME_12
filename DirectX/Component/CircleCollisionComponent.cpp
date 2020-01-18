@@ -11,8 +11,8 @@ CircleCollisionComponent::CircleCollisionComponent(Actor* owner) :
 CircleCollisionComponent::~CircleCollisionComponent() = default;
 
 void CircleCollisionComponent::startCollider() {
-    auto pivot = mOwner->transform()->getPivot() * mOwner->transform()->getWorldScale();
-    auto radius = Math::Max<float>(pivot.x, pivot.y);
+    auto size = mOwner->transform()->getTextureSizeDiv2() * mOwner->transform()->getWorldScale();
+    auto radius = Math::Max<float>(size.x, size.y);
     mCircle = std::make_shared<Circle>(mOwner->transform()->getWorldPosition(), radius);
 }
 
@@ -24,8 +24,8 @@ void CircleCollisionComponent::onUpdateWorldTransformCollider() {
         return;
     }
 
-    auto pivot = mOwner->transform()->getPivot() * mOwner->transform()->getWorldScale();
-    auto radius = Math::Max<float>(pivot.x, pivot.y);
+    auto size = mOwner->transform()->getTextureSizeDiv2() * mOwner->transform()->getWorldScale();
+    auto radius = Math::Max<float>(size.x, size.y);
 
     mCircle->set(mOwner->transform()->getWorldPosition(), radius);
 }
