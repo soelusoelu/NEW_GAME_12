@@ -48,7 +48,7 @@ public:
 
     //テクスチャサイズ
     void setTextureSize(const Vector2& size);
-    Vector2 getTextureSizeDiv2() const;
+    Vector2 getTextureSize() const;
 
     //親子関係
     void addChild(std::shared_ptr<Transform2D> child);
@@ -70,7 +70,7 @@ private:
     Quaternion mRotation;
     Vector2 mPivot;
     Vector2 mScale;
-    Vector2 mTextureSizeDiv2;
+    Vector2 mTextureSize;
     std::weak_ptr<Transform2D> mParent;
     std::list<std::shared_ptr<Transform2D>> mChildren;
     bool mIsRecomputeTransform;

@@ -23,11 +23,14 @@ Sprite::Sprite(std::shared_ptr<Renderer> renderer, const char* fileName, float z
     mFileName(fileName),
     mUpdateMyself(updateMyself) {
 
-    mTransform->setPrimary(z);
-
+    //デスクをもとにサイズ取得
     auto desc = mTexture->desc();
     mDefaultSize = Vector2(desc.width, desc.height);
     mCurrentSize = mDefaultSize;
+
+    //Transformに通知
+    mTransform->setPrimary(z);
+    mTransform->setTextureSize(mCurrentSize);
 
     mTexture->createInputLayout(mRenderer, mShader->getCompiledShader());
 
@@ -63,13 +66,7 @@ void Sprite::draw(const Matrix4 & proj) {
         return;
     }
 
-    //バーテックスバッファーをセット
-    VertexStreamDesc stream;
-    stream.buffer = mTexture->getVertexBuffer();
-    stream.offset = 0;
-    stream.stride = sizeof(TextureVertex);
-    mRenderer->setVertexBuffer(&stream);
-    //自身を使用するシェーダーとして登録
+    //シェーダーを登録
     mShader->setVSShader();
     mShader->setPSShader();
     //コンスタントバッファーを使うシェーダーの登録
@@ -82,7 +79,7 @@ void Sprite::draw(const Matrix4 & proj) {
     D3D11_MAPPED_SUBRESOURCE pData;
     if (SUCCEEDED(mRenderer->deviceContext()->Map(mShader->getConstantBuffer()->buffer(), 0, D3D11_MAP_WRITE_DISCARD, 0, &pData))) {
         TextureShaderConstantBuffer cb;
-        //ワールド、カメラ、射影行列を渡す
+        //ワールド、射影行列を渡す
         cb.mWorld = mTransform->getWorldTransform();
         cb.mWorld.transpose();
         cb.mProjection = proj;
@@ -146,10 +143,8 @@ void Sprite::setUV(float l, float t, float r, float b) {
     mCurrentSize.x = mDefaultSize.x * (r - l);
     mCurrentSize.y = mDefaultSize.y * (b - t);
 
-    //バーテックスバッファを作り直す(ボトルネック)
-    mTexture->createVertexBuffer(mRenderer, mCurrentSize);
-
-    //mWorldUpdateFlag = true;
+    //テクスチャサイズを変更したことを通知
+    mTransform->setTextureSize(mCurrentSize);
 }
 
 Vector4 Sprite::getUV() const {
@@ -165,7 +160,7 @@ Vector2 Sprite::getCurrentTextureSize() const {
 }
 
 Vector2 Sprite::getOnScreenTextureSize() const {
-    return mCurrentSize.x * mTransform->getScale();
+    return mCurrentSize * mTransform->getWorldScale();
 }
 
 void Sprite::destroy(Sprite * sprite) {

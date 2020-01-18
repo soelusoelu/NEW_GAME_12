@@ -5,7 +5,6 @@
 #include "../Component/ComponentManager.h"
 #include "../Component/CircleCollisionComponent.h"
 #include "../Device/Time.h"
-#include "../System/Game.h"
 
 PlayerMoveComponent::PlayerMoveComponent(Actor* owner, std::shared_ptr<Renderer> renderer, int updateOrder) :
     Component(owner, updateOrder),

@@ -25,15 +25,15 @@ ID3D11DeviceContext* Renderer::deviceContext() const {
     return mDeviceContext;
 }
 
-Buffer* Renderer::createRawBuffer(const BufferDesc& desc, const SubResourceDesc* data) {
+Buffer* Renderer::createRawBuffer(const BufferDesc& desc, const SubResourceDesc* data) const {
     return new Buffer(mDevice, desc, data);
 }
 
-std::shared_ptr<Buffer> Renderer::createBuffer(const BufferDesc& desc, const SubResourceDesc* data) {
+std::shared_ptr<Buffer> Renderer::createBuffer(const BufferDesc& desc, const SubResourceDesc* data) const {
     return std::make_shared<Buffer>(mDevice, desc, data);
 }
 
-std::shared_ptr<InputElement> Renderer::createInputLayout(const InputElementDesc* layout, unsigned numElements, ID3D10Blob* compile) {
+std::shared_ptr<InputElement> Renderer::createInputLayout(const InputElementDesc* layout, unsigned numElements, ID3D10Blob* compile) const {
     return std::make_shared<InputElement>(mDevice, layout, numElements, compile);
 }
 

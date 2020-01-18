@@ -12,7 +12,7 @@ Transform2D::Transform2D(Actor* owner) :
     mRotation(Quaternion::identity),
     mPivot(Vector2::zero),
     mScale(Vector2::one),
-    mTextureSizeDiv2(Vector2::one),
+    mTextureSize(Vector2::zero),
     mParent(),
     mChildren(0),
     mIsRecomputeTransform(true) {
@@ -30,7 +30,8 @@ Actor* Transform2D::getOwner() const {
 
 bool Transform2D::computeWorldTransform() {
     if (mIsRecomputeTransform) {
-        mWorldTransform = Matrix4::createTranslation(-Vector3(mTextureSizeDiv2 + mPivot, 0.f));
+        mWorldTransform = Matrix4::createScale(Vector3(mTextureSize, 1.f)); //テクスチャサイズに
+        mWorldTransform *= Matrix4::createTranslation(-Vector3(mTextureSize * 0.5f + mPivot, 0.f)); //中心 + ピボットを原点に
         mWorldTransform *= Matrix4::createScale(Vector3(getWorldScale(), 1.f));
         mWorldTransform *= Matrix4::createFromQuaternion(getWorldRotation());
         mWorldTransform *= Matrix4::createTranslation(Vector3(getWorldPosition(), mPosition.z));
@@ -158,12 +159,12 @@ Vector2 Transform2D::getWorldScale() const {
 }
 
 void Transform2D::setTextureSize(const Vector2& size) {
-    mTextureSizeDiv2 = size / 2.f;
+    mTextureSize = size;
     shouldRecomputeTransform();
 }
 
-Vector2 Transform2D::getTextureSizeDiv2() const {
-    return mTextureSizeDiv2;
+Vector2 Transform2D::getTextureSize() const {
+    return mTextureSize;
 }
 
 void Transform2D::addChild(std::shared_ptr<Transform2D> child) {
