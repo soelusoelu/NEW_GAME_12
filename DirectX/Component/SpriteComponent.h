@@ -16,7 +16,6 @@ public:
     virtual void start() override;
     virtual void update() override;
     virtual void onUpdateWorldTransform() override;
-    Sprite* getSprite() const;
 
     //色味、たぶん0～1
     void setColor(const Vector3& color);
@@ -28,17 +27,16 @@ public:
     void setUV(float l, float t, float r, float b);
     Vector4 getUV() const;
     //テクスチャサイズの取得
-    Vector2INT getTextureSize() const;
+    Vector2 getTextureSize() const;
     //テクスチャの現在のサイズを取得
-    Vector2INT getCurrentTextureSize() const;
+    Vector2 getCurrentTextureSize() const;
     //スクリーン表示上のサイズの取得
-    Vector2INT getScreenTextureSize() const;
+    Vector2 getOnScreenTextureSize() const;
     //状態管理
     void setActive(bool value);
     bool getActive() const;
     SpriteState getState() const;
     //テクスチャ
-    void setTexture(const char* fileName);
     std::shared_ptr<Texture> texture() const;
     //シェーダーの取得
     std::shared_ptr<Shader> shader() const;

@@ -64,7 +64,7 @@ void Texture::createVertexBuffer(std::shared_ptr<Renderer> renderer) {
     mVertexBuffer = renderer->createBuffer(bd, &sub);
 }
 
-void Texture::createVertexBuffer(std::shared_ptr<Renderer> renderer, const Vector2INT& size) {
+void Texture::createVertexBuffer(std::shared_ptr<Renderer> renderer, const Vector2& size) {
     TextureVertex vertices[] = {
         Vector3(0.f, 0.f, 0.f), Vector2(0.f, 0.f), //左上
         Vector3(size.x, 0.f, 0.f), Vector2(1.f, 0.f), //右上
@@ -102,7 +102,7 @@ void Texture::drawAll(std::list<std::shared_ptr<Sprite>> sprites, std::shared_pt
     renderer->setIndexBuffer(mIndexBuffer);
 
     for (auto itr = sprites.begin(); itr != sprites.end(); ++itr) {
-        if ((*itr)->isUsageUI()) {
+        if ((*itr)->isUI()) {
             proj.m[3][0] = -1.f;
             proj.m[3][1] = 1.f;
         }

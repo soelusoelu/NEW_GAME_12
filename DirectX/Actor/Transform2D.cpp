@@ -1,6 +1,10 @@
 ﻿#include "Transform2D.h"
 #include "Actor.h"
 
+Transform2D::Transform2D() :
+    Transform2D(nullptr) {
+}
+
 Transform2D::Transform2D(Actor* owner) :
     mOwner(owner),
     mWorldTransform(Matrix4::identity),
@@ -36,6 +40,10 @@ bool Transform2D::computeWorldTransform() {
         return true;
     }
     return false;
+}
+
+void Transform2D::setWorldTransform(const Matrix4& world) {
+    mWorldTransform = world;
 }
 
 Matrix4 Transform2D::getWorldTransform() const {
@@ -149,8 +157,8 @@ Vector2 Transform2D::getWorldScale() const {
     return scale;
 }
 
-void Transform2D::setTextureSize(const Vector2INT& size) {
-    mTextureSizeDiv2 = Vector2(size.x, size.y) / 2.f;
+void Transform2D::setTextureSize(const Vector2& size) {
+    mTextureSizeDiv2 = size / 2.f;
     shouldRecomputeTransform();
 }
 

@@ -21,10 +21,10 @@ void AnchorPoint::updateUI() {
         if (!mPoint->getActive()) {
             return;
         }
-        auto full = Vector2(mPoint->getScreenTextureSize().x, mPoint->getScreenTextureSize().y);
+        auto full = Vector2(mPoint->getOnScreenTextureSize().x, mPoint->getOnScreenTextureSize().y);
         auto half = full / 2.f;
         auto point = (p->transform()->getPosition() + Vector2::normalize(p->getAnchorDirection()) * mLength) - half;
-        mPoint->setPosition(point);
+        mPoint->transform()->setPosition(point);
 
         //ポイント範囲調整
         //mPoint->setPosition(Vector2::clamp(

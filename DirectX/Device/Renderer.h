@@ -43,7 +43,6 @@ public:
 
     void draw(unsigned numVertex, unsigned start = 0);
     void drawIndexed(unsigned numIndices, unsigned startIndex = 0, int startVertex = 0);
-    void drawNumber(int number, const Vector2& position, bool isRightAlignment = false);
     void clear();
 
 private:

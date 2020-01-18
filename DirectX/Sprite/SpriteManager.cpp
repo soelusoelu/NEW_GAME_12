@@ -1,6 +1,7 @@
 ﻿#include "SpriteManager.h"
 #include "Sprite.h"
 #include "Texture.h"
+#include "../Actor/Transform2D.h"
 #include <algorithm>
 
 SpriteManager::SpriteManager() :
@@ -27,10 +28,10 @@ void SpriteManager::add(Sprite* add) {
 }
 
 void SpriteManager::add(std::shared_ptr<Sprite> add) {
-    float z = add->getDepth();
+    float z = add->transform()->getDepth();
     auto itr = mSprites.begin();
     for (; itr != mSprites.end(); ++itr) {
-        if (z > (*itr)->getDepth()) {
+        if (z > (*itr)->transform()->getDepth()) {
             break;
         }
     }
