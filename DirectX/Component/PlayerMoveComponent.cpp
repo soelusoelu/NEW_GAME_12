@@ -31,7 +31,7 @@ PlayerMoveComponent::~PlayerMoveComponent() = default;
 
 void PlayerMoveComponent::start() {
     mOwner->transform()->setPosition(Vector2(100.f, 200.f));
-    mOwner->transform()->setPrimary(2);
+    mOwner->transform()->setPrimary(10);
     mCollider = mOwner->componentManager()->getComponent<CircleCollisionComponent>();
 
     mOwner->transform()->addChild(mAnchor->transform());

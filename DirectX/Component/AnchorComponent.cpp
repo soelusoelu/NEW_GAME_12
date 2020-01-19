@@ -34,7 +34,7 @@ void AnchorComponent::start() {
     mCollide->disabled();
 
     mOwner->transform()->setPivot(Vector2(-mOwner->transform()->getSize().x * 0.5f, 0.f));
-    mOwner->transform()->setPrimary(1);
+    mOwner->transform()->setPrimary(5);
 }
 
 void AnchorComponent::update() {

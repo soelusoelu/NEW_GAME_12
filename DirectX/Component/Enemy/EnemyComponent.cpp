@@ -46,10 +46,9 @@ void EnemyComponent::hit() {
     for (auto&& c : mCollider->onCollisionEnter()) {
         if (c->getOwner()->tag() == "Player") {
             auto pmc = c->getOwner()->componentManager()->getComponent<PlayerMoveComponent>();
-            if (!pmc) {
-                return;
+            if (pmc) {
+                mHitDir = pmc->getMoveDirection();
             }
-            mHitDir = pmc->getMoveDirection();
 
             mState = EnemyState::HIT;
         }
@@ -57,6 +56,14 @@ void EnemyComponent::hit() {
 
     for (auto&& c : mCollider->onCollisionStay()) {
         if (c->getOwner()->tag() == "Player") {
+            auto p = c->getOwner()->transform();
+            auto e = mOwner->transform();
+
+            //‚ß‚èž‚Ü‚È‚¢ˆ—
+            auto d = Vector2::distance(p->getPosition(), e->getPosition());
+            auto r = (p->getSize().x * p->getScale().x / 2.f) + (e->getSize().x * e->getScale().x / 2.f);
+
+            e->translate(Vector2::normalize(mHitDir) * (r - d));
         }
     }
 }

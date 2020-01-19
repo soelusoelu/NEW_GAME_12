@@ -13,7 +13,10 @@ Transform2D::Transform2D(Actor* owner) :
     mChildren(0),
     mIsRecomputeTransform(true) {
     mCount++;
-    setPrimary(50);
+    //setPrimary(50);
+    float c = static_cast<float>(mCount) / 50000.f;
+    mPosition.z = 0.5f - c;
+    mPosition.z = Math::clamp<float>(mPosition.z, 0.f, 1.f);
 }
 
 Transform2D::~Transform2D() {
