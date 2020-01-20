@@ -21,6 +21,8 @@ class Shader;
 class SubResourceDesc;
 class Texture;
 class VertexStreamDesc;
+class SoundBase;
+class Sound;
 
 class Renderer : public std::enable_shared_from_this<Renderer> {
 public:
@@ -38,8 +40,9 @@ public:
     void setInputLayout(std::shared_ptr<InputElement> layout);
     void setPrimitive(PrimitiveType primitive);
 
-    std::shared_ptr<Shader> createShader(const char* fileName, const char* VSFuncName, const char* PSFuncName);
+    std::shared_ptr<Shader> createShader(const char* fileName);
     std::shared_ptr<Texture> createTexture(const char* fileName);
+    std::shared_ptr<Sound> createSound(const char* fileName);
 
     void draw(unsigned numVertex, unsigned start = 0);
     void drawIndexed(unsigned numIndices, unsigned startIndex = 0, int startVertex = 0);
@@ -51,8 +54,10 @@ private:
 private:
     ID3D11Device* mDevice;
     ID3D11DeviceContext* mDeviceContext;
+    std::unique_ptr<SoundBase> mSoundBase;
 
     std::unordered_map<const char*, std::shared_ptr<Shader>> mShaders;
     std::unordered_map<const char*, std::shared_ptr<Texture>> mTextures;
+    std::unordered_map<const char*, std::shared_ptr<Sound>> mSounds;
 };
 

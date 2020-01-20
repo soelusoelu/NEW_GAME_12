@@ -149,6 +149,7 @@
     <ClCompile Include="Actor\EnemyActor.cpp" />
     <ClCompile Include="Actor\EnemyFactory.cpp" />
     <ClCompile Include="Component\Enemy\TackleEnemyComponent.cpp" />
+    <ClCompile Include="Device\Sound.cpp" />
     <ClCompile Include="UI\AnchorPoint.cpp" />
     <ClCompile Include="Component\AnchorComponent.cpp" />
     <ClCompile Include="Component\CircleCollisionComponent.cpp" />
@@ -199,6 +200,7 @@
     <ClInclude Include="Actor\EnemyActor.h" />
     <ClInclude Include="Actor\EnemyFactory.h" />
     <ClInclude Include="Component\Enemy\TackleEnemyComponent.h" />
+    <ClInclude Include="Device\Sound.h" />
     <ClInclude Include="UI\AnchorPoint.h" />
     <ClInclude Include="Component\AnchorComponent.h" />
     <ClInclude Include="Component\CircleCollisionComponent.h" />

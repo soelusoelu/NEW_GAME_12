@@ -17,7 +17,7 @@ Sprite::Sprite(std::shared_ptr<Renderer> renderer, const char* fileName, std::sh
     mRenderer(renderer),
     mTransform(transform),
     mTexture(mRenderer->createTexture(fileName)),
-    mShader(mRenderer->createShader("Texture.hlsl", "VS", "PS")),
+    mShader(mRenderer->createShader("Texture.hlsl")),
     mTextureSize(Vector2::zero),
     mColor(ColorPalette::white, 1.f),
     mUV(0.f, 0.f, 1.f, 1.f),

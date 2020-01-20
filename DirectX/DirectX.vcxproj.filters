@@ -52,6 +52,7 @@
     <ClCompile Include="Component\Enemy\ShotEnemyComponent.cpp" />
     <ClCompile Include="Component\Enemy\TackleEnemyComponent.cpp" />
     <ClCompile Include="Component\HitPointComponent.cpp" />
+    <ClCompile Include="Device\Sound.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor\ActorManager.h" />
@@ -107,5 +108,6 @@
     <ClInclude Include="Component\Enemy\ShotEnemyComponent.h" />
     <ClInclude Include="Component\Enemy\TackleEnemyComponent.h" />
     <ClInclude Include="Component\HitPointComponent.h" />
+    <ClInclude Include="Device\Sound.h" />
   </ItemGroup>
 </Project>

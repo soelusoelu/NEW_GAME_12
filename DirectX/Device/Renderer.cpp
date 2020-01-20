@@ -1,4 +1,5 @@
 ﻿#include "Renderer.h"
+#include "Sound.h"
 #include "../System/Buffer.h"
 #include "../Shader/Shader.h"
 #include "../System/DirectXIncLib.h"
@@ -8,14 +9,16 @@
 #include "../System/VertexStreamDesc.h"
 #include "../Sprite/Texture.h"
 #include "../Sprite/Sprite.h"
-#include <string>
 
 Renderer::Renderer(ID3D11Device* device, ID3D11DeviceContext* context) :
     mDevice(device),
-    mDeviceContext(context) {
+    mDeviceContext(context),
+    mSoundBase(std::make_unique<SoundBase>()) {
 }
 
-Renderer::~Renderer() = default;
+Renderer::~Renderer() {
+    mSounds.clear();
+}
 
 ID3D11Device* Renderer::device() const {
     return mDevice;
@@ -25,15 +28,15 @@ ID3D11DeviceContext* Renderer::deviceContext() const {
     return mDeviceContext;
 }
 
-Buffer* Renderer::createRawBuffer(const BufferDesc& desc, const SubResourceDesc* data) const {
+Buffer* Renderer::createRawBuffer(const BufferDesc & desc, const SubResourceDesc * data) const {
     return new Buffer(mDevice, desc, data);
 }
 
-std::shared_ptr<Buffer> Renderer::createBuffer(const BufferDesc& desc, const SubResourceDesc* data) const {
+std::shared_ptr<Buffer> Renderer::createBuffer(const BufferDesc & desc, const SubResourceDesc * data) const {
     return std::make_shared<Buffer>(mDevice, desc, data);
 }
 
-std::shared_ptr<InputElement> Renderer::createInputLayout(const InputElementDesc* layout, unsigned numElements, ID3D10Blob* compile) const {
+std::shared_ptr<InputElement> Renderer::createInputLayout(const InputElementDesc * layout, unsigned numElements, ID3D10Blob * compile) const {
     return std::make_shared<InputElement>(mDevice, layout, numElements, compile);
 }
 
@@ -49,7 +52,7 @@ void Renderer::setVertexBuffer(const VertexStreamDesc * stream, unsigned numStre
     mDeviceContext->IASetVertexBuffers(start, numStream, &buffer, &stream->stride, &stream->offset);
 }
 
-void Renderer::setIndexBuffer(Buffer* buffer, unsigned offset) {
+void Renderer::setIndexBuffer(Buffer * buffer, unsigned offset) {
     mDeviceContext->IASetIndexBuffer(buffer->buffer(), DXGI_FORMAT_R16_UINT, offset);
 }
 
@@ -61,13 +64,13 @@ void Renderer::setPrimitive(PrimitiveType primitive) {
     mDeviceContext->IASetPrimitiveTopology(toPrimitiveMode(primitive));
 }
 
-std::shared_ptr<Shader> Renderer::createShader(const char* fileName, const char* VSFuncName, const char* PSFuncName) {
+std::shared_ptr<Shader> Renderer::createShader(const char* fileName) {
     std::shared_ptr<Shader> shader;
     auto itr = mShaders.find(fileName);
     if (itr != mShaders.end()) { //既に読み込まれている
         shader = itr->second;
     } else { //初読み込み
-        shader = std::make_shared<Shader>(shared_from_this(), fileName, VSFuncName, PSFuncName);
+        shader = std::make_shared<Shader>(shared_from_this(), fileName);
         mShaders.emplace(fileName, shader);
     }
     return shader;
@@ -85,6 +88,19 @@ std::shared_ptr<Texture> Renderer::createTexture(const char* fileName) {
     return texture;
 }
 
+std::shared_ptr<Sound> Renderer::createSound(const char* fileName) {
+    std::shared_ptr<Sound> sound;
+    auto itr = mSounds.find(fileName);
+    if (itr != mSounds.end()) { //既に読み込まれている
+        sound = itr->second;
+    } else { //初読み込み
+        sound = std::make_shared<Sound>();
+        mSoundBase->load(fileName, &sound);
+        mSounds.emplace(fileName, sound);
+    }
+    return sound;
+}
+
 void Renderer::draw(unsigned numVertex, unsigned start) {
     mDeviceContext->Draw(numVertex, start);
 }
@@ -96,6 +112,7 @@ void Renderer::drawIndexed(unsigned numIndices, unsigned startIndex, int startVe
 void Renderer::clear() {
     mShaders.clear();
     mTextures.clear();
+    mSounds.clear();
 }
 
 D3D11_PRIMITIVE_TOPOLOGY Renderer::toPrimitiveMode(PrimitiveType primitive) {
