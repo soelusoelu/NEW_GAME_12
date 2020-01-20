@@ -53,6 +53,7 @@
     <ClCompile Include="Component\Enemy\TackleEnemyComponent.cpp" />
     <ClCompile Include="Component\HitPointComponent.cpp" />
     <ClCompile Include="Device\Sound.cpp" />
+    <ClCompile Include="Map\Map.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor\ActorManager.h" />
@@ -109,5 +110,6 @@
     <ClInclude Include="Component\Enemy\TackleEnemyComponent.h" />
     <ClInclude Include="Component\HitPointComponent.h" />
     <ClInclude Include="Device\Sound.h" />
+    <ClInclude Include="Map\Map.h" />
   </ItemGroup>
 </Project>

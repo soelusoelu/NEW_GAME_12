@@ -6,6 +6,7 @@
 #include "../Component/Collider.h"
 #include "../Device/Camera2d.h"
 #include "../Device/Physics.h"
+#include "../Map/Map.h"
 #include "../Scene/Title.h"
 #include "../System/Game.h"
 #include "../UI/AnchorPoint.h"
@@ -35,7 +36,9 @@ void GamePlay::startScene() {
     auto p = mActorManager->getPlayer();
     new AnchorPoint(mRenderer, p);
     mCamera2d = std::make_shared<Camera2d>(p);
-    mCamera2d->init(1000, 1000);
+    mCamera2d->init(10000, 10000);
+    //Map* mMap = new Map();
+    //mMap->init("test.csv");
 }
 
 void GamePlay::updateScene() {

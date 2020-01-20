@@ -3,6 +3,7 @@
 #include <cassert>
 #include <fstream>
 #include <sstream>
+#include <string>
 
 CSVReader::CSVReader() :
     mCSV(0),
