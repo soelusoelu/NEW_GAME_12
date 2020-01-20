@@ -46,6 +46,7 @@
     <ClCompile Include="Component\AnchorComponent.cpp" />
     <ClCompile Include="UI\AnchorPoint.cpp" />
     <ClCompile Include="Device\Camera2d.cpp" />
+    <ClCompile Include="Map\Map.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor\ActorManager.h" />
@@ -95,5 +96,6 @@
     <ClInclude Include="Component\AnchorComponent.h" />
     <ClInclude Include="UI\AnchorPoint.h" />
     <ClInclude Include="Device\Camera2d.h" />
+    <ClInclude Include="Map\Map.h" />
   </ItemGroup>
 </Project>

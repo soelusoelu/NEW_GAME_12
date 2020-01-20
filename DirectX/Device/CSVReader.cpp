@@ -3,6 +3,7 @@
 #include <cassert>
 #include <fstream>
 #include <sstream>
+#include <string>
 
 CSVReader::CSVReader(const char* fileName) :
     mCSV(0),
@@ -60,3 +61,4 @@ void CSVReader::parse(const char* fileName) {
     }
     mHeightCount = mCSV.size() / mWidthCount;
 }
+

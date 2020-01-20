@@ -13,7 +13,6 @@ public:
 
 private:
     void parse(const char* fileName);
-
 private:
     std::vector<int> mCSV;
     int mWidthCount;
