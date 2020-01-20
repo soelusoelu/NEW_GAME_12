@@ -4,9 +4,9 @@
 #include "../Component/SpriteComponent.h"
 
 EnemyBullet::EnemyBullet(std::shared_ptr<Renderer> renderer, const char* tag) :
-    Actor(tag),
+    Actor(renderer, tag),
     mCircle(new CircleCollisionComponent(this)),
-    mSprite(new SpriteComponent(this, renderer, "fire.png")),
+    mSprite(new SpriteComponent(this, "fire.png")),
     mBullet(new EnemyBulletComponent(this)) {
     mSprite->setActive(false);
 }

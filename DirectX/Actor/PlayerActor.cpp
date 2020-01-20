@@ -5,10 +5,10 @@
 #include "../Component/SpriteComponent.h"
 
 PlayerActor::PlayerActor(std::shared_ptr<Renderer> renderer, const char* tag) :
-    Actor(tag),
+    Actor(renderer, tag),
     mCollide(new CircleCollisionComponent(this)),
-    mSprite(new SpriteComponent(this, renderer, "circleP.png")),
-    mMove(new PlayerMoveComponent(this, renderer)) {
+    mSprite(new SpriteComponent(this, "circleP.png")),
+    mMove(new PlayerMoveComponent(this)) {
 }
 
 PlayerActor::~PlayerActor() = default;

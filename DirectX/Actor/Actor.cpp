@@ -4,7 +4,8 @@
 #include "../Component/ComponentManager.h"
 #include "../Device/Time.h"
 
-Actor::Actor(const char* tag) :
+Actor::Actor(std::shared_ptr<Renderer> renderer, const char* tag) :
+    mRenderer(renderer),
     mComponentManager(std::make_shared<ComponentManager>()),
     mTransform(std::make_shared<Transform2D>(this)),
     mDestroyTimer(nullptr),
@@ -57,6 +58,10 @@ void Actor::destroy(std::shared_ptr<Actor> actor, float sec) {
         return;
     }
     actor->mDestroyTimer = std::make_unique<Time>(sec);
+}
+
+std::shared_ptr<Renderer> Actor::renderer() const {
+    return mRenderer;
 }
 
 std::shared_ptr<ComponentManager> Actor::componentManager() const {

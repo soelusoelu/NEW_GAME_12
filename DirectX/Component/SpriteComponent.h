@@ -11,7 +11,7 @@ class Sprite;
 
 class SpriteComponent : public Component {
 public:
-    SpriteComponent(Actor* owner, std::shared_ptr<Renderer> renderer, const char* fileName);
+    SpriteComponent(Actor* owner, const char* fileName);
     ~SpriteComponent();
     virtual void start() override;
     virtual void update() override;

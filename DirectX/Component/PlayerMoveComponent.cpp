@@ -7,10 +7,9 @@
 #include "../Device/Time.h"
 #include "../System/Game.h"
 
-PlayerMoveComponent::PlayerMoveComponent(Actor* owner, std::shared_ptr<Renderer> renderer, int updateOrder) :
+PlayerMoveComponent::PlayerMoveComponent(Actor* owner, int updateOrder) :
     Component(owner, updateOrder),
-    mAnchor(new AnchorActor(renderer)),
-    mRenderer(renderer),
+    mAnchor(new AnchorActor(mOwner->renderer())),
     mCollider(nullptr),
     mAcceleration(Vector2(30.f, 0.f)),
     mAccelerationSpeed(120.f),

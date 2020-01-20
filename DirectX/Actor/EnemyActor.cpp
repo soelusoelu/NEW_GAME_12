@@ -7,15 +7,15 @@
 #include "../Component/SpriteComponent.h"
 
 EnemyActor::EnemyActor(std::shared_ptr<Renderer> renderer, EnemyType type, const std::string& scale, const char* tag) :
-    Actor(tag),
+    Actor(renderer, tag),
     mCollide(new CircleCollisionComponent(this)),
-    mSprite(new SpriteComponent(this, renderer, "player.png")),
+    mSprite(new SpriteComponent(this, "player.png")),
     mHP(new HitPointComponent(this, 1)), //HP‚Í‰¼
     mEnemy(new EnemyComponent(this)) {
     if (type == EnemyType::NORMAL) {
         //‚È‚µ
     } else if (type == EnemyType::SHOT) {
-        new ShotEnemyComponent(this, renderer);
+        new ShotEnemyComponent(this);
     } else if (type == EnemyType::TACKLE) {
         new TackleEnemyComponent(this);
     }

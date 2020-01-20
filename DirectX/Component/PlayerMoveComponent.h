@@ -12,7 +12,7 @@ class CircleCollisionComponent;
 
 class PlayerMoveComponent : public Component {
 public:
-    PlayerMoveComponent(Actor* owner, std::shared_ptr<Renderer> renderer, int updateOrder = 10);
+    PlayerMoveComponent(Actor* owner, int updateOrder = 10);
     ~PlayerMoveComponent();
     virtual void start() override;
     virtual void update() override;
@@ -35,7 +35,6 @@ private:
 
 private:
     AnchorActor* mAnchor;
-    std::shared_ptr<Renderer> mRenderer;
     std::shared_ptr<CircleCollisionComponent> mCollider;
     Vector2 mAcceleration; //現加速度
     float mAccelerationSpeed; //追加速度

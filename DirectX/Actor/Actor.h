@@ -8,14 +8,15 @@ enum class ActorState {
     DEAD
 };
 
+class ActorManager;
 class ComponentManager;
+class Renderer;
 class Transform2D;
 class Time;
-class ActorManager;
 
 class Actor {
 protected:
-    Actor(const char* tag = "");
+    Actor(std::shared_ptr<Renderer> renderer, const char* tag = "");
 public:
     virtual ~Actor();
 
@@ -34,6 +35,7 @@ public:
     static void destroy(std::shared_ptr<Actor> actor, float sec);
 
     //ゲッター、セッター
+    std::shared_ptr<Renderer> renderer() const;
     std::shared_ptr<ComponentManager> componentManager() const;
     std::shared_ptr<Transform2D> transform() const;
     ActorState getState() const;
@@ -47,6 +49,7 @@ private:
     void destroyTimer();
 
 private:
+    std::shared_ptr<Renderer> mRenderer;
     std::shared_ptr<ComponentManager> mComponentManager;
     std::shared_ptr<Transform2D> mTransform;
     std::unique_ptr<Time> mDestroyTimer;

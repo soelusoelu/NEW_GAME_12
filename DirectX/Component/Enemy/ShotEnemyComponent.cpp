@@ -5,9 +5,8 @@
 #include "../../Actor/Transform2D.h"
 #include "../../Device/Time.h"
 
-ShotEnemyComponent::ShotEnemyComponent(Actor* owner, std::shared_ptr<Renderer> renderer) :
+ShotEnemyComponent::ShotEnemyComponent(Actor* owner) :
     Component(owner),
-    mRenderer(renderer),
     mShotTimer(std::make_unique<Time>(2.f)),
     mEnemyBulletList(0) {
 }
@@ -16,7 +15,7 @@ ShotEnemyComponent::~ShotEnemyComponent() = default;
 
 void ShotEnemyComponent::start() {
     for (size_t i = 0; i < MAX_BULLET_COUNT; i++) {
-        auto e = new EnemyBullet(mRenderer);
+        auto e = new EnemyBullet(mOwner->renderer());
         mEnemyBulletList.emplace_back(e);
         mOwner->transform()->addChild(e->transform());
     }
