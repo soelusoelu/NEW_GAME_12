@@ -7,7 +7,8 @@ Camera2d::Camera2d(std::shared_ptr<PlayerActor> Player):
 	mCameraPos(Vector2(0.f,0.f)),
 	mPlayer(Player),
 	mXPos(0),
-	mYPos(0)
+	mYPos(0),
+    mPreviousPlayerPos(Vector2::zero)
 {
 	
 }
@@ -66,11 +67,13 @@ Vector2 Camera2d::getCameraPos()
 	return mCameraPos;
 }
 
-Vector2 Camera2d::getPlayerPos() const
+Vector2 Camera2d::getPlayerPos()
 {
 	if (auto p = mPlayer.lock())
 	{
-		return p->transform()->getPosition();
+        auto pos = p->transform()->getPosition();
+        mPreviousPlayerPos = pos;
+        return pos;
 	}
-	return Vector2::zero;
+    return mPreviousPlayerPos;
 }

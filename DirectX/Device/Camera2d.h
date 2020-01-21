@@ -14,9 +14,10 @@ public:
 	void setPlayer(std::shared_ptr<PlayerActor> Player);
 	Vector2 getCameraPos();
 private:
-	Vector2 getPlayerPos()const;
+	Vector2 getPlayerPos();
     Vector2 mCameraPos;//カメラの位置
 	std::weak_ptr<PlayerActor> mPlayer;//プレイヤーの位置
 	int mXPos;//マップのX値
 	int mYPos;//マップのY値
+    Vector2 mPreviousPlayerPos;
 };
