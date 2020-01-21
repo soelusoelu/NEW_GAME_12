@@ -143,6 +143,7 @@
     <ClCompile Include="Actor\AnchorActor.cpp" />
     <ClCompile Include="Component\HitPointComponent.cpp" />
     <ClCompile Include="Device\Camera2d.cpp" />
+    <ClCompile Include="Actor\Hole.cpp" />
     <ClCompile Include="Component\Enemy\ShotEnemyComponent.cpp" />
     <ClCompile Include="Actor\EnemyBullet.cpp" />
     <ClCompile Include="Component\Enemy\EnemyBulletComponent.cpp" />
@@ -152,6 +153,7 @@
     <ClCompile Include="Device\Sound.cpp" />
     <ClCompile Include="Map\Map.cpp" />
     <ClCompile Include="Component\SoundComponent.cpp" />
+    <ClCompile Include="Actor\Pillar.cpp" />
     <ClCompile Include="UI\AnchorPoint.cpp" />
     <ClCompile Include="Component\AnchorComponent.cpp" />
     <ClCompile Include="Component\CircleCollisionComponent.cpp" />
@@ -189,6 +191,7 @@
     <ClCompile Include="System\Entry.cpp" />
     <ClCompile Include="System\Game.cpp" />
     <ClCompile Include="System\Window.cpp" />
+    <ClCompile Include="Actor\Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor\ActorManager.h" />
@@ -196,6 +199,7 @@
     <ClInclude Include="Actor\AnchorActor.h" />
     <ClInclude Include="Component\HitPointComponent.h" />
     <ClInclude Include="Device\Camera2d.h" />
+    <ClInclude Include="Actor\Hole.h" />
     <ClInclude Include="Component\Enemy\ShotEnemyComponent.h" />
     <ClInclude Include="Actor\EnemyBullet.h" />
     <ClInclude Include="Component\Enemy\EnemyBulletComponent.h" />
@@ -205,6 +209,7 @@
     <ClInclude Include="Device\Sound.h" />
     <ClInclude Include="Map\Map.h" />
     <ClInclude Include="Component\SoundComponent.h" />
+    <ClInclude Include="Actor\Pillar.h" />
     <ClInclude Include="UI\AnchorPoint.h" />
     <ClInclude Include="Component\AnchorComponent.h" />
     <ClInclude Include="Component\CircleCollisionComponent.h" />
@@ -247,6 +252,7 @@
     <ClInclude Include="System\DirectXIncLib.h" />
     <ClInclude Include="System\Game.h" />
     <ClInclude Include="System\Window.h" />
+    <ClInclude Include="Actor\Wall.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Shader\Texture.hlsl">
