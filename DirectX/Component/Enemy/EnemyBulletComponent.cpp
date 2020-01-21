@@ -46,8 +46,10 @@ void EnemyBulletComponent::update() {
 
 void EnemyBulletComponent::shot() {
     auto player = mOwner->getActorManager()->getPlayer();
-    auto toPlayer = player->transform()->getPosition() - mOwner->transform()->parent()->getPosition();
-    mBulletDir = Vector2::normalize(toPlayer);
+    if (player) {
+        auto toPlayer = player->transform()->getPosition() - mOwner->transform()->parent()->getPosition();
+        mBulletDir = Vector2::normalize(toPlayer);
+    }
 
     mState = BulletState::UPDATING;
     mCollider->enabled();
