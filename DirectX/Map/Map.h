@@ -33,11 +33,13 @@ public:
 	int returnHeight();//マップ全体の縦大きさ
 	void create(const GimmickData& data);
 
+	static int width;
+	static int height;
+    static int wallSize;
+
 private:
 	std::shared_ptr<Renderer> mRenderer;
 	CSVReader* mCSVReader;
 	std::vector<int> mCSV;
 	std::list<GimmickData>mGimmickData;
-	int mWidth;
-	int mHeight;
 };

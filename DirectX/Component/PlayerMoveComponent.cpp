@@ -6,6 +6,7 @@
 #include "../Component/CircleCollisionComponent.h"
 #include "../Component/SoundComponent.h"
 #include "../Device/Time.h"
+#include "../Map/Map.h"
 #include "../System/Game.h"
 
 PlayerMoveComponent::PlayerMoveComponent(Actor* owner, int updateOrder) :
@@ -161,12 +162,12 @@ void PlayerMoveComponent::anchorUpdate() {
 }
 
 void PlayerMoveComponent::clamp() {
-    //auto t = mOwner->transform();
-    //t->setPosition(Vector2::clamp(
-    //    t->getPosition(),
-    //    Vector2::zero + mOwner->transform()->getSize() / 2.f,
-    //    Vector2(Game::WINDOW_WIDTH, Game::WINDOW_HEIGHT) - mOwner->transform()->getSize() / 2.f
-    //));
+    auto t = mOwner->transform();
+    t->setPosition(Vector2::clamp(
+        t->getPosition(),
+        Vector2::zero + mOwner->transform()->getSize(),
+        Vector2(Map::width * Map::wallSize, (Map::height - 1) * Map::wallSize) - mOwner->transform()->getSize()
+    ));
 
     //最大最小加速度
     auto range = (isHitAnchor()) ? mAnchorAccelerationRange : mAccelerationRange;

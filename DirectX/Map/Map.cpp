@@ -10,9 +10,7 @@ Map::Map(std::shared_ptr<Renderer> renderer) :
 	mRenderer(renderer),
 	mCSVReader(nullptr),
 	mCSV(0),
-	mGimmickData(0),
-	mWidth(0),
-	mHeight(0)
+	mGimmickData(0)
 {
 
 }
@@ -28,8 +26,8 @@ void Map::init(const char * filename)
 	mCSVReader = new CSVReader(filename);
 	mCSV = mCSVReader->load(filename);
 
-	mWidth = mCSVReader->getWidth();
-	mHeight = mCSVReader->getHeight();
+	width = mCSVReader->getWidth();
+	height = mCSVReader->getHeight();
 	auto a = mCSV.size();
 	for (int i = mCSV.size() - 1; i >= 0; --i)
 	{
@@ -62,12 +60,12 @@ void Map::update()
 
 int Map::returnWidth()
 {
-	return mWidth * 64;
+	return width * 64;
 }
 
 int Map::returnHeight()
 {
-	return mHeight * 64;
+	return height * 64;
 }
 
 void Map::create(const GimmickData & data)
@@ -85,3 +83,7 @@ void Map::create(const GimmickData & data)
 		auto p = new Pillar(mRenderer, data.position);
 	}
 }
+
+int Map::width = 0;
+int Map::height = 0;
+int Map::wallSize = 64;

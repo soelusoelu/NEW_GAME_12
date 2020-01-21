@@ -39,7 +39,6 @@ void GamePlay::startScene() {
 	Map* mMap = new Map(mRenderer);
 	mMap->init("test.csv");
     mCamera2d = std::make_shared<Camera2d>(p);
-    mCamera2d->init(10000, 10000);
 
 	mCamera2d->init(mMap->returnWidth() - 64, mMap->returnHeight() - 64);
 	delete(mMap);
