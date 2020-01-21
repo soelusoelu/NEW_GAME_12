@@ -24,6 +24,8 @@ public:
 	Vector2& getPosWall(int i);//壁の位置情報を返す
 	Vector2& getPosHole(int i);//穴の位置情報を返す
 	Vector2& getPosPillar(int i);//柱の位置情報を返す
+	int returnWidth();//マップ全体の横大きさ
+	int returnHeight();//マップ全体の縦大きさ
 
 private:
 	//Vector2* mWallPos;//位置保管用

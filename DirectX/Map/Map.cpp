@@ -70,3 +70,13 @@ Vector2 & Map::getPosPillar(int i)
 {
 	return mPillarPos[i];
 }
+
+int Map::returnWidth()
+{
+	return mWidth * 64;
+}
+
+int Map::returnHeight()
+{
+	return mHeight * 64;
+}
