@@ -57,7 +57,7 @@ void Map::init(const char * filename)
 
 void Map::update()
 {
-
+	
 }
 
 int Map::returnWidth()
@@ -76,11 +76,11 @@ void Map::create(const GimmickData & data)
 	{
 		auto w = new Wall(mRenderer, data.position);
 	}
-	else if (data.type == Category::WALL)
+	else if (data.type == Category::HOLE)
 	{
 		auto h = new Hole(mRenderer, data.position);
 	}
-	else if (data.type == Category::WALL)
+	else if (data.type == Category::PILLAR)
 	{
 		auto p = new Pillar(mRenderer, data.position);
 	}

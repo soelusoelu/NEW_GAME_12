@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Actor.h"
+#include "../Component/GimmickComponent.h"
 #include "../Utility/Math.h"
 #include <memory>
 
@@ -18,5 +19,6 @@ public:
 private:
 	CircleCollisionComponent* mCollide;
 	SpriteComponent* mSprite;
+	GimmickComponent* mGimmick;
 };
 

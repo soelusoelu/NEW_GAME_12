@@ -42,6 +42,7 @@ void GamePlay::startScene() {
     mCamera2d->init(10000, 10000);
 
 	mCamera2d->init(mMap->returnWidth() - 64, mMap->returnHeight() - 64);
+	delete(mMap);
 }
 
 void GamePlay::updateScene() {

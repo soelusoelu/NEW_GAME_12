@@ -20,14 +20,18 @@ void Camera2d::init(int mXPos, int mYPos)
 {
 	this->mXPos = mXPos;
 	this->mYPos = mYPos;
-	//カメラ位置はマップの中心
-	//this->mCameraPos = Vector2(Game::WINDOW_WIDTH / 2, Game::WINDOW_HEIGHT / 2);
 }
 
 void Camera2d::update()
 {
-	//this->mCameraPos = getPlayerPos();
 	
+	if (auto p = mPlayer.lock())
+	{
+		if (p->isHitAnchor())
+		{
+			return;
+		}
+	}
 	//カメラX値の2/3を超えたらプレーヤーとともにカメラを移動させる
 	if ((mCameraPos.x + Game::WINDOW_WIDTH < mXPos) && (getPlayerPos().x > mCameraPos.x + Game::WINDOW_WIDTH * 2 / 3))
 	{
