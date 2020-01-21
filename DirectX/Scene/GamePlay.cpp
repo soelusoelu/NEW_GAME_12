@@ -11,6 +11,7 @@
 #include "../System/Game.h"
 #include "../UI/AnchorPoint.h"
 #include "../UI/Pause.h"
+#include "../Device/Sound.h"
 
 GamePlay::GamePlay() :
     SceneBase(),
@@ -37,6 +38,7 @@ void GamePlay::startScene() {
     new AnchorPoint(mRenderer, p);
     mCamera2d = std::make_shared<Camera2d>(p);
     mCamera2d->init(10000, 10000);
+
     //Map* mMap = new Map();
     //mMap->init("test.csv");
 }
@@ -60,7 +62,7 @@ void GamePlay::updateScene() {
 
         auto p = mActorManager->getPlayer();
         if (!p) {
-            //nextScene(std::make_shared<Title>());
+            nextScene(std::make_shared<Title>());
         }
     } else if (mState == GameState::PAUSED) {
 

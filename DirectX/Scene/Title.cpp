@@ -1,6 +1,8 @@
 ﻿#include "Title.h"
 #include "GamePlay.h"
+#include "../Actor/Transform2D.h"
 #include "../Sprite/Sprite.h"
+#include "../System/Game.h"
 
 Title::Title() :
     SceneBase(),
@@ -10,7 +12,8 @@ Title::Title() :
 Title::~Title() = default;
 
 void Title::startScene() {
-    new Sprite(mRenderer, "press_space.png");
+    auto title = new Sprite(mRenderer, "press_space.png");
+    title->transform()->setPosition(Vector2(Game::WINDOW_WIDTH / 2.f, Game::WINDOW_HEIGHT / 2.f));
 }
 
 void Title::updateScene() {

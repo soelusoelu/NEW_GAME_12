@@ -9,6 +9,7 @@ class Actor;
 class AnchorActor;
 class Renderer;
 class CircleCollisionComponent;
+class SoundComponent;
 
 class PlayerMoveComponent : public Component {
 public:
@@ -16,6 +17,7 @@ public:
     ~PlayerMoveComponent();
     virtual void start() override;
     virtual void update() override;
+    int getSpeedRate() const;
     Vector2 getMoveDirection() const;
     void anchorReleaseAcceleration();
     Vector2 getAnchorDirection() const;
@@ -36,6 +38,7 @@ private:
 private:
     AnchorActor* mAnchor;
     std::shared_ptr<CircleCollisionComponent> mCollider;
+    std::shared_ptr<SoundComponent> mSound;
     Vector2 mAcceleration; //現加速度
     float mAccelerationSpeed; //追加速度
     float mAccelerationRange; //加速度範囲

@@ -6,6 +6,7 @@
 
 class Renderer;
 class CircleCollisionComponent;
+class SoundComponent;
 class SpriteComponent;
 class PlayerMoveComponent;
 
@@ -22,6 +23,7 @@ public:
 
 private:
     CircleCollisionComponent* mCollide;
+    SoundComponent* mSound;
     SpriteComponent* mSprite;
     PlayerMoveComponent* mMove;
 };

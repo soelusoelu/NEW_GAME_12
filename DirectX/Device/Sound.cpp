@@ -1,5 +1,6 @@
 ﻿#include "Sound.h"
 #include "Renderer.h"
+#include "../Actor/Actor.h"
 #include "../System/Game.h"
 
 SoundBase::SoundBase() {

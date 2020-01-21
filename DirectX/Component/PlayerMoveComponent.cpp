@@ -4,6 +4,7 @@
 #include "../Actor/Transform2D.h"
 #include "../Component/ComponentManager.h"
 #include "../Component/CircleCollisionComponent.h"
+#include "../Component/SoundComponent.h"
 #include "../Device/Time.h"
 #include "../System/Game.h"
 
@@ -11,8 +12,9 @@ PlayerMoveComponent::PlayerMoveComponent(Actor* owner, int updateOrder) :
     Component(owner, updateOrder),
     mAnchor(new AnchorActor(mOwner->renderer())),
     mCollider(nullptr),
+    mSound(nullptr),
     mAcceleration(Vector2(30.f, 0.f)),
-    mAccelerationSpeed(120.f),
+    mAccelerationSpeed(160.f),
     mAccelerationRange(400.f),
     mAnchorAccelerationTimes(5.f),
     mAnchorAccelerationRange(600.f),
@@ -32,6 +34,7 @@ void PlayerMoveComponent::start() {
     mOwner->transform()->setPosition(Vector2(100.f, 200.f));
     mOwner->transform()->setPrimary(10);
     mCollider = mOwner->componentManager()->getComponent<CircleCollisionComponent>();
+    mSound = mOwner->componentManager()->getComponent<SoundComponent>();
 
     mOwner->transform()->addChild(mAnchor->transform());
 }
@@ -44,6 +47,20 @@ void PlayerMoveComponent::update() {
     clamp();
     hit();
     dead();
+}
+
+int PlayerMoveComponent::getSpeedRate() const {
+    auto value = getMoveDirection().length();
+    //auto value = Math::Max<float>(Math::abs(mAcceleration.x), Math::abs(mAcceleration.y));
+    constexpr float min = 5.f;
+    constexpr float max = 10.f;
+    if (value < min) {
+        return 1;
+    } else if (value >= min && value < max) {
+        return 3;
+    } else if (value >= max) {
+        return 5;
+    }
 }
 
 Vector2 PlayerMoveComponent::getMoveDirection() const {
@@ -104,7 +121,7 @@ void PlayerMoveComponent::move() {
 }
 
 void PlayerMoveComponent::rotate() {
-    auto rate = (Math::abs(mAcceleration.x) + Math::abs(mAcceleration.y)) / 2.f;
+    auto rate = (Math::abs(mAcceleration.x) + Math::abs(mAcceleration.y)) / 3.f;
     mRotateCount += Time::deltaTime * rate;
     auto angle = (mAnchor->hitAngle() + mRotateCount);
     angle *= mRotateDirection;
@@ -171,6 +188,6 @@ void PlayerMoveComponent::hit() {
 void PlayerMoveComponent::dead() {
     if (Math::abs(mAcceleration.x) < mDestroyRange &&
         Math::abs(mAcceleration.y) < mDestroyRange) {
-        //Actor::destroy(mOwner);
+        Actor::destroy(mOwner);
     }
 }

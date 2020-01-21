@@ -1,10 +1,11 @@
 ﻿#pragma once
 
-#include "../System/Game.h"
+#include "../Component/Component.h"
 #include <XAudio2.h>
 #include <memory>
 
 class Sound;
+class Actor;
 
 class SoundBase {
 public:
