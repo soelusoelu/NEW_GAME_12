@@ -9,12 +9,15 @@ EnemyFactory::EnemyFactory(std::shared_ptr<Renderer> renderer) :
     mRenderer(renderer),
     mCSV(std::make_unique<CSVReader>()),
     mEnemyList(0),
-    mSpawnTimer(0.f) {
+    mEnemyData(0),
+    mSpawnTimer(0.f),
+    mEnemyCount(0) {
     mEnemyList = mCSV->loadString("EnemyList.csv");
 
     for (size_t i = 0; i < mCSV->getHeight(); i++) {
         parse(i);
     }
+    mEnemyCount = mEnemyData.size();
 }
 
 EnemyFactory::~EnemyFactory() = default;
@@ -31,6 +34,10 @@ void EnemyFactory::update() {
             break;
         }
     }
+}
+
+size_t EnemyFactory::getEnemyCount() const {
+    return mEnemyCount;
 }
 
 void EnemyFactory::create(const EnemyData & data) {

@@ -28,6 +28,7 @@ public:
     EnemyFactory(std::shared_ptr<Renderer> renderer);
     ~EnemyFactory();
     void update();
+    size_t getEnemyCount() const;
 
 private:
     void create(const EnemyData& data);
@@ -41,5 +42,6 @@ private:
     std::vector<std::string> mEnemyList;
     std::list<EnemyData> mEnemyData;
     float mSpawnTimer;
+    size_t mEnemyCount;
 };
 

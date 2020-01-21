@@ -1,6 +1,7 @@
 ﻿#include "GamePlay.h"
 #include "../Actor/Actor.h"
 #include "../Actor/ActorManager.h"
+#include "../Actor/EnemyActor.h"
 #include "../Actor/EnemyFactory.h"
 #include "../Actor/PlayerActor.h"
 #include "../Component/Collider.h"
@@ -36,12 +37,12 @@ void GamePlay::startScene() {
     mEnemyCreater = std::make_unique<EnemyFactory>(mRenderer);
     auto p = mActorManager->getPlayer();
     new AnchorPoint(mRenderer, p);
-	Map* mMap = new Map(mRenderer);
-	mMap->init("test.csv");
+    Map* mMap = new Map(mRenderer);
+    mMap->init("test.csv");
     mCamera2d = std::make_shared<Camera2d>(p);
 
-	mCamera2d->init(mMap->returnWidth() - 64, mMap->returnHeight() - 64);
-	delete(mMap);
+    mCamera2d->init(mMap->returnWidth() - 64, mMap->returnHeight() - 64);
+    delete(mMap);
 }
 
 void GamePlay::updateScene() {
@@ -61,9 +62,11 @@ void GamePlay::updateScene() {
             new Pause(shared_from_this(), mRenderer);
         }
 
-        auto p = mActorManager->getPlayer();
-        if (!p) {
-            //nextScene(std::make_shared<Title>());
+        if (!mActorManager->getPlayer()) { //ゲームオーバー
+            nextScene(std::make_shared<Title>());
+        }
+        if (!mActorManager->getActor<EnemyActor>()) { //クリア
+            nextScene(std::make_shared<Title>());
         }
     } else if (mState == GameState::PAUSED) {
 
