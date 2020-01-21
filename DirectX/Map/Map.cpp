@@ -17,6 +17,7 @@ Map::Map(std::shared_ptr<Renderer> renderer) :
 
 Map::~Map()
 {
+
 }
 
 void Map::init(const char * filename)
@@ -51,6 +52,7 @@ void Map::init(const char * filename)
 		create(mGimmickData.front());
 		mGimmickData.pop_front();
 	}
+	delete(mCSVReader);
 }
 
 void Map::update()
