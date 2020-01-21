@@ -43,6 +43,7 @@ void GamePlay::startScene() {
     mCamera2d = std::make_shared<Camera2d>(p);
 	mCamera2d->init(mMap->returnWidth() - 64, mMap->returnHeight() - 64);
 	//mCamera2d->init(1000, 1000);
+	delete(mMap);
 }
 
 void GamePlay::updateScene() {

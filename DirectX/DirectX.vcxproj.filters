@@ -57,6 +57,8 @@
     <ClCompile Include="Actor\Pillar.cpp" />
     <ClCompile Include="Actor\Wall.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Component\GimmickComponent.cpp" />
+    <ClCompile Include="Component\OnlyHitComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor\ActorManager.h" />
@@ -117,5 +119,7 @@
     <ClInclude Include="Actor\Hole.h" />
     <ClInclude Include="Actor\Pillar.h" />
     <ClInclude Include="Actor\Wall.h" />
+    <ClInclude Include="Component\GimmickComponent.h" />
+    <ClInclude Include="Component\OnlyHitComponent.h" />
   </ItemGroup>
 </Project>
