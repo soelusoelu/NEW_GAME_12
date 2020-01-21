@@ -4,9 +4,9 @@
 #include "../Component/SpriteComponent.h"
 
 Hole::Hole(std::shared_ptr<Renderer> renderer, const Vector2& pos, const char* tag):
-	Actor(tag),
+	Actor(renderer,tag),
 	mCollide(new CircleCollisionComponent(this)),
-	mSprite(new SpriteComponent(this, renderer, "circleP.png", 0.5f))
+	mSprite(new SpriteComponent(this, "circleP.png"))
 {
 	transform()->setPosition(pos);
 }

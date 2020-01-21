@@ -1,7 +1,7 @@
 ﻿#include "GamePlay.h"
 #include "../Actor/Actor.h"
 #include "../Actor/ActorManager.h"
-#include "../Actor/Enemy.h"
+#include "../Actor/EnemyFactory.h"
 #include "../Actor/PlayerActor.h"
 #include "../Actor/Hole.h"
 #include "../Actor/Pillar.h"
@@ -15,10 +15,10 @@
 #include "../UI/AnchorPoint.h"
 #include "../UI/Pause.h"
 
-
 GamePlay::GamePlay() :
     SceneBase(),
     mActorManager(new ActorManager()),
+    mEnemyCreater(nullptr),
     mPhysics(new Physics()),
     mState(GameState::PLAY),
     mPauseKey(KeyCode::Alpha1) {
@@ -35,36 +35,28 @@ GamePlay::~GamePlay() {
 
 void GamePlay::startScene() {
     new PlayerActor(mRenderer);
-    new Enemy(mRenderer, Vector2(500.f, 300.f), Scale::SMALL, Type::NORMAL);
-    new AnchorPoint(mRenderer, mActorManager->getPlayer());
-	Map* mMap = new Map();
+    mEnemyCreater = std::make_unique<EnemyFactory>(mRenderer);
+    auto p = mActorManager->getPlayer();
+    new AnchorPoint(mRenderer, p);
+	Map* mMap = new Map(mRenderer);
 	mMap->init("test.csv");
-	for (int i = 0; i < mMap->howManyWall(); ++i)
-	{
-		new Wall(mRenderer, Vector2(mMap->getPosWall[i]));
-	}
-	for (int i = 0; i < mMap->howManyHole(); i++)
-	{
-		new Hole(mRenderer, Vector2(mMap->getPosHole[i]));
-	}
-	for (int i = -0; i < mMap->howManyPillar(); ++i)
-	{
-		new Pillar(mRenderer, Vector2(mMap->getPosPillar[i]));
-	}
-	mCamera2d = std::make_shared<Camera2d>(mActorManager->getPlayer());
-	mCamera2d->init(mMap->returnWidth(), mMap->returnHeight());
+    mCamera2d = std::make_shared<Camera2d>(p);
+	mCamera2d->init(mMap->returnWidth() - 64, mMap->returnHeight() - 64);
+	//mCamera2d->init(1000, 1000);
 }
 
 void GamePlay::updateScene() {
     if (mState == GameState::PLAY) {
+        //エネミー生成
+        mEnemyCreater->update();
         //総アクターアップデート
         mActorManager->update();
         //総当たり判定
         mPhysics->sweepAndPrune();
 
-		//カメラ
-		mCamera2d->setPlayer(mActorManager->getPlayer());
-		mCamera2d->update();
+        //カメラ
+        //mCamera2d->setPlayer(mActorManager->getPlayer());
+        mCamera2d->update();
 
         if (Input::getKeyDown(mPauseKey)) {
             new Pause(shared_from_this(), mRenderer);

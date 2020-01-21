@@ -2,9 +2,9 @@
 #include "CircleCollisionComponent.h"
 #include "Collider.h"
 #include "ComponentManager.h"
-#include "PlayerMoveComponent.h"
 #include "SpriteComponent.h"
 #include "../Actor/Actor.h"
+#include "../Actor/PlayerActor.h"
 #include "../Actor/Transform2D.h"
 #include "../Device/Time.h"
 #include "../Utility/Input.h"
@@ -31,6 +31,10 @@ void AnchorComponent::start() {
     mSpriteComp = mOwner->componentManager()->getComponent<SpriteComponent>();
     mSpriteComp->setActive(false);
     mCollide = mOwner->componentManager()->getComponent<CircleCollisionComponent>();
+    mCollide->disabled();
+
+    mOwner->transform()->setPivot(Vector2(-mOwner->transform()->getSize().x * 0.5f, 0.f));
+    mOwner->transform()->setPrimary(5);
 }
 
 void AnchorComponent::update() {
@@ -46,7 +50,7 @@ void AnchorComponent::update() {
 }
 
 void AnchorComponent::shot(const Vector2 & direction) {
-    mTargetPoint = playerPosition() + direction * MAX_LENGTH;
+    mTargetPoint = worldPosition() + direction * MAX_LENGTH;
     mHitEnemy = nullptr;
     mCurrentAnchorLength = 0.f;
     mState = AnchorState::EXTEND;
@@ -80,9 +84,9 @@ float AnchorComponent::hitAngle() const {
 
 void AnchorComponent::rotate() {
     if (mState != AnchorState::EXTEND || mState != AnchorState::HIT) {
-        auto other = (isHit()) ? enemyCenterPosition(): mTargetPoint;
-        auto dir = other - playerPosition();
-        auto rot = Math::toDegrees(Math::atan2(-dir.x, dir.y));
+        auto other = (isHit()) ? enemyPosition(): mTargetPoint;
+        auto dir = other - worldPosition();
+        auto rot = Math::toDegrees(Math::atan2(dir.y, dir.x));
         mOwner->transform()->setRotation(rot);
     }
 }
@@ -108,26 +112,30 @@ void AnchorComponent::updateCollider() {
         return;
     }
     //アンカーの先端にだけ当たり判定
-    auto dir = mTargetPoint - playerPosition();
-    dir.normalize(); //重いねぇ
-    mCollide->set(playerPosition() + dir * mCurrentAnchorLength, 3.f);
+    auto dir = mTargetPoint - worldPosition();
+    dir.normalize();
+    auto pos = worldPosition();
+    mCollide->set(worldPosition() + dir * mCurrentAnchorLength, 3.f);
 }
 
 void AnchorComponent::hit() {
     if (mState != AnchorState::EXTEND) {
         return;
     }
-    auto hits = mCollide->onCollisionEnter();
-    for (auto&& hit : hits) {
+    for (auto&& hit : mCollide->onCollisionEnter()) {
         if (hit->getOwner()->tag() == "Enemy") {
             //ヒットしたエネミーの登録
             mHitEnemy = hit->getOwner();
 
             //プレイヤーとエネミーとの角度計算
-            auto dir = enemyCenterPosition() - playerPosition();
+            auto dir = enemyPosition() - worldPosition();
             mHitAngle = Math::toDegrees(Math::atan2(-dir.y, -dir.x));
 
-            mOwner->transform()->parent()->getOwner()->componentManager()->getComponent<PlayerMoveComponent>()->rotateDirection();
+            auto actor = mOwner->transform()->parent()->getOwner();
+            if (actor) {
+                auto player = dynamic_cast<PlayerActor*>(actor);
+                player->rotateDirection();
+            }
 
             mState = AnchorState::HIT;
             mCollide->disabled();
@@ -143,7 +151,11 @@ void AnchorComponent::changeState() {
         }
     } else if (mState == AnchorState::HIT) {
         if (Input::getKeyDown(mReleaseKey) || Input::getJoyDown(mReleaseJoy)) {
-            mOwner->transform()->parent()->getOwner()->componentManager()->getComponent<PlayerMoveComponent>()->anchorReleaseAcceleration();
+            auto actor = mOwner->transform()->parent()->getOwner();
+            if (actor) {
+                auto player = dynamic_cast<PlayerActor*>(actor);
+                player->anchorReleaseAcceleration();
+            }
             mState = AnchorState::SHRINK;
         }
     } else if (mState == AnchorState::SHRINK) {
@@ -154,17 +166,17 @@ void AnchorComponent::changeState() {
     }
 }
 
-Vector2 AnchorComponent::playerPosition() const {
-    return mOwner->transform()->parent()->getCenter();
+Vector2 AnchorComponent::worldPosition() const {
+    return mOwner->transform()->getWorldPosition();
 }
 
-Vector2 AnchorComponent::enemyCenterPosition() const {
+Vector2 AnchorComponent::enemyPosition() const {
     if (!mHitEnemy) {
         return Vector2::zero;
     }
-    return mHitEnemy->transform()->getCenter();
+    return mHitEnemy->transform()->getPosition();
 }
 
 void AnchorComponent::computeScale() {
-    mOwner->transform()->setScale(Vector2(mThick, mCurrentAnchorLength), false);
+    mOwner->transform()->setScale(Vector2(mCurrentAnchorLength, mThick));
 }

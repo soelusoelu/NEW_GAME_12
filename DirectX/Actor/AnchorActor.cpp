@@ -5,9 +5,9 @@
 #include "../Component/SpriteComponent.h"
 
 AnchorActor::AnchorActor(std::shared_ptr<Renderer> renderer, const char* tag) :
-    Actor(tag),
+    Actor(renderer, tag),
     mCollide(new CircleCollisionComponent(this)),
-    mSprite(new SpriteComponent(this, renderer, "black.png", 0.55f)),
+    mSprite(new SpriteComponent(this, "black.png")),
     mAnchor(new AnchorComponent(this)) {
 }
 

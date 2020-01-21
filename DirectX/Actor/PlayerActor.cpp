@@ -5,10 +5,10 @@
 #include "../Component/SpriteComponent.h"
 
 PlayerActor::PlayerActor(std::shared_ptr<Renderer> renderer, const char* tag) :
-    Actor(tag),
+    Actor(renderer, tag),
     mCollide(new CircleCollisionComponent(this)),
-    mSprite(new SpriteComponent(this, renderer, "circleP.png", 0.5f)),
-    mMove(new PlayerMoveComponent(this, renderer)) {
+    mSprite(new SpriteComponent(this, "circleP.png")),
+    mMove(new PlayerMoveComponent(this)) {
 }
 
 PlayerActor::~PlayerActor() = default;
@@ -16,8 +16,12 @@ PlayerActor::~PlayerActor() = default;
 void PlayerActor::updateActor() {
 }
 
-Vector2 PlayerActor::getLastInput() const {
-    return mMove->getLastInput();
+void PlayerActor::anchorReleaseAcceleration() {
+    mMove->anchorReleaseAcceleration();
+}
+
+Vector2 PlayerActor::getAnchorDirection() const {
+    return mMove->getAnchorDirection();
 }
 
 bool PlayerActor::isHitAnchor() const {
@@ -26,4 +30,8 @@ bool PlayerActor::isHitAnchor() const {
 
 const float PlayerActor::anchorMaxLength() const {
     return mMove->anchorMaxLength();
+}
+
+void PlayerActor::rotateDirection() {
+    mMove->rotateDirection();
 }

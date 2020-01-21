@@ -1,8 +1,12 @@
 #pragma once
 
 #include "../Device/CSVReader.h"
+#include "../Device/Renderer.h"
 #include "../Utility/Math.h"
-
+#include <list>
+#include <memory>
+#include <string>
+#include <vector>
 
 enum class Category
 {
@@ -12,30 +16,28 @@ enum class Category
 	PILLAR//柱
 };
 
+struct GimmickData
+{
+	Vector2 position;
+	Category type;
+};
+
 class Map
 {
 public:                                                                   
-	Map();
+	Map(std::shared_ptr<Renderer> renderer);
 	~Map();
 	void init(const char* filename);
-	int howManyWall();//壁が何個あるかを返す
-	int howManyHole();//穴が何個あるかを返す
-	int howManyPillar();//柱が何個あるかを返す
-	Vector2& getPosWall(int i);//壁の位置情報を返す
-	Vector2& getPosHole(int i);//穴の位置情報を返す
-	Vector2& getPosPillar(int i);//柱の位置情報を返す
+	void update();
 	int returnWidth();//マップ全体の横大きさ
 	int returnHeight();//マップ全体の縦大きさ
+	void create(const GimmickData& data);
 
 private:
-	//Vector2* mWallPos;//位置保管用
-	//Vector2* mHolePos;//位置保管用
-	//Vector2* mPillarPos;//位置保管用
-	std::vector<Vector2>mWallPos;
-	std::vector<Vector2>mHolePos;
-	std::vector<Vector2>mPillarPos;
+	std::shared_ptr<Renderer> mRenderer;
 	CSVReader* mCSVReader;
 	std::vector<int> mCSV;
+	std::list<GimmickData>mGimmickData;
 	int mWidth;
 	int mHeight;
 };

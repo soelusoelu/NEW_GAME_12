@@ -1,7 +1,7 @@
 ﻿#include "UI.h"
 #include "UIManager.h"
+#include "../Actor/Transform2D.h"
 #include "../Sprite/Sprite.h"
-#include <algorithm>
 
 UI::UI() :
     mSprites(0),
@@ -37,7 +37,11 @@ void UI::close() {
     mState = UIState::CLOSING;
 }
 
-void UI::addSprite(Sprite* sprite) {
+void UI::addSprite(Sprite* sprite, bool fixedUI) {
+    if (fixedUI) {
+        sprite->setUI();
+    }
+    sprite->transform()->setPrimary(0);
     mSprites.emplace_back(sprite);
 }
 

@@ -8,14 +8,14 @@ public:
     void reset();
     bool isTime() const;
     void setLimitTime(float sec);
-    int getLimitTime() const;
-    int currentTimer() const;
+    float currentTime() const;
+    float limitTime() const;
 
 public:
     static float deltaTime;
 
 private:
-    int mCurrentTime;
-    int mLimitTime;
+    float mCurrentTime;
+    float mLimitTime;
     bool mIsOverLimit;
 };

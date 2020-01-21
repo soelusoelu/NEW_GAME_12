@@ -10,7 +10,7 @@ Title::Title() :
 Title::~Title() = default;
 
 void Title::startScene() {
-    new Sprite(mRenderer, "press_space.png", 0.1f);
+    new Sprite(mRenderer, "press_space.png");
 }
 
 void Title::updateScene() {

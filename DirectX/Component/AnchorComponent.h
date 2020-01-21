@@ -43,8 +43,8 @@ private:
     //死ぬ条件
     void changeState();
     //座標の取得
-    Vector2 playerPosition() const;
-    Vector2 enemyCenterPosition() const;
+    Vector2 worldPosition() const;
+    Vector2 enemyPosition() const;
     //アンカーの伸縮
     void computeScale();
 

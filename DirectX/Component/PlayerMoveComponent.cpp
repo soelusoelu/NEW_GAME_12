@@ -3,41 +3,37 @@
 #include "../Actor/AnchorActor.h"
 #include "../Actor/Transform2D.h"
 #include "../Component/ComponentManager.h"
-#include "../Component/SpriteComponent.h"
+#include "../Component/CircleCollisionComponent.h"
 #include "../Device/Time.h"
 #include "../System/Game.h"
 
-PlayerMoveComponent::PlayerMoveComponent(Actor* owner, std::shared_ptr<Renderer> renderer, int updateOrder) :
+PlayerMoveComponent::PlayerMoveComponent(Actor* owner, int updateOrder) :
     Component(owner, updateOrder),
-    mAnchor(new AnchorActor(renderer)),
-    mRenderer(renderer),
-    mSpriteComp(nullptr),
+    mAnchor(new AnchorActor(mOwner->renderer())),
+    mCollider(nullptr),
     mAcceleration(Vector2(30.f, 0.f)),
     mAccelerationSpeed(120.f),
-    mAccelerationRange(200.f),
+    mAccelerationRange(400.f),
     mAnchorAccelerationTimes(5.f),
-    mAnchorAccelerationRange(400.f),
+    mAnchorAccelerationRange(600.f),
     mDecelerationSpeed(30.f),
     mDestroyRange(3.f),
     mRotateCount(0.f),
-    mRotateDirection(1.f),
+    mRotateDirection(0.f),
     mPreviousPos(Vector2::zero),
     mAnchorKey(KeyCode::Q),
     mAnchorJoy(JoyCode::RightButton),
-    mLastInput(Vector2::right) {
+    mAnchorDir(Vector2::right) {
 }
 
 PlayerMoveComponent::~PlayerMoveComponent() = default;
 
 void PlayerMoveComponent::start() {
     mOwner->transform()->setPosition(Vector2(100.f, 200.f));
+    mOwner->transform()->setPrimary(10);
+    mCollider = mOwner->componentManager()->getComponent<CircleCollisionComponent>();
 
     mOwner->transform()->addChild(mAnchor->transform());
-
-    mSpriteComp = mOwner->componentManager()->getComponent<SpriteComponent>();
-
-    //アンカーの位置をプレイヤーの中心に
-    mAnchor->transform()->setPosition(mOwner->transform()->getPivot());
 }
 
 void PlayerMoveComponent::update() {
@@ -46,19 +42,20 @@ void PlayerMoveComponent::update() {
     anchorUpdate();
     anchorInjection();
     clamp();
+    hit();
     dead();
 }
 
-Vector2 PlayerMoveComponent::getAcceleration() const {
-    return mAcceleration;
+Vector2 PlayerMoveComponent::getMoveDirection() const {
+    return mOwner->transform()->getPosition() - mPreviousPos;
 }
 
 void PlayerMoveComponent::anchorReleaseAcceleration() {
-    mAcceleration = moveDirection() * 200.f;
+    mAcceleration = getMoveDirection() * 30.f;
 }
 
-Vector2 PlayerMoveComponent::getLastInput() const {
-    return mLastInput;
+Vector2 PlayerMoveComponent::getAnchorDirection() const {
+    return mAnchorDir;
 }
 
 bool PlayerMoveComponent::isHitAnchor() const {
@@ -70,9 +67,9 @@ const float PlayerMoveComponent::anchorMaxLength() const {
 }
 
 void PlayerMoveComponent::rotateDirection() {
-    auto dir = centerPosition() - mPreviousPos;
-    auto enemyPos = mAnchor->hitEnemy()->transform()->getCenter();
-    auto temp = enemyPos - centerPosition();
+    auto dir = getMoveDirection();
+    auto enemyPos = mAnchor->hitEnemy()->transform()->getPosition();
+    auto temp = enemyPos - mOwner->transform()->getPosition();
     if (temp.y > 0) {
         mRotateDirection = (dir.x > 0) ? 1.f : -1.f;
     } else {
@@ -82,12 +79,14 @@ void PlayerMoveComponent::rotateDirection() {
 
 void PlayerMoveComponent::move() {
     //1フレーム前の座標を記憶
-    mPreviousPos = centerPosition();
+    mPreviousPos = mOwner->transform()->getPosition();
 
-    auto h = Input::horizontal();
-    auto v = Input::vertical();
-    //auto h = Input::joyHorizontal();
-    //auto v = Input::joyVertical();
+    float h = Input::horizontal();
+    float v = Input::vertical();
+    if (Math::nearZero(h) && Math::nearZero(v)) {
+        h = Input::joyHorizontal();
+        v = Input::joyVertical();
+    }
     if (!Math::nearZero(h) || !Math::nearZero(v)) {
         auto fh = h * mAccelerationSpeed * Time::deltaTime;
         auto fv = v * mAccelerationSpeed * Time::deltaTime;
@@ -95,10 +94,6 @@ void PlayerMoveComponent::move() {
         auto a = Vector2(fh, -fv);
         mAcceleration += (isHitAnchor()) ? a * mAnchorAccelerationTimes : a;
     }
-
-    //最大最小加速度
-    auto range = (isHitAnchor()) ? mAnchorAccelerationRange : mAccelerationRange;
-    mAcceleration.clamp(Vector2(-range, -range), Vector2(range, range));
 
     //現在の加速度で移動
     if (isHitAnchor()) {
@@ -132,7 +127,7 @@ void PlayerMoveComponent::anchorInjection() {
     if ((!Input::getKeyDown(mAnchorKey) && !Input::getJoyDown(mAnchorJoy)) || !mAnchor->canShot()) {
         return;
     }
-    mAnchor->shot(mLastInput);
+    mAnchor->shot(Vector2::normalize(mAnchorDir));
     mRotateCount = 0.f;
 }
 
@@ -141,19 +136,36 @@ void PlayerMoveComponent::anchorUpdate() {
     auto h = Input::joyRhorizontal();
     auto v = Input::joyRvertical();
     if (!Math::nearZero(h) || !Math::nearZero(v)) {
-        auto dir = Vector2::normalize(Vector2(h, -v));
-        mLastInput.set(dir.x, dir.y);
-        //mLastInput.set(h, -v);
+        if (Math::abs(h) < 0.5f && Math::abs(v) < 0.5f) {
+            return;
+        }
+        mAnchorDir.set(h, -v);
     }
 }
 
 void PlayerMoveComponent::clamp() {
-    auto t = mOwner->transform();
-    t->setPosition(Vector2::clamp(
-        t->getPosition(),
-        Vector2::zero,
-        Vector2(Game::WINDOW_WIDTH, Game::WINDOW_HEIGHT) - Vector2(mSpriteComp->getScreenTextureSize().x, mSpriteComp->getScreenTextureSize().y)
-    ));
+    //auto t = mOwner->transform();
+    //t->setPosition(Vector2::clamp(
+    //    t->getPosition(),
+    //    Vector2::zero + mOwner->transform()->getSize() / 2.f,
+    //    Vector2(Game::WINDOW_WIDTH, Game::WINDOW_HEIGHT) - mOwner->transform()->getSize() / 2.f
+    //));
+
+    //最大最小加速度
+    auto range = (isHitAnchor()) ? mAnchorAccelerationRange : mAccelerationRange;
+    mAcceleration.clamp(Vector2(-range, -range), Vector2(range, range));
+}
+
+void PlayerMoveComponent::hit() {
+    for (auto&& c : mCollider->onCollisionEnter()) {
+        if (c->getOwner()->tag() == "EnemyBullet") {
+            //減速
+            Vector2 d;
+            d.x = (mAcceleration.x > 0.f) ? -300.f : 300.f;
+            d.y = (mAcceleration.y > 0.f) ? -300.f : 300.f;
+            mAcceleration += d * Time::deltaTime;
+        }
+    }
 }
 
 void PlayerMoveComponent::dead() {
@@ -161,12 +173,4 @@ void PlayerMoveComponent::dead() {
         Math::abs(mAcceleration.y) < mDestroyRange) {
         //Actor::destroy(mOwner);
     }
-}
-
-Vector2 PlayerMoveComponent::centerPosition() const {
-    return mOwner->transform()->getCenter();
-}
-
-Vector2 PlayerMoveComponent::moveDirection() const {
-    return Vector2::normalize(centerPosition() - mPreviousPos);
 }

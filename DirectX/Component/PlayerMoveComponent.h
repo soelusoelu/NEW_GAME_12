@@ -8,17 +8,17 @@
 class Actor;
 class AnchorActor;
 class Renderer;
-class SpriteComponent;
+class CircleCollisionComponent;
 
 class PlayerMoveComponent : public Component {
 public:
-    PlayerMoveComponent(Actor* owner, std::shared_ptr<Renderer> renderer, int updateOrder = 10);
+    PlayerMoveComponent(Actor* owner, int updateOrder = 10);
     ~PlayerMoveComponent();
     virtual void start() override;
     virtual void update() override;
-    Vector2 getAcceleration() const;
+    Vector2 getMoveDirection() const;
     void anchorReleaseAcceleration();
-    Vector2 getLastInput() const;
+    Vector2 getAnchorDirection() const;
     bool isHitAnchor() const;
     const float anchorMaxLength() const;
     void rotateDirection();
@@ -30,14 +30,12 @@ private:
     void anchorInjection();
     void anchorUpdate();
     void clamp();
+    void hit();
     void dead();
-    Vector2 centerPosition() const;
-    Vector2 moveDirection() const;
 
 private:
     AnchorActor* mAnchor;
-    std::shared_ptr<Renderer> mRenderer;
-    std::shared_ptr<SpriteComponent> mSpriteComp;
+    std::shared_ptr<CircleCollisionComponent> mCollider;
     Vector2 mAcceleration; //現加速度
     float mAccelerationSpeed; //追加速度
     float mAccelerationRange; //加速度範囲
@@ -50,6 +48,6 @@ private:
     Vector2 mPreviousPos;
     KeyCode mAnchorKey;
     JoyCode mAnchorJoy;
-    Vector2 mLastInput;
+    Vector2 mAnchorDir;
 };
 

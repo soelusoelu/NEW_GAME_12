@@ -20,7 +20,7 @@ public:
     void update();
     virtual void updateUI() = 0;
     void close();
-    void addSprite(Sprite* sprite);
+    void addSprite(Sprite* sprite, bool fixedUI = true);
     void removeSprite(Sprite* sprite);
     void setActive(bool value);
     bool getActive() const;

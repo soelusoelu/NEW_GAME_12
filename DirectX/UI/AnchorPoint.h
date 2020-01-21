@@ -16,5 +16,6 @@ public:
 private:
     std::weak_ptr<PlayerActor> mPlayer;
     Sprite* mPoint;
+    float mLength;
 };
 
