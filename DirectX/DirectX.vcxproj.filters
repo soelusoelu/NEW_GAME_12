@@ -34,7 +34,6 @@
     <ClCompile Include="Utility\Input.cpp" />
     <ClCompile Include="Utility\Math.cpp" />
     <ClCompile Include="Scene\GamePlay.cpp" />
-    <ClCompile Include="Main.cpp" />
     <ClCompile Include="Scene\SceneBase.cpp" />
     <ClCompile Include="Scene\SceneManager.cpp" />
     <ClCompile Include="System\Direct3D11.cpp" />
@@ -54,6 +53,10 @@
     <ClCompile Include="Component\HitPointComponent.cpp" />
     <ClCompile Include="Device\Sound.cpp" />
     <ClCompile Include="Map\Map.cpp" />
+    <ClCompile Include="Actor\Hole.cpp" />
+    <ClCompile Include="Actor\Pillar.cpp" />
+    <ClCompile Include="Actor\Wall.cpp" />
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor\ActorManager.h" />
@@ -111,5 +114,8 @@
     <ClInclude Include="Component\HitPointComponent.h" />
     <ClInclude Include="Device\Sound.h" />
     <ClInclude Include="Map\Map.h" />
+    <ClInclude Include="Actor\Hole.h" />
+    <ClInclude Include="Actor\Pillar.h" />
+    <ClInclude Include="Actor\Wall.h" />
   </ItemGroup>
 </Project>

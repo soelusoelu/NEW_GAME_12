@@ -3,6 +3,9 @@
 #include "../Actor/ActorManager.h"
 #include "../Actor/EnemyFactory.h"
 #include "../Actor/PlayerActor.h"
+#include "../Actor/Hole.h"
+#include "../Actor/Pillar.h"
+#include "../Actor/Wall.h"
 #include "../Component/Collider.h"
 #include "../Device/Camera2d.h"
 #include "../Device/Physics.h"
@@ -35,10 +38,11 @@ void GamePlay::startScene() {
     mEnemyCreater = std::make_unique<EnemyFactory>(mRenderer);
     auto p = mActorManager->getPlayer();
     new AnchorPoint(mRenderer, p);
+	Map* mMap = new Map(mRenderer);
+	mMap->init("test.csv");
     mCamera2d = std::make_shared<Camera2d>(p);
-    mCamera2d->init(10000, 10000);
-    //Map* mMap = new Map();
-    //mMap->init("test.csv");
+	mCamera2d->init(mMap->returnWidth() - 64, mMap->returnHeight() - 64);
+	//mCamera2d->init(1000, 1000);
 }
 
 void GamePlay::updateScene() {
