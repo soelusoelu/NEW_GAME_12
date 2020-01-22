@@ -31,6 +31,9 @@ void Camera2d::update()
 	{
 		if (p->isHitAnchor())
 		{
+			if (!p->hitActor()) {
+				return;
+			}
 			Vector2 temp;
 			temp.x = p->hitActor()->transform()->getPosition().x - Game::WINDOW_WIDTH / 2.f;
 			temp.y = p->hitActor()->transform()->getPosition().y - Game::WINDOW_HEIGHT / 2.f;

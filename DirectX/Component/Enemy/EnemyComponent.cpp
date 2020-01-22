@@ -60,8 +60,10 @@ void EnemyComponent::hit() {
     for (auto&& c : mCollider->onCollisionEnter()) {
         if (c->getOwner()->tag() == "Player") {
             auto player = dynamic_cast<PlayerActor*>(c->getOwner());
-            if (player->hitActor() == mOwner) {
-                return;
+            if (player->isHitAnchor()) {
+                if (player->hitActor() == mOwner) {
+                    return;
+                }
             }
             auto pmc = c->getOwner()->componentManager()->getComponent<PlayerMoveComponent>();
             if (pmc) {
