@@ -16,6 +16,7 @@ public:
     EnemyActor(std::shared_ptr<Renderer> renderer, EnemyType type, const std::string& scale, const char* tag = "Enemy");
     ~EnemyActor();
     virtual void updateActor() override;
+    bool isDead() const;
 
 private:
     CircleCollisionComponent* mCollide;

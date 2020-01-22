@@ -33,3 +33,7 @@ EnemyActor::~EnemyActor() = default;
 
 void EnemyActor::updateActor() {
 }
+
+bool EnemyActor::isDead() const {
+    return mEnemy->isDead();
+}

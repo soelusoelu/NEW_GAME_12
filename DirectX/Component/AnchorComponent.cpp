@@ -4,6 +4,7 @@
 #include "ComponentManager.h"
 #include "SpriteComponent.h"
 #include "../Actor/Actor.h"
+#include "../Actor/EnemyActor.h"
 #include "../Actor/PlayerActor.h"
 #include "../Actor/Transform2D.h"
 #include "../Device/Time.h"
@@ -18,7 +19,7 @@ AnchorComponent::AnchorComponent(Actor* owner, int updateOrder) :
     mCurrentAnchorLength(0.f),
     mThick(2.f),
     mTargetPoint(Vector2::zero),
-    mHitEnemy(nullptr),
+    mHitActor(nullptr),
     mHitAngle(0.f),
     mReleaseKey(KeyCode::Q),
     mReleaseJoy(JoyCode::RightButton),
@@ -51,7 +52,7 @@ void AnchorComponent::update() {
 
 void AnchorComponent::shot(const Vector2 & direction) {
     mTargetPoint = worldPosition() + direction * MAX_LENGTH;
-    mHitEnemy = nullptr;
+    mHitActor = nullptr;
     mCurrentAnchorLength = 0.f;
     mState = AnchorState::EXTEND;
     mSpriteComp->setActive(true);
@@ -74,8 +75,13 @@ float AnchorComponent::currentLength() const {
     return mCurrentAnchorLength;
 }
 
-Actor* AnchorComponent::hitEnemy() const {
-    return mHitEnemy;
+void AnchorComponent::setCurrentLength(float length) {
+    mCurrentAnchorLength = length;
+    computeScale();
+}
+
+Actor* AnchorComponent::hitActor() const {
+    return mHitActor;
 }
 
 float AnchorComponent::hitAngle() const {
@@ -123,9 +129,15 @@ void AnchorComponent::hit() {
         return;
     }
     for (auto&& hit : mCollide->onCollisionEnter()) {
-        if (hit->getOwner()->tag() == "Enemy") {
+        if (hit->getOwner()->tag() == "Enemy" || hit->getOwner()->tag() == "Pillar") {
+            if (auto enemy = dynamic_cast<EnemyActor*>(hit->getOwner())) {
+                if (enemy->isDead()) {
+                    return;
+                }
+            }
+
             //ヒットしたエネミーの登録
-            mHitEnemy = hit->getOwner();
+            mHitActor = hit->getOwner();
 
             //プレイヤーとエネミーとの角度計算
             auto dir = enemyPosition() - worldPosition();
@@ -171,10 +183,10 @@ Vector2 AnchorComponent::worldPosition() const {
 }
 
 Vector2 AnchorComponent::enemyPosition() const {
-    if (!mHitEnemy) {
+    if (!mHitActor) {
         return Vector2::zero;
     }
-    return mHitEnemy->transform()->getPosition();
+    return mHitActor->transform()->getPosition();
 }
 
 void AnchorComponent::computeScale() {

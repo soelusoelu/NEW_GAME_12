@@ -28,5 +28,4 @@ private:
     std::unique_ptr<EnemyFactory> mEnemyCreater;
     Physics* mPhysics;
     GameState mState;
-    KeyCode mPauseKey;
 };

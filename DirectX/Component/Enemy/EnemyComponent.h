@@ -13,6 +13,7 @@ enum class EnemyState {
 class Actor;
 class CircleCollisionComponent;
 class HitPointComponent;
+class SpriteComponent;
 class Time;
 
 class EnemyComponent : public Component {
@@ -21,16 +22,19 @@ public:
     ~EnemyComponent();
     virtual void start() override;
     virtual void update() override;
+    bool isDead() const;
 
 private:
     void move();
     void hit();
+    void clamp();
     void dead();
     void deadMove();
 
 private:
     std::shared_ptr<CircleCollisionComponent> mCollider;
     std::shared_ptr<HitPointComponent> mHP;
+    std::shared_ptr<SpriteComponent> mSprite;
     std::unique_ptr<Time> mHittedTimer;
     std::unique_ptr<Time> mDeadTimer;
     Vector2 mHitDir;

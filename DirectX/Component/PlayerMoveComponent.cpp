@@ -68,6 +68,10 @@ Vector2 PlayerMoveComponent::getMoveDirection() const {
     return mOwner->transform()->getPosition() - mPreviousPos;
 }
 
+void PlayerMoveComponent::addAcceleration(const Vector2& add) {
+    mAcceleration += add;
+}
+
 void PlayerMoveComponent::anchorReleaseAcceleration() {
     mAcceleration = getMoveDirection() * 30.f;
 }
@@ -80,13 +84,17 @@ bool PlayerMoveComponent::isHitAnchor() const {
     return mAnchor->isHit();
 }
 
+Actor* PlayerMoveComponent::hitActor() const {
+    return mAnchor->hitActor();
+}
+
 const float PlayerMoveComponent::anchorMaxLength() const {
     return mAnchor->maxLength();
 }
 
 void PlayerMoveComponent::rotateDirection() {
     auto dir = getMoveDirection();
-    auto enemyPos = mAnchor->hitEnemy()->transform()->getPosition();
+    auto enemyPos = mAnchor->hitActor()->transform()->getPosition();
     auto temp = enemyPos - mOwner->transform()->getPosition();
     if (temp.y > 0) {
         mRotateDirection = (dir.x > 0) ? 1.f : -1.f;
@@ -122,12 +130,15 @@ void PlayerMoveComponent::move() {
 }
 
 void PlayerMoveComponent::rotate() {
-    auto rate = (Math::abs(mAcceleration.x) + Math::abs(mAcceleration.y)) / 3.f;
+    auto rate = Math::abs(mAcceleration.x) / 2.f;
+    rate *= mRotateDirection;
+    //auto rate = (Math::abs(mAcceleration.x) + Math::abs(mAcceleration.y)) / 3.f;
     mRotateCount += Time::deltaTime * rate;
     auto angle = (mAnchor->hitAngle() + mRotateCount);
-    angle *= mRotateDirection;
+    //angle *= mRotateDirection;
+
     mOwner->transform()->setPosition(
-        mAnchor->hitEnemy()->transform()->getPosition() + Vector2(Math::cos(angle), Math::sin(angle)) * mAnchor->currentLength()
+        mAnchor->hitActor()->transform()->getPosition() + Vector2(Math::cos(angle), Math::sin(angle)) * mAnchor->currentLength()
     );
 }
 
@@ -146,6 +157,8 @@ void PlayerMoveComponent::anchorInjection() {
         return;
     }
     mAnchor->shot(Vector2::normalize(mAnchorDir));
+    mAcceleration.x = Math::abs(mAcceleration.x);
+    mAcceleration.y = Math::abs(mAcceleration.y);
     mRotateCount = 0.f;
 }
 
@@ -168,6 +181,10 @@ void PlayerMoveComponent::clamp() {
         Vector2::zero + mOwner->transform()->getSize(),
         Vector2((Map::width - 1) * Map::wallSize, (Map::height - 1) * Map::wallSize) - mOwner->transform()->getSize()
     ));
+    if (isHitAnchor()) { //アンカーをクランプ
+        float dis = Vector2::distance(mOwner->transform()->getPosition(), mAnchor->hitActor()->transform()->getPosition());
+        mAnchor->setCurrentLength(dis);
+    }
 
     //最大最小加速度
     auto range = (isHitAnchor()) ? mAnchorAccelerationRange : mAccelerationRange;
@@ -179,8 +196,9 @@ void PlayerMoveComponent::hit() {
         if (c->getOwner()->tag() == "EnemyBullet") {
             //減速
             Vector2 d;
-            d.x = (mAcceleration.x > 0.f) ? -300.f : 300.f;
-            d.y = (mAcceleration.y > 0.f) ? -300.f : 300.f;
+            constexpr float add = 3000.f;
+            d.x = (getMoveDirection().x > 0.f) ? -add : add;
+            d.y = (getMoveDirection().y > 0.f) ? -add : add;
             mAcceleration += d * Time::deltaTime;
         }
     }

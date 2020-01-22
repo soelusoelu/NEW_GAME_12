@@ -18,6 +18,10 @@ PlayerActor::~PlayerActor() = default;
 void PlayerActor::updateActor() {
 }
 
+void PlayerActor::addAcceleration(const Vector2& add) {
+    mMove->addAcceleration(add);
+}
+
 void PlayerActor::anchorReleaseAcceleration() {
     mMove->anchorReleaseAcceleration();
 }
@@ -28,6 +32,10 @@ Vector2 PlayerActor::getAnchorDirection() const {
 
 bool PlayerActor::isHitAnchor() const {
     return mMove->isHitAnchor();
+}
+
+Actor* PlayerActor::hitActor() const {
+    return mMove->hitActor();
 }
 
 const float PlayerActor::anchorMaxLength() const {

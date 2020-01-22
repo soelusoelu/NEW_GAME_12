@@ -19,7 +19,8 @@ public:
     bool canShot() const;
     const float maxLength() const;
     float currentLength() const;
-    Actor* hitEnemy() const;
+    void setCurrentLength(float length);
+    Actor* hitActor() const;
     float hitAngle() const;
 
 private:

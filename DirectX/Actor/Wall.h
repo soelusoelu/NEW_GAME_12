@@ -6,7 +6,6 @@
 #include <memory>
 
 class Renderer;
-class CircleCollisionComponent;
 class SpriteComponent;
 
 class Wall:public Actor
@@ -17,7 +16,6 @@ public:
 	virtual void updateActor() override;
 
 private:
-	CircleCollisionComponent* mCollide;
 	SpriteComponent* mSprite;
 	OnlyHitComponent* mOnly;
 };

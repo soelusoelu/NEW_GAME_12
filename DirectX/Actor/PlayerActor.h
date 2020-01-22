@@ -15,9 +15,11 @@ public:
     PlayerActor(std::shared_ptr<Renderer> renderer, const char* tag = "Player");
     ~PlayerActor();
     virtual void updateActor() override;
+    void addAcceleration(const Vector2& add);
     void anchorReleaseAcceleration();
     Vector2 getAnchorDirection() const;
     bool isHitAnchor() const;
+    Actor* hitActor() const;
     const float anchorMaxLength() const;
     void rotateDirection();
 

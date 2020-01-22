@@ -36,8 +36,12 @@ float AnchorActor::currentLength() const {
     return mAnchor->currentLength();
 }
 
-Actor* AnchorActor::hitEnemy() const {
-    return mAnchor->hitEnemy();
+void AnchorActor::setCurrentLength(float length) {
+    mAnchor->setCurrentLength(length);
+}
+
+Actor* AnchorActor::hitActor() const {
+    return mAnchor->hitActor();
 }
 
 float AnchorActor::hitAngle() const {

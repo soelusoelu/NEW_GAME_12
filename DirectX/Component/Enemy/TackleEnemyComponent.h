@@ -13,6 +13,7 @@ class Actor;
 class PlayerActor;
 class Renderer;
 class Time;
+class CircleCollisionComponent;
 class SpriteComponent;
 
 class TackleEnemyComponent : public Component {
@@ -27,9 +28,11 @@ private:
     void tackle();
     void toPlayer();
     void changeColor();
+    void hit();
 
 private:
     std::weak_ptr<PlayerActor> mPlayer;
+    std::shared_ptr<CircleCollisionComponent> mCollider;
     std::shared_ptr<SpriteComponent> mSprite;
     std::unique_ptr<Time> mThinkTimer;
     std::unique_ptr<Time> mTackleTimer;

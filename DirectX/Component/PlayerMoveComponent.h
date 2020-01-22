@@ -19,9 +19,11 @@ public:
     virtual void update() override;
     int getSpeedRate() const;
     Vector2 getMoveDirection() const;
+    void addAcceleration(const Vector2& add);
     void anchorReleaseAcceleration();
     Vector2 getAnchorDirection() const;
     bool isHitAnchor() const;
+    Actor* hitActor() const;
     const float anchorMaxLength() const;
     void rotateDirection();
 

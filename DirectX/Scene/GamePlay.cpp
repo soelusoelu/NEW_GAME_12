@@ -19,8 +19,7 @@ GamePlay::GamePlay() :
     mActorManager(new ActorManager()),
     mEnemyCreater(nullptr),
     mPhysics(new Physics()),
-    mState(GameState::PLAY),
-    mPauseKey(KeyCode::Alpha1) {
+    mState(GameState::PLAY) {
     Actor::setActorManager(mActorManager);
     Collider::setPhysics(mPhysics);
 }
@@ -55,12 +54,7 @@ void GamePlay::updateScene() {
         mPhysics->sweepAndPrune();
 
         //カメラ
-        //mCamera2d->setPlayer(mActorManager->getPlayer());
         mCamera2d->update();
-
-        //if (Input::getKeyDown(mPauseKey)) {
-        //    new Pause(shared_from_this(), mRenderer);
-        //}
 
         if (!mActorManager->getPlayer()) { //ゲームオーバー
             nextScene(std::make_shared<Title>());

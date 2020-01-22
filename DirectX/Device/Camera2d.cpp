@@ -1,6 +1,7 @@
 #include "Camera2d.h"
 #include "../Actor/PlayerActor.h"
 #include "../Actor/Transform2D.h"
+#include "../Device/Time.h"
 #include "../System/Game.h"
 
 Camera2d::Camera2d(std::shared_ptr<PlayerActor> Player):
@@ -30,6 +31,10 @@ void Camera2d::update()
 	{
 		if (p->isHitAnchor())
 		{
+			Vector2 temp;
+			temp.x = p->hitActor()->transform()->getPosition().x - Game::WINDOW_WIDTH / 2.f;
+			temp.y = p->hitActor()->transform()->getPosition().y - Game::WINDOW_HEIGHT / 2.f;
+			mCameraPos = Vector2::lerp(mCameraPos, temp, Time::deltaTime);
 			return;
 		}
 	}

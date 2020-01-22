@@ -1,4 +1,5 @@
 #include "TackleEnemyComponent.h"
+#include "../CircleCollisionComponent.h"
 #include "../ComponentManager.h"
 #include "../SpriteComponent.h"
 #include "../../Actor/Actor.h"
@@ -21,6 +22,7 @@ TackleEnemyComponent::~TackleEnemyComponent() = default;
 
 void TackleEnemyComponent::start() {
     mPlayer = mOwner->getActorManager()->getPlayer();
+    mCollider = mOwner->componentManager()->getComponent<CircleCollisionComponent>();
     mSprite = mOwner->componentManager()->getComponent<SpriteComponent>();
 }
 
@@ -36,6 +38,7 @@ void TackleEnemyComponent::update() {
         }
     } else if (mState == TackleState::TACKLE) {
         tackle();
+        hit();
     }
     changeColor();
 }
@@ -66,6 +69,16 @@ void TackleEnemyComponent::changeColor() {
         mSprite->setColor(mThinkTimer->currentTime() / mThinkTimer->limitTime(), 0.f, 0.f);
     } else if (mState == TackleState::TACKLE) {
         mSprite->setColor(1 - mTackleTimer->currentTime() / mTackleTimer->limitTime(), 0.f, 0.f);
+    }
+}
+
+void TackleEnemyComponent::hit() {
+    for (auto&& hit : mCollider->onCollisionEnter()) {
+        if (hit->getOwner()->tag() == "Player") {
+            if (auto p = mPlayer.lock()) {
+                p->addAcceleration(mToPlayer * TACKLE_SPEED * 30.f * Time::deltaTime);
+            }
+        }
     }
 }
 

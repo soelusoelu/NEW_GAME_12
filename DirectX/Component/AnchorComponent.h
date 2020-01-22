@@ -28,7 +28,8 @@ public:
     bool canShot() const;
     const float maxLength() const;
     float currentLength() const;
-    Actor* hitEnemy() const;
+    void setCurrentLength(float length);
+    Actor* hitActor() const;
     float hitAngle() const;
 
 private:
@@ -56,7 +57,7 @@ private:
     float mCurrentAnchorLength;
     float mThick;
     Vector2 mTargetPoint;
-    Actor* mHitEnemy;
+    Actor* mHitActor;
     float mHitAngle;
     KeyCode mReleaseKey;
     JoyCode mReleaseJoy;

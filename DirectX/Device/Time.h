@@ -10,6 +10,7 @@ public:
     void setLimitTime(float sec);
     float currentTime() const;
     float limitTime() const;
+    float rate() const;
 
 public:
     static float deltaTime;
