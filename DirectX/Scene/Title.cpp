@@ -6,7 +6,8 @@
 
 Title::Title() :
     SceneBase(),
-    mNextKey(KeyCode::Space) {
+    mNextKey(KeyCode::Space),
+    mNextJoy(JoyCode::A) {
 }
 
 Title::~Title() = default;
@@ -17,7 +18,7 @@ void Title::startScene() {
 }
 
 void Title::updateScene() {
-    if (Input::getKeyDown(mNextKey)) {
+    if (Input::getKeyDown(mNextKey) || Input::getJoyDown(mNextJoy)) {
         nextScene(std::make_shared<GamePlay>());
     }
 }

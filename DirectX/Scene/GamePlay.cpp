@@ -58,9 +58,9 @@ void GamePlay::updateScene() {
         //mCamera2d->setPlayer(mActorManager->getPlayer());
         mCamera2d->update();
 
-        if (Input::getKeyDown(mPauseKey)) {
-            new Pause(shared_from_this(), mRenderer);
-        }
+        //if (Input::getKeyDown(mPauseKey)) {
+        //    new Pause(shared_from_this(), mRenderer);
+        //}
 
         if (!mActorManager->getPlayer()) { //ゲームオーバー
             nextScene(std::make_shared<Title>());

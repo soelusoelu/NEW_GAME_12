@@ -73,7 +73,7 @@ void PlayerMoveComponent::anchorReleaseAcceleration() {
 }
 
 Vector2 PlayerMoveComponent::getAnchorDirection() const {
-    return mAnchorDir;
+    return Vector2::normalize(mAnchorDir);
 }
 
 bool PlayerMoveComponent::isHitAnchor() const {
@@ -166,7 +166,7 @@ void PlayerMoveComponent::clamp() {
     t->setPosition(Vector2::clamp(
         t->getPosition(),
         Vector2::zero + mOwner->transform()->getSize(),
-        Vector2(Map::width * Map::wallSize, (Map::height - 1) * Map::wallSize) - mOwner->transform()->getSize()
+        Vector2((Map::width - 1) * Map::wallSize, (Map::height - 1) * Map::wallSize) - mOwner->transform()->getSize()
     ));
 
     //最大最小加速度
