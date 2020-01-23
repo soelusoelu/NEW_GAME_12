@@ -4,8 +4,6 @@
 #include "../Actor/Wall.h"
 #include "../Actor/Transform2D.h"
 
-
-
 Map::Map(std::shared_ptr<Renderer> renderer) :
 	mRenderer(renderer),
 	mCSVReader(nullptr),
