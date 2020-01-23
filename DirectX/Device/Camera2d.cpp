@@ -67,6 +67,12 @@ void Camera2d::update()
 	{
 		this->mCameraPos.y = getPlayerPos().y - Game::WINDOW_HEIGHT * 2 / 3;
 	}
+
+	//ÉJÉÅÉâï‚ê≥
+	if (mCameraPos.x < 0) { this->mCameraPos.x = 0; }
+	if (mCameraPos.y < 0) { this->mCameraPos.y = 0; }
+	if (mCameraPos.x > mXPos - Game::WINDOW_WIDTH) { this->mCameraPos.x = mXPos - Game::WINDOW_WIDTH; }
+	if (mCameraPos.y > mYPos - Game::WINDOW_HEIGHT) { this->mCameraPos.y = mYPos - Game::WINDOW_HEIGHT; }
 }
 
 void Camera2d::setPlayer(std::shared_ptr<PlayerActor> Player)
