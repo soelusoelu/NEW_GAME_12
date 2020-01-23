@@ -30,6 +30,7 @@ void EnemyFactory::update() {
     while (mEnemyData.front().spawnTime <= mSpawnTimer) {
         create(mEnemyData.front());
         mEnemyData.pop_front();
+        mEnemyCount--;
         if (mEnemyData.empty()) {
             break;
         }

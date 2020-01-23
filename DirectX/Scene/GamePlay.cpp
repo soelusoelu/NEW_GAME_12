@@ -59,7 +59,7 @@ void GamePlay::updateScene() {
         if (!mActorManager->getPlayer()) { //ゲームオーバー
             nextScene(std::make_shared<Title>());
         }
-        if (!mActorManager->getActor<EnemyActor>()) { //クリア
+        if (mEnemyCreater->getEnemyCount() == 0 && !mActorManager->getActor<EnemyActor>()) { //クリア
             nextScene(std::make_shared<Title>());
         }
     } else if (mState == GameState::PAUSED) {
