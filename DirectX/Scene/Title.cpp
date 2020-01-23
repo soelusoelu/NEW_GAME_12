@@ -13,7 +13,7 @@ Title::Title() :
 Title::~Title() = default;
 
 void Title::startScene() {
-    auto title = new Sprite(mRenderer, "press_space.png");
+    auto title = new Sprite(mRenderer, "12Title.png");
     title->transform()->setPosition(Vector2(Game::WINDOW_WIDTH / 2.f, Game::WINDOW_HEIGHT / 2.f));
 }
 
