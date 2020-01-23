@@ -37,6 +37,10 @@ void Camera2d::update()
 			Vector2 temp;
 			temp.x = p->hitActor()->transform()->getPosition().x - Game::WINDOW_WIDTH / 2.f;
 			temp.y = p->hitActor()->transform()->getPosition().y - Game::WINDOW_HEIGHT / 2.f;
+			if (temp.x < 0) { temp.x = 0; }
+			if (temp.y < 0) { temp.y = 0; }
+			if (temp.x > mXPos - Game::WINDOW_WIDTH) { temp.x = mXPos - Game::WINDOW_WIDTH; }
+			if (temp.y > mYPos - Game::WINDOW_HEIGHT) { temp.y = mYPos - Game::WINDOW_HEIGHT; }
 			mCameraPos = Vector2::lerp(mCameraPos, temp, Time::deltaTime);
 			return;
 		}
