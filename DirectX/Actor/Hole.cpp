@@ -6,7 +6,7 @@
 Hole::Hole(std::shared_ptr<Renderer> renderer, const Vector2& pos, const char* tag):
 	Actor(renderer,tag),
 	mCollide(new CircleCollisionComponent(this)),
-	mSprite(new SpriteComponent(this, "aaaa.png")),
+	mSprite(new SpriteComponent(this, "bbbb.png")),
 	mGimmick(new GimmickComponent(this))
 {
 	transform()->setPosition(pos);
